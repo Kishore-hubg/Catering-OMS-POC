@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const html = getQuoteHTML(order);
+    const html = getQuoteHTML(order as unknown as Record<string, unknown>);
     return new NextResponse(html, { headers: htmlHeaders });
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

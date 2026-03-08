@@ -1,6 +1,6 @@
 import { connectDB } from '@/lib/db';
 import MenuItem from '@/lib/models/MenuItem';
-import type { MenuType } from '@/types';
+import type { MenuType, MenuItem as MenuItemType } from '@/types';
 
 export class MenuService {
   static async getAll(filters?: { menuType?: MenuType; category?: string; search?: string }) {
@@ -107,8 +107,8 @@ export class MenuService {
   }
 
   /** Find one item by name + category + menuType (for import matching) */
-  static async findByNaturalKey(name: string, category: string, menuType: string) {
+  static async findByNaturalKey(name: string, category: string, menuType: string): Promise<MenuItemType | null> {
     await connectDB();
-    return MenuItem.findOne({ name: name.trim(), category: category.trim(), menuType }).lean();
+    return MenuItem.findOne({ name: name.trim(), category: category.trim(), menuType }).lean() as Promise<MenuItemType | null>;
   }
 }

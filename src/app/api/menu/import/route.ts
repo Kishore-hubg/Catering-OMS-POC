@@ -264,7 +264,7 @@ export async function POST(request: NextRequest) {
           if (!groups.has(k)) groups.set(k, []);
           groups.get(k)!.push(r);
         }
-        for (const [, groupRows] of groups) {
+        for (const [, groupRows] of Array.from(groups.entries())) {
           const first = groupRows[0];
           const existing = await MenuService.findByNaturalKey(first.name, first.category, first.menuType);
           if (!existing) {
@@ -320,7 +320,7 @@ export async function POST(request: NextRequest) {
         if (!groups.has(k)) groups.set(k, []);
         groups.get(k)!.push(r);
       }
-      for (const [, groupRows] of groups) {
+      for (const [, groupRows] of Array.from(groups.entries())) {
         const first = groupRows[0];
         const existing = await MenuService.findByNaturalKey(first.name, first.category, first.menuType);
         if (!existing) {
