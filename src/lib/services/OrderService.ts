@@ -169,9 +169,9 @@ export class OrderService {
     return { totalOrders, confirmed, awaitingApproval, revised };
   }
 
-  static async getById(id: string) {
+  static async getById(id: string): Promise<OrderType | null> {
     await connectDB();
-    return Order.findById(id).lean();
+    return Order.findById(id).lean() as Promise<OrderType | null>;
   }
 
   static async getByOrderNumber(orderNumber: string) {
