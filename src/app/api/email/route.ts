@@ -20,13 +20,16 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      type OrderType = import('@/types').Order;
+      const o = order as OrderType;
+
       const composed = await EmailService.composeWithAI({
-        orderNumber: order.orderNumber,
-        customerName: order.customer.name,
-        eventDate: format(new Date(order.event.eventDate), 'MMMM d, yyyy'),
-        eventType: order.event.eventType,
-        total: order.total,
-        itemCount: order.lineItems.length,
+        orderNumber: o.orderNumber,
+        customerName: o.customer.name,
+        eventDate: format(new Date(o.event.eventDate), 'MMMM d, yyyy'),
+        eventType: o.event.eventType,
+        total: o.total,
+        itemCount: o.lineItems.length,
       });
 
       return NextResponse.json({ success: true, data: composed });
