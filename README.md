@@ -117,6 +117,13 @@ npm run seed:admin
 
 Uses `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `.env`. Re-run after changing the password to update it.
 
+**Admin login & first-time access**
+
+- The login page is at **`/login`**. Credentials are the same as in `.env`: **Email** = `ADMIN_EMAIL`, **Password** = `ADMIN_PASSWORD`.
+- If you have not run `npm run seed:admin`, no user exists yet — run it once so you can log in.
+- To **change the admin password**: set a new `ADMIN_PASSWORD` in `.env`, then run `npm run seed:admin` again (it updates the existing user’s password).
+- **Sharing the app with others:** Share your app URL (e.g. `https://yourdomain.com`). Users open it, get redirected to `/login`, and sign in with the same `ADMIN_EMAIL` and `ADMIN_PASSWORD`. Ensure you have run `seed:admin` in that environment so the admin user exists in the database.
+
 ### Step 6 — Run the application
 
 **Development (with hot reload):**
@@ -306,14 +313,14 @@ Then start the app with one of the run options above.
 |----------|----------|-------------|
 | `MONGODB_URI` | ✅ | MongoDB Atlas connection string |
 | `NEXTAUTH_SECRET` | ✅ (for auth) | Random secret for JWT (e.g. `openssl rand -base64 32`) |
-| `NEXTAUTH_URL` | ✅ (for auth) | App URL (e.g. `http://localhost:3000`) |
+| `NEXTAUTH_URL` | ✅ (for auth) | App URL — must match exactly what users type (e.g. `https://yourdomain.com`). Use `http://localhost:3000` in dev. |
 | `REDIS_URL` | ❌ | Redis connection URL (optional) |
 | `GROQ_API_KEY` | ❌ | AI email composition via Groq (falls back to template) |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` | ❌ | SMTP for sending quote emails (quote is attached as HTML) |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM` | ❌ | Twilio WhatsApp (see below) |
 | `NEXT_PUBLIC_APP_URL` | ❌ | App base URL (for quote link in WhatsApp; e.g. `https://yourapp.com`) |
 | `ADMIN_EMAIL` | ❌ | Admin login email (default: admin@nidhicatering.com) |
-| `ADMIN_PASSWORD` | ❌ | Admin password for seed (default: ChangeMe123!) |
+| `ADMIN_PASSWORD` | ❌ | Admin password used by `seed:admin` and for login. **Change from default in production**; re-run `npm run seed:admin` after changing. |
 
 **Quote email:** When you send a quote by email, the quote is attached as a **PDF** (`Nidhi-Catering-Quote-{orderNumber}.pdf`) with the same logo and table format as the on-screen quote. If PDF generation fails, an HTML attachment is used as fallback.
 
@@ -381,9 +388,27 @@ The `menu_seed_data.json` file contains all 233 menu items extracted from the ma
 - **Import CSV:** Header must be `name,category,menuType,sizeOption,price,unit`. Rows with the same (name, category, menuType) are grouped and set that item’s pricing options.
 - **Import JSON:** Array of objects. Each object must have either `_id` or `name`, `category`, `menuType`; optional fields include `pricingOptions`, `description`, `notes`, `minOrder`, `minOrderUnit`, `isQuoteBased`, `isActive`.
 
-## Deployment (VPS / Hostinger / similar)
+## Deployment
 
-For full steps see **Production Implementation** above. Short checklist:
+### Platforms
+
+- **VPS / Hostinger / DigitalOcean / similar:** Follow **Production Implementation** below (build, env, seed, PM2 or Docker, Nginx/Caddy).
+- **Vercel / Netlify / Railway:** Connect the repo, set all environment variables in the dashboard, set build command to `npm run build` (or `npm ci && npm run build`). Run `npm run seed` and `npm run seed:admin` once (e.g. via a one-off script or locally against the production MongoDB). Set `NEXTAUTH_URL` and `NEXT_PUBLIC_APP_URL` to your deployed app URL.
+
+### Post-deploy checklist
+
+1. Set **required** env vars: `MONGODB_URI`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL` (exact production URL, including `https`).
+2. Set **optional** as needed: `REDIS_URL`, `GROQ_API_KEY`, SMTP vars, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `NEXT_PUBLIC_APP_URL`.
+3. Run **once** in the deployed environment: `npm run seed`, then `npm run seed:admin` (so the admin user exists in the production DB).
+4. Use **HTTPS** and ensure `NEXTAUTH_URL` and `NEXT_PUBLIC_APP_URL` match the URL users see.
+
+### Sharing the app with testers
+
+1. Share the app URL (e.g. `https://yourdomain.com`). Unauthenticated users are redirected to `/login`.
+2. Share login credentials: **Email** = your `ADMIN_EMAIL` (e.g. `admin@nidhicatering.com`), **Password** = your `ADMIN_PASSWORD` (the value you set when running `seed:admin`).
+3. Ensure `npm run seed:admin` has been run in that environment so the admin user exists. To change the password later, set a new `ADMIN_PASSWORD` in env and re-run `npm run seed:admin`.
+
+### Deployment (VPS / Hostinger / similar) — detailed checklist
 
 1. Upload the project (or clone from repo) to the server.
 2. Create `.env` with production values (`MONGODB_URI`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`, SMTP, etc.).
@@ -391,6 +416,24 @@ For full steps see **Production Implementation** above. Short checklist:
 4. Start the app: `npm start` or use PM2/Docker as in the Production section.
 5. Put Nginx (or Caddy) in front with HTTPS and proxy to the app port.
 6. Set `NEXTAUTH_URL` and `NEXT_PUBLIC_APP_URL` to your production URL.
+
+### Quick deployment (Vercel / Netlify / Railway)
+
+1. Connect the repo to your platform.
+2. Set environment variables (see **Environment Variables Reference**).
+3. Build command: `npm run build` (or `npm ci && npm run build`).
+4. Run seed once (platform-specific): run `npm run seed` and `npm run seed:admin` in a one-off job or locally against production MongoDB.
+5. Share the app URL; users log in at `/login` with `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
+
+## Troubleshooting
+
+| Issue | What to do |
+|-------|------------|
+| **E11000 duplicate key (orderNumber)** | The app retries and syncs the order-number counter from existing orders. If it persists, ensure only one app instance is writing orders, or that the Counter collection was not reset without re-syncing. |
+| **Redirect loop or “Configuration error” on login** | Ensure `NEXTAUTH_URL` matches the exact URL users use (including `https` and no trailing slash). In production, set `NEXTAUTH_SECRET` to a strong random value (`openssl rand -base64 32`). |
+| **Cannot log in / “Invalid email or password”** | Run `npm run seed:admin` in that environment so the admin user exists. Use the same `ADMIN_EMAIL` and `ADMIN_PASSWORD` as in your env. |
+| **Redis connection errors** | The app runs without Redis; features that use it will degrade gracefully. To use Redis, set `REDIS_URL` correctly (e.g. Upstash or Redis Cloud). |
+| **Quote email not sending** | Check SMTP vars (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM`). For Gmail, use an app password. |
 
 ## Architecture Decisions
 

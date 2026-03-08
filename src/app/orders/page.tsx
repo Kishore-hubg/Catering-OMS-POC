@@ -101,7 +101,7 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState(initialStatus);
   const [search, setSearch] = useState('');
-  const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
+  const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0, limit: 20 });
   const [eventType, setEventType] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -429,29 +429,74 @@ export default function OrdersPage() {
               </table>
             </div>
 
-            {pagination.pages > 1 && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-white">
-                <p className="text-xs text-gray-500">
-                  Showing page {pagination.page} of {pagination.pages} ({pagination.total} orders)
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setPagination((p) => ({ ...p, page: p.page - 1 }))}
-                    disabled={pagination.page === 1}
-                    className="px-3 py-1.5 rounded border border-gray-300 text-sm font-medium disabled:opacity-50"
-                  >
-                    ‹ Prev
-                  </button>
-                  <button
-                    onClick={() => setPagination((p) => ({ ...p, page: p.page + 1 }))}
-                    disabled={pagination.page === pagination.pages}
-                    className="px-3 py-1.5 rounded border border-gray-300 text-sm font-medium disabled:opacity-50"
-                  >
-                    Next ›
-                  </button>
-                </div>
+            {/* Pagination - always show when there are orders */}
+            <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50/50">
+              <p className="text-sm text-gray-600">
+                Showing{' '}
+                {pagination.total === 0
+                  ? '0'
+                  : `${(pagination.page - 1) * (pagination.limit || 20) + 1}-${Math.min(pagination.page * (pagination.limit || 20), pagination.total)}`}{' '}
+                of {pagination.total} orders
+              </p>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPagination((p) => ({ ...p, page: p.page - 1 }))}
+                  disabled={pagination.page <= 1}
+                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                  aria-label="Previous page"
+                >
+                  ‹
+                </button>
+                {(() => {
+                  const { page, pages } = pagination;
+                  const showPages: (number | 'ellipsis')[] = [];
+                  if (pages <= 5) {
+                    for (let i = 1; i <= pages; i++) showPages.push(i);
+                  } else {
+                    showPages.push(1);
+                    const left = page <= 3 ? 2 : page - 1;
+                    const right = page >= pages - 2 ? pages - 1 : page + 1;
+                    if (left > 2) showPages.push('ellipsis');
+                    for (let i = left; i <= right; i++) {
+                      if (i !== 1 && i !== pages) showPages.push(i);
+                    }
+                    if (right < pages - 1) showPages.push('ellipsis');
+                    if (pages > 1) showPages.push(pages);
+                  }
+                  return showPages.map((p, i) =>
+                    p === 'ellipsis' ? (
+                      <span key={`e-${i}`} className="flex items-center justify-center w-9 h-9 text-gray-400 text-sm">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setPagination((prev) => ({ ...prev, page: p }))}
+                        className={cn(
+                          'flex items-center justify-center min-w-[2.25rem] h-9 px-2 rounded-lg text-sm font-semibold transition-colors',
+                          page === p
+                            ? 'bg-saffron-500 text-white border border-saffron-500'
+                            : 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+                        )}
+                      >
+                        {p}
+                      </button>
+                    )
+                  );
+                })()}
+                <button
+                  type="button"
+                  onClick={() => setPagination((p) => ({ ...p, page: p.page + 1 }))}
+                  disabled={pagination.page >= pagination.pages}
+                  className="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                  aria-label="Next page"
+                >
+                  ›
+                </button>
               </div>
-            )}
+            </div>
           </>
         )}
       </div>

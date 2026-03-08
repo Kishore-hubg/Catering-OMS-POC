@@ -23,4 +23,13 @@ export async function getNextOrderNumber(): Promise<string> {
   return `NC-${num}`;
 }
 
+/** Ensure the order-number counter is at least minSeq (e.g. after syncing from existing orders). */
+export async function setOrderNumberCounterAtLeast(minSeq: number): Promise<void> {
+  const doc = await Counter.findById('orderNumber').lean();
+  const current = (doc as { seq?: number } | null)?.seq ?? 0;
+  if (minSeq > current) {
+    await Counter.findByIdAndUpdate('orderNumber', { $set: { seq: minSeq } }, { upsert: true });
+  }
+}
+
 export default Counter;

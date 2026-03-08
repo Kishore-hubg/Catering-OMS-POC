@@ -14,7 +14,50 @@ const MENU_TYPES: MenuType[] = [
   'Disposable Plates',
 ];
 
-function parseCSVLine(line: string): string[] {
+const MENU_TYPE_ALIASES: Record<string, MenuType> = {
+  veg: 'Veg Menu',
+  'veg menu': 'Veg Menu',
+  nonveg: 'Non-Veg Menu',
+  'non-veg': 'Non-Veg Menu',
+  'non-veg menu': 'Non-Veg Menu',
+  dessert: 'Desserts',
+  desserts: 'Desserts',
+  puja: 'Puja Food',
+  'puja food': 'Puja Food',
+  live: 'Live Catering',
+  'live catering': 'Live Catering',
+  chafing: 'Chafing Dishes',
+  'chafing dishes': 'Chafing Dishes',
+  disposable: 'Disposable Plates',
+  'disposable plates': 'Disposable Plates',
+};
+
+function normalizeMenuType(value: string): string {
+  const key = value.toLowerCase().trim().replace(/\s+/g, ' ');
+  return MENU_TYPE_ALIASES[key] || value.trim();
+}
+
+/** Parse price from string: strip commas, currency symbols, whitespace; return number or null. */
+function parsePrice(raw: string): number | null {
+  if (raw === '' || raw == null) return null;
+  const s = String(raw).trim().replace(/,/g, '').replace(/[\s\u20B9₹$€£]/g, '');
+  const n = Number(s);
+  return Number.isNaN(n) ? null : n;
+}
+
+function stripBOM(text: string): string {
+  if (text.charCodeAt(0) === 0xfeff) return text.slice(1);
+  return text;
+}
+
+/** Detect CSV delimiter from first line: comma or semicolon (e.g. European Excel). */
+function detectDelimiter(firstLine: string): ',' | ';' {
+  const semicolons = (firstLine.match(/;/g) || []).length;
+  const commas = (firstLine.match(/,/g) || []).length;
+  return semicolons > commas ? ';' : ',';
+}
+
+function parseCSVLine(line: string, delimiter: ',' | ';' = ','): string[] {
   const result: string[] = [];
   let current = '';
   let inQuotes = false;
@@ -22,7 +65,7 @@ function parseCSVLine(line: string): string[] {
     const c = line[i];
     if (c === '"') {
       inQuotes = !inQuotes;
-    } else if (c === ',' && !inQuotes) {
+    } else if (c === delimiter && !inQuotes) {
       result.push(current.trim());
       current = '';
     } else {
@@ -33,31 +76,49 @@ function parseCSVLine(line: string): string[] {
   return result;
 }
 
+/** Find column index by trying several possible header names (lowercase, no spaces). */
+function findHeaderIndex(headerRow: string[], ...candidates: string[]): number {
+  const normalized = headerRow.map((h) => h.toLowerCase().replace(/\s/g, ''));
+  for (const c of candidates) {
+    const key = c.toLowerCase().replace(/\s/g, '');
+    const i = normalized.indexOf(key);
+    if (i >= 0) return i;
+  }
+  for (const c of candidates) {
+    const key = c.toLowerCase().replace(/\s/g, '');
+    const j = normalized.findIndex((n) => n.includes(key) || key.includes(n));
+    if (j >= 0) return j;
+  }
+  return -1;
+}
+
 function parseCSV(csvText: string): { name: string; category: string; menuType: string; sizeOption: string; price: number | null; unit: string }[] {
-  const lines = csvText.trim().split(/\r?\n/).filter((l) => l.trim());
+  const raw = stripBOM(csvText.trim());
+  const lines = raw.split(/\r?\n/).filter((l) => l.trim());
   if (lines.length < 2) return [];
-  const header = parseCSVLine(lines[0]).map((h) => h.toLowerCase().replace(/\s/g, ''));
-  const nameIdx = header.indexOf('name');
-  const categoryIdx = header.indexOf('category');
-  const menutypeIdx = header.indexOf('menutype');
-  const sizeOptionIdx = header.indexOf('sizeoption');
-  const priceIdx = header.indexOf('price');
-  const unitIdx = header.indexOf('unit');
+  const delimiter = detectDelimiter(lines[0]);
+  const headerRow = parseCSVLine(lines[0], delimiter);
+  const nameIdx = findHeaderIndex(headerRow, 'name', 'item name', 'item', 'itemname');
+  const categoryIdx = findHeaderIndex(headerRow, 'category', 'cat');
+  const menutypeIdx = findHeaderIndex(headerRow, 'menutype', 'menu type', 'type');
+  const sizeOptionIdx = findHeaderIndex(headerRow, 'sizeoption', 'size option', 'size');
+  const priceIdx = findHeaderIndex(headerRow, 'price', 'unit price', 'unitprice');
+  const unitIdx = findHeaderIndex(headerRow, 'unit', 'uom');
   if (nameIdx === -1 || categoryIdx === -1 || menutypeIdx === -1 || sizeOptionIdx === -1 || priceIdx === -1) {
     return [];
   }
   const rows: { name: string; category: string; menuType: string; sizeOption: string; price: number | null; unit: string }[] = [];
   for (let i = 1; i < lines.length; i++) {
-    const cells = parseCSVLine(lines[i]);
+    const cells = parseCSVLine(lines[i], delimiter);
     const name = (cells[nameIdx] ?? '').trim();
     const category = (cells[categoryIdx] ?? '').trim();
-    const menuType = (cells[menutypeIdx] ?? '').trim();
+    const menuType = normalizeMenuType((cells[menutypeIdx] ?? '').trim());
     const sizeOption = (cells[sizeOptionIdx] ?? '').trim() || 'Default';
     const priceRaw = (cells[priceIdx] ?? '').trim();
-    const price = priceRaw === '' ? null : Number(priceRaw);
+    const price = parsePrice(priceRaw);
     const unit = (unitIdx >= 0 ? (cells[unitIdx] ?? '').trim() : '') || 'serving';
     if (name && category && menuType && MENU_TYPES.includes(menuType as MenuType)) {
-      rows.push({ name, category, menuType, sizeOption, price: Number.isNaN(price as number) ? null : price, unit });
+      rows.push({ name, category, menuType, sizeOption, price: price ?? null, unit });
     }
   }
   return rows;
@@ -132,20 +193,123 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Missing file. Use form field "file".' }, { status: 400 });
     }
 
-    const text = await file.text();
     const fileName = (file as File).name?.toLowerCase() || '';
-    const isCSV = fileName.endsWith('.csv');
+    const arrayBuffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(arrayBuffer);
+    const isExcelFile = fileName.endsWith('.xlsx') || fileName.endsWith('.xls') || (bytes.length >= 2 && bytes[0] === 0x50 && bytes[1] === 0x4b);
+    const errors: string[] = [];
+
+    let text: string;
+    let isCSV: boolean;
+
+    if (isExcelFile) {
+      try {
+        const XLSX = await import('xlsx');
+        const wb = XLSX.read(arrayBuffer, { type: 'array' });
+        const firstSheetName = wb.SheetNames[0];
+        if (!firstSheetName) {
+          return NextResponse.json({ success: false, error: 'Excel file has no sheets.' }, { status: 400 });
+        }
+        const sheet = wb.Sheets[firstSheetName];
+        // header: 1 = array of arrays so we control column mapping (avoids __EMPTY keys from empty header cells)
+        const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, raw: true, defval: '' });
+        if (rows.length < 2) {
+          return NextResponse.json({
+            success: false,
+            error: 'Excel sheet must have a header row and at least one data row.',
+          }, { status: 400 });
+        }
+        const headerRow = (rows[0] || []).map((c) => String(c ?? '').trim());
+        const nameIdx = findHeaderIndex(headerRow, 'name', 'item name', 'item', 'itemname');
+        const categoryIdx = findHeaderIndex(headerRow, 'category', 'cat');
+        const menutypeIdx = findHeaderIndex(headerRow, 'menutype', 'menu type', 'type');
+        const sizeOptionIdx = findHeaderIndex(headerRow, 'sizeoption', 'size option', 'size');
+        const priceIdx = findHeaderIndex(headerRow, 'price', 'unit price', 'unitprice');
+        const unitIdx = findHeaderIndex(headerRow, 'unit', 'uom');
+        if (nameIdx === -1 || categoryIdx === -1 || menutypeIdx === -1 || sizeOptionIdx === -1 || priceIdx === -1) {
+          const found = headerRow.filter((h) => h).join(', ') || '(none)';
+          return NextResponse.json({
+            success: false,
+            error: `Excel header row must include columns: name (or Item Name), category, menuType (or Menu Type/Type), sizeOption (or Size), price. Found: ${found.slice(0, 150)}${found.length > 150 ? '...' : ''}`,
+          }, { status: 400 });
+        }
+        const excelRows: { name: string; category: string; menuType: string; sizeOption: string; price: number | null; unit: string }[] = [];
+        for (let i = 1; i < rows.length; i++) {
+          const row = rows[i] as unknown[];
+          const cells = Array.isArray(row) ? row : [];
+          const getCell = (idx: number) => String(cells[idx] ?? '').trim();
+          const name = getCell(nameIdx);
+          const category = getCell(categoryIdx);
+          const menuType = normalizeMenuType(getCell(menutypeIdx));
+          const sizeOption = getCell(sizeOptionIdx) || 'Default';
+          const priceVal = cells[priceIdx];
+          const price = typeof priceVal === 'number' && !Number.isNaN(priceVal) ? priceVal : parsePrice(String(priceVal ?? ''));
+          const unit = unitIdx >= 0 ? (getCell(unitIdx) || 'serving') : 'serving';
+          if (name && category && menuType && MENU_TYPES.includes(menuType as MenuType)) {
+            excelRows.push({ name, category, menuType, sizeOption, price, unit });
+          }
+        }
+        if (excelRows.length === 0) {
+          return NextResponse.json({
+            success: false,
+            error: 'No valid data rows found. Check that menuType values are exactly: ' + MENU_TYPES.join(', ') + '.',
+          }, { status: 400 });
+        }
+        const updated: string[] = [];
+        const skipped: string[] = [];
+        const key = (r: typeof excelRows[0]) => `${r.name}\t${r.category}\t${r.menuType}`;
+        const groups = new Map<string, typeof excelRows>();
+        for (const r of excelRows) {
+          const k = key(r);
+          if (!groups.has(k)) groups.set(k, []);
+          groups.get(k)!.push(r);
+        }
+        for (const [, groupRows] of groups) {
+          const first = groupRows[0];
+          const existing = await MenuService.findByNaturalKey(first.name, first.category, first.menuType);
+          if (!existing) {
+            skipped.push(`${first.name} / ${first.category} / ${first.menuType} (not found)`);
+            continue;
+          }
+          const pricingOptions = groupRows.map((r) => ({
+            sizeOption: r.sizeOption,
+            price: r.price,
+            unit: r.unit,
+          }));
+          await MenuService.update(String(existing._id), { pricingOptions });
+          updated.push(String(existing._id));
+        }
+        return NextResponse.json({
+          success: true,
+          updated: updated.length,
+          updatedIds: updated,
+          skipped: skipped.length,
+          skippedDetails: skipped,
+          errors: errors.length ? errors : undefined,
+        });
+      } catch (err) {
+        console.error('Excel parse error:', err);
+        return NextResponse.json({
+          success: false,
+          error: 'Could not read Excel file. Try saving the sheet as CSV (Save As → CSV) and import the CSV instead.',
+        }, { status: 400 });
+      }
+    } else {
+      text = stripBOM(new TextDecoder().decode(arrayBuffer));
+      const looksLikeCSV = fileName.endsWith('.csv') || (text.trim().length > 0 && !text.trim().startsWith('[') && !text.trim().startsWith('{') && (text.includes(',') || text.includes(';')));
+      isCSV = looksLikeCSV;
+    }
 
     const updated: string[] = [];
     const skipped: string[] = [];
-    const errors: string[] = [];
 
     if (isCSV) {
       const rows = parseCSV(text);
       if (rows.length === 0) {
+        const firstLine = text.trim().split(/\r?\n/)[0] || '(empty)';
         return NextResponse.json({
           success: false,
-          error: 'CSV must have header: name,category,menuType,sizeOption,price,unit and at least one data row.',
+          error: 'CSV could not be parsed. Use comma or semicolon as separator. First row = header. Required columns (any case): name (or Item Name), category, menuType (or Menu Type/Type), sizeOption (or Size), price, unit (optional). menuType must be one of: ' + MENU_TYPES.join(', ') + '. Your first line: ' + firstLine.slice(0, 120) + (firstLine.length > 120 ? '...' : ''),
         }, { status: 400 });
       }
       // Group by name,category,menuType

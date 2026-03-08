@@ -192,12 +192,12 @@ export default function AdminMenuPage() {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".json,.csv"
+              accept=".csv,.json,.xlsx,.xls,text/csv,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
               className="hidden"
               onChange={handleImport}
               disabled={importing}
             />
-            {importing ? 'Importing...' : '📤 Import CSV/JSON'}
+            {importing ? 'Importing...' : '📤 Import CSV / Excel / JSON'}
           </label>
         </div>
       </div>
@@ -217,7 +217,31 @@ export default function AdminMenuPage() {
       )}
 
       <p className="text-xs text-gray-500 mb-4">
-        CSV: header <code className="bg-gray-100 px-1 rounded">name,category,menuType,sizeOption,price,unit</code>. JSON: array of items with <code className="bg-gray-100 px-1 rounded">_id</code> or <code className="bg-gray-100 px-1 rounded">name,category,menuType</code> and <code className="bg-gray-100 px-1 rounded">pricingOptions</code>.
+        <strong>CSV:</strong> First row = header. Supported column names (any case): <code className="bg-gray-100 px-1 rounded">name</code> (or Item Name), <code className="bg-gray-100 px-1 rounded">category</code>, <code className="bg-gray-100 px-1 rounded">menuType</code> (or Menu Type / Type), <code className="bg-gray-100 px-1 rounded">sizeOption</code> (or Size), <code className="bg-gray-100 px-1 rounded">price</code>, <code className="bg-gray-100 px-1 rounded">unit</code> (optional). menuType must be one of: Veg Menu, Non-Veg Menu, Desserts, Puja Food, Live Catering, Chafing Dishes, Disposable Plates. Comma or semicolon separator supported.
+        <br />
+        <strong>Excel:</strong> Same columns; first row = header, then one row per size/price. Use .xlsx or .xls.
+        <br />
+        <strong>JSON:</strong> Array of items with <code className="bg-gray-100 px-1 rounded">_id</code> or <code className="bg-gray-100 px-1 rounded">name,category,menuType</code> and optional <code className="bg-gray-100 px-1 rounded">pricingOptions</code>.
+        <span className="ml-2">
+          <button
+            type="button"
+            onClick={() => {
+              const header = 'name,category,menuType,sizeOption,price,unit';
+              const row = 'Sample Item,Main,Veg Menu,Half Tray,250,serving';
+              const csv = header + '\n' + row;
+              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'menu-import-sample.csv';
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="text-navy-600 hover:underline text-xs"
+          >
+            Download sample CSV
+          </button>
+        </span>
       </p>
 
       <div className="flex flex-wrap gap-2 mb-4">

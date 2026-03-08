@@ -39,7 +39,11 @@ export function Topbar() {
           const isActive =
             item.href === '/'
               ? pathname === '/'
-              : pathname.startsWith(item.href);
+              : item.href === '/orders/new'
+                ? pathname === '/orders/new'
+                : item.href === '/orders'
+                  ? (pathname === '/orders' || pathname.startsWith('/orders/')) && pathname !== '/orders/new'
+                  : pathname.startsWith(item.href);
 
           return (
             <Link

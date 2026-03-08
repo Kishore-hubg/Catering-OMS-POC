@@ -17,6 +17,29 @@ const COLORS = {
 
 const formatCurrency = (n: number) => `$${n.toFixed(2)}`;
 
+/** Truncate text to fit within maxWidth at given font size; append "..." if truncated. */
+function truncateToWidth(
+  text: string,
+  font: { widthOfTextAtSize: (t: string, s: number) => number },
+  size: number,
+  maxWidth: number,
+  ellipsis = '...'
+): string {
+  const full = String(text).trim();
+  if (full.length === 0) return full;
+  if (font.widthOfTextAtSize(full, size) <= maxWidth) return full;
+  let lo = 0;
+  let hi = full.length;
+  while (lo < hi - 1) {
+    const mid = Math.ceil((lo + hi) / 2);
+    const sub = full.slice(0, mid) + ellipsis;
+    if (font.widthOfTextAtSize(sub, size) <= maxWidth) lo = mid;
+    else hi = mid;
+  }
+  const out = full.slice(0, lo) + ellipsis;
+  return font.widthOfTextAtSize(out, size) <= maxWidth ? out : full.slice(0, Math.max(0, lo - 1)) + ellipsis;
+}
+
 /** Safe currency for unknown values (undefined, null, NaN). */
 const safeFormatCurrency = (n: unknown): string => {
   const x = Number(n);
@@ -101,14 +124,14 @@ const QUOTE_LETTERHEAD_TEMPLATE = `<!DOCTYPE html>
     }
     body { font-family: 'Segoe UI', Arial, sans-serif; color: #1B2A4A; margin: 40px; }
     .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; border-bottom: 3px solid #F4A300; padding-bottom: 20px; }
-    .logo-section h1 { color: #F4A300; margin: 0; font-size: 28px; }
-    .logo-section p { color: #666; margin: 4px 0; font-size: 13px; }
+    .logo-section h1 { color: #F4A300; margin: 0; font-size: 28px; line-height: 1.2; }
+    .logo-section p { color: #666; margin: 6px 0 4px; font-size: 13px; line-height: 1.4; }
     .quote-badge { background: #1B2A4A; color: #F4A300; padding: 12px 20px; border-radius: 8px; text-align: right; }
     .quote-badge h2 { margin: 0; font-size: 14px; letter-spacing: 1px; color: #fff; }
     .quote-badge .number { font-size: 22px; font-weight: 700; margin-top: 4px; }
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }
-    .info-box { background: #FFFDF5; border: 1px solid #FFE082; border-radius: 8px; padding: 16px; }
-    .info-box h3 { color: #F4A300; margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; margin-top: 28px; }
+    .info-box { background: #FFFDF5; border: 1px solid #FFE082; border-radius: 8px; padding: 18px 16px 16px; }
+    .info-box h3 { color: #F4A300; margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding-top: 4px; }
     .info-box p { margin: 3px 0; font-size: 14px; }
     table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
     thead th { background: #1B2A4A; color: #fff; padding: 10px 12px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -305,32 +328,30 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
   const lineHeight = 12;
   const small = 9;
 
-  // Table column positions to match HTML (same #, Item, Size, Qty, Price, Total)
+  // Table column positions: give Item and Size enough width to avoid truncation/overlap
   const col = {
     num: left,
-    item: left + 28,
-    size: left + 200,
-    qty: left + 300,
-    price: left + 355,
-    total: right - 70,
+    item: left + 30,
+    size: left + 218,
+    qty: left + 318,
+    price: left + 368,
+    total: right - 62,
+  };
+  const colWidths = {
+    item: col.size - col.item - 6,
+    size: col.qty - col.size - 6,
+    qty: col.price - col.qty - 4,
   };
 
   let y = height - 45;
 
-  const drawText = (text: string, x: number, size: number, bold: boolean, color: RGB = COLORS.text) => {
-    const f = bold ? fontBold : font;
-    const str = String(text).slice(0, 100);
-    page.drawText(str, { x, y, size, font: f, color });
-    y -= size + 2;
-  };
-
   // ─── Header (same as HTML): logo left, quote badge right ───
   page.drawText('Nidhi Catering', { x: left, y, size: 22, font: fontBold, color: COLORS.orange });
-  y -= 6;
+  y -= 26;
   page.drawText('Authentic Indian Catering · Dallas, TX', { x: left, y, size: 10, font, color: COLORS.textMuted });
-  y -= 5;
+  y -= 14;
   page.drawText('Email: nidhi.catering@gmail.com', { x: left, y, size: 10, font, color: COLORS.textMuted });
-  y -= 10;
+  y -= 14;
 
   const badgeRight = right;
   const badgeLeft = right - 110;
@@ -347,8 +368,8 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
   page.drawText(orderNumber, { x: badgeLeft + 8, y: badgeTop - 28, size: 16, font: fontBold, color: COLORS.orange });
   page.drawText('Date: ' + format(new Date(), 'MMM d, yyyy'), { x: badgeLeft + 8, y: badgeTop - 40, size: 9, font, color: COLORS.textMuted });
 
-  // Orange line under header (match HTML border-bottom)
-  y = height - 50 - 28;
+  // Orange line under header: place clearly below email and quote badge (no overlap)
+  y = height - 108;
   page.drawRectangle({
     x: left,
     y: y - 3,
@@ -356,7 +377,7 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
     height: 3,
     color: COLORS.orange,
   });
-  y -= 24;
+  y -= 36; // extra space between line and Customer/Event boxes so headers don't feel cramped
 
   // ─── Info grid: Customer Details (left) and Event Details (right) ───
   const boxWidth = (tableWidth - 20) / 2;
@@ -366,7 +387,8 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
   page.drawRectangle({ x: left, y: boxY, width: boxWidth, height: boxHeight, color: COLORS.cream, borderColor: COLORS.creamBorder, borderWidth: 1 });
   page.drawRectangle({ x: left + boxWidth + 20, y: boxY, width: boxWidth, height: boxHeight, color: COLORS.cream, borderColor: COLORS.creamBorder, borderWidth: 1 });
 
-  let yBox = y - 6;
+  const boxPadTop = 14; // space between top of box and "CUSTOMER DETAILS" / "EVENT DETAILS"
+  let yBox = y - boxPadTop;
   page.drawText('CUSTOMER DETAILS', { x: left + 10, y: yBox, size: 9, font: fontBold, color: COLORS.orange });
   yBox -= 11;
   page.drawText(customer.name, { x: left + 10, y: yBox, size: 10, font: fontBold, color: COLORS.text });
@@ -380,7 +402,7 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
   const eventDateLong = safeFormatDate(event.eventDate, 'EEEE, MMMM d, yyyy');
   const deliveryType = String(event.deliveryType ?? 'pickup');
   const deliveryLabel = deliveryType === 'delivery' ? 'Delivery' : deliveryType === 'pickup' ? 'Pickup' : 'Live Catering (On-site)';
-  yBox = y - 6;
+  yBox = y - boxPadTop;
   page.drawText('EVENT DETAILS', { x: left + boxWidth + 30, y: yBox, size: 9, font: fontBold, color: COLORS.orange });
   yBox -= 11;
   page.drawText('Date: ' + (eventDateLong ?? '—'), { x: left + boxWidth + 30, y: yBox, size: small, font, color: COLORS.text });
@@ -408,7 +430,7 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
   });
   page.drawText('#', { x: col.num + 4, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
   page.drawText('Item', { x: col.item, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
-  page.drawText('Size', { x: col.size + 8, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
+  page.drawText('Size', { x: col.size + 4, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
   page.drawText('Qty', { x: col.qty + 4, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
   page.drawText('Price', { x: col.price, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
   page.drawText('Total', { x: col.total, y: y - 14, size: 9, font: fontBold, color: COLORS.white });
@@ -418,16 +440,18 @@ export async function getQuotePDFBuffer(order: Record<string, unknown>): Promise
   for (let i = 0; i < lineItems.length; i++) {
     if (y < 180) break;
     const item = lineItems[i];
-    const name = String(item.menuItemName ?? '—').slice(0, 32);
-    const sizeOption = String(item.sizeOption ?? '').slice(0, 14);
+    const nameRaw = String(item.menuItemName ?? '—');
+    const sizeOptionRaw = String(item.sizeOption ?? '');
+    const name = truncateToWidth(nameRaw, font, small, colWidths.item);
+    const sizeOption = truncateToWidth(sizeOptionRaw, font, small, colWidths.size);
     const qty = Number(item.quantity) || 0;
-    const unit = String(item.unit ?? '').slice(0, 4);
+    const unit = String(item.unit ?? '').slice(0, 8);
     const isQuoteBased = Boolean(item.isQuoteBased);
     page.drawRectangle({ x: left, y: y - rowH, width: tableWidth, height: rowH, borderColor: COLORS.border, borderWidth: 0.5 });
     page.drawText(String(i + 1), { x: col.num + 4, y: y - 12, size: small, font, color: COLORS.text });
     page.drawText(name, { x: col.item + 2, y: y - 12, size: small, font, color: COLORS.text });
     page.drawText(sizeOption, { x: col.size + 2, y: y - 12, size: small, font, color: COLORS.text });
-    page.drawText(String(qty) + ' ' + unit, { x: col.qty + 2, y: y - 12, size: small, font, color: COLORS.text });
+    page.drawText(String(qty) + (unit ? ' ' + unit : ''), { x: col.qty + 2, y: y - 12, size: small, font, color: COLORS.text });
     page.drawText(isQuoteBased ? 'TBD' : safeFormatCurrency(item.unitPrice), { x: col.price, y: y - 12, size: small, font, color: COLORS.text });
     page.drawText(isQuoteBased ? 'Quote' : safeFormatCurrency(item.lineTotal), { x: col.total, y: y - 12, size: small, font: fontBold, color: COLORS.green });
     y -= rowH;

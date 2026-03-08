@@ -18,11 +18,13 @@ import type { MenuItem, MenuType, OrderLineItem } from '@/types';
 
 /* ---------- Step components ---------- */
 
-function StepCustomer() {
+function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
   const { customer, setCustomer } = useOrderWizard();
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold mb-4">Customer Information</h2>
+      {showTitle && (
+        <h2 className="text-xl font-semibold mb-4">Customer Information</h2>
+      )}
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="label">
@@ -82,95 +84,162 @@ function StepCustomer() {
   );
 }
 
-function StepEvent() {
+function StepEvent({ showTitle = true }: { showTitle?: boolean }) {
   const { event, setEvent } = useOrderWizard();
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold mb-4">Event Details</h2>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="label">Event Date *</label>
-          <input className="input-field" type="date" value={event.eventDate} onChange={(e) => setEvent({ eventDate: e.target.value })} />
+      {showTitle && (
+        <h2 className="text-xl font-semibold mb-4">Event Details</h2>
+      )}
+      <div className="space-y-4">
+        {/* Row 1: Event Date *, Event Time *, Number of Guests, Event Type */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <label className="label">Event Date <span className="text-red-500">*</span></label>
+            <input className="input-field" type="date" value={event.eventDate} onChange={(e) => setEvent({ eventDate: e.target.value })} />
+          </div>
+          <div>
+            <label className="label">Event Time <span className="text-red-500">*</span></label>
+            <input className="input-field" type="time" value={event.eventTime} onChange={(e) => setEvent({ eventTime: e.target.value })} />
+          </div>
+          <div>
+            <label className="label">Number of Guests</label>
+            <input className="input-field" type="number" min={1} value={event.guestCount || ''} onChange={(e) => setEvent({ guestCount: e.target.value ? parseInt(e.target.value) : undefined })} placeholder="e.g. 75" />
+          </div>
+          <div>
+            <label className="label">Event Type</label>
+            <select
+              className="input-field"
+              value={event.eventType}
+              onChange={(e) => setEvent({ eventType: e.target.value })}
+            >
+              <option value="">Select type...</option>
+              <option value="Wedding / Shaadi">Wedding / Shaadi</option>
+              <option value="Birthday Party">Birthday Party</option>
+              <option value="Corporate Event">Corporate Event</option>
+              <option value="Puja / Religious Ceremony">Puja / Religious Ceremony</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Baby Shower / Bridal Shower">Baby Shower / Bridal Shower</option>
+              <option value="Graduation Party">Graduation Party</option>
+              <option value="Housewarming">Housewarming</option>
+              <option value="Festival Gathering">Festival Gathering</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label className="label">Event Time</label>
-          <input className="input-field" type="time" value={event.eventTime} onChange={(e) => setEvent({ eventTime: e.target.value })} />
-        </div>
-        <div>
-          <label className="label">Event Type</label>
-          <select
-            className="input-field"
-            value={event.eventType}
-            onChange={(e) => setEvent({ eventType: e.target.value })}
-          >
-            <option value="">Select type...</option>
-            <option value="Wedding / Shaadi">Wedding / Shaadi</option>
-            <option value="Birthday Party">Birthday Party</option>
-            <option value="Corporate Event">Corporate Event</option>
-            <option value="Puja / Religious Ceremony">Puja / Religious Ceremony</option>
-            <option value="Anniversary">Anniversary</option>
-            <option value="Baby Shower / Bridal Shower">Baby Shower / Bridal Shower</option>
-            <option value="Graduation Party">Graduation Party</option>
-            <option value="Housewarming">Housewarming</option>
-            <option value="Festival Gathering">Festival Gathering</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div>
-          <label className="label">Guest Count</label>
-          <input className="input-field" type="number" min="1" value={event.guestCount || ''} onChange={(e) => setEvent({ guestCount: e.target.value ? parseInt(e.target.value) : undefined })} placeholder="50" />
-        </div>
-        <div className="col-span-2">
-          <label className="label">Venue</label>
-          <input className="input-field" value={event.venue} onChange={(e) => setEvent({ venue: e.target.value })} placeholder="Event venue name or address" />
-        </div>
+
+        {/* Delivery Type * - card-style options with icons */}
         <div>
           <label className="label">
             Delivery Type <span className="text-red-500">*</span>
           </label>
-          <div className="flex flex-wrap gap-4 mt-1">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="deliveryType"
-                value="delivery"
-                checked={event.deliveryType === 'delivery'}
-                onChange={() => setEvent({ deliveryType: 'delivery' })}
-                className="text-saffron-500"
-              />
-              <span>🚚 Delivery</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="deliveryType"
-                value="pickup"
-                checked={event.deliveryType === 'pickup'}
-                onChange={() => setEvent({ deliveryType: 'pickup' })}
-                className="text-saffron-500"
-              />
-              <span>🏠 Pickup</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="deliveryType"
-                value="live"
-                checked={event.deliveryType === 'live'}
-                onChange={() => setEvent({ deliveryType: 'live' })}
-                className="text-saffron-500"
-              />
-              <span>🍳 Live Catering (On-site)</span>
-            </label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-1">
+            {[
+              {
+                value: 'delivery' as const,
+                label: 'Delivery',
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+                    <path d="M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25zM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 116 0h3a3 3 0 116 0h.375c1.035 0 1.875-.84 1.875-1.875V15z" />
+                    <path d="M8.25 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15.75 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                    <path d="M18.75 6.375h.75v7.5h-.75a.75.75 0 01-.75-.75v-6a.75.75 0 01.75-.75z" />
+                  </svg>
+                ),
+              },
+              {
+                value: 'pickup' as const,
+                label: 'Pickup',
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+                    <path d="M11.47 3.841a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.061l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 101.061 1.06l8.69-8.689z" />
+                    <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+                  </svg>
+                ),
+              },
+              {
+                value: 'live' as const,
+                label: 'Live Catering (On-site)',
+                icon: (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+                    <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63v-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+                  </svg>
+                ),
+              },
+            ].map(({ value, label, icon }) => {
+              const isSelected = event.deliveryType === value;
+              return (
+                <label
+                  key={value}
+                  className={cn(
+                    'relative flex flex-col items-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all duration-150',
+                    isSelected
+                      ? 'border-saffron-500 bg-saffron-50 text-saffron-700 shadow-sm'
+                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="deliveryType"
+                    value={value}
+                    checked={isSelected}
+                    onChange={() => setEvent({ deliveryType: value })}
+                    className="sr-only"
+                  />
+                  <span
+                    className={cn(
+                      'absolute top-3 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 flex items-center justify-center',
+                      isSelected ? 'border-saffron-500 bg-saffron-500' : 'border-gray-300 bg-white'
+                    )}
+                  >
+                    {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  </span>
+                  <span className={cn('mt-4', isSelected ? 'text-saffron-600' : 'text-gray-500')}>
+                    {icon}
+                  </span>
+                  <span className={cn('text-sm font-semibold text-center', isSelected && 'border-b-2 border-saffron-500 pb-0.5')}>
+                    {label}
+                  </span>
+                </label>
+              );
+            })}
           </div>
         </div>
+
+        {/* Row 2: Venue / Location Name, Setup Time Required */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="label">Venue / Location Name</label>
+            <input className="input-field" value={event.venue} onChange={(e) => setEvent({ venue: e.target.value })} placeholder="e.g. Grand Ballroom, Marriott Dallas" />
+          </div>
+          <div>
+            <label className="label">Setup Time Required</label>
+            <select
+              className="input-field"
+              value={event.setupTimeOption || ''}
+              onChange={(e) => setEvent({ setupTimeOption: e.target.value })}
+            >
+              <option value="">No setup needed</option>
+              <option value="30 minutes before">30 minutes before</option>
+              <option value="1 hour before">1 hour before</option>
+              <option value="2 hours before">2 hours before</option>
+              <option value="3 hours before">3 hours before</option>
+              <option value="Other (see notes)">Other (see notes)</option>
+            </select>
+          </div>
+        </div>
+
         {event.deliveryType === 'delivery' && (
-          <>
+          <div className="space-y-4">
             <div>
-              <label className="label">Delivery Address *</label>
-              <input className="input-field" value={event.deliveryAddress} onChange={(e) => setEvent({ deliveryAddress: e.target.value })} placeholder="Full delivery address" />
+              <label className="label">Delivery Address <span className="text-red-500">*</span></label>
+              <input
+                className="input-field"
+                value={event.deliveryAddress}
+                onChange={(e) => setEvent({ deliveryAddress: e.target.value })}
+                placeholder="Street address, Suite / Apt"
+              />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="label">City</label>
                 <input
@@ -199,7 +268,16 @@ function StepEvent() {
                 />
               </div>
             </div>
-            <div className="col-span-2">
+            <div>
+              <label className="label">Venue / Location Name</label>
+              <input
+                className="input-field"
+                value={event.venue}
+                onChange={(e) => setEvent({ venue: e.target.value })}
+                placeholder="e.g. Grand Ballroom, Marriott Dallas"
+              />
+            </div>
+            <div>
               <label className="label">Delivery Notes</label>
               <textarea
                 className="input-field"
@@ -209,12 +287,20 @@ function StepEvent() {
                 placeholder="Gate code, parking instructions, etc."
               />
             </div>
-          </>
+          </div>
         )}
         {event.deliveryType === 'live' && (
-          <>
+          <div className="rounded-xl border-2 border-saffron-200 bg-saffron-50/60 p-5 space-y-4">
+            <div className="flex items-center gap-2 pb-2 border-b border-saffron-200">
+              <span className="text-saffron-600" aria-hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63v-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+                </svg>
+              </span>
+              <h3 className="text-sm font-bold uppercase tracking-wide text-navy-600">Live Catering Requirements</h3>
+            </div>
             <div>
-              <label className="label">Delivery / Venue Address *</label>
+              <label className="label">Delivery / Venue Address <span className="text-red-500">*</span></label>
               <input
                 className="input-field"
                 value={event.deliveryAddress}
@@ -222,7 +308,7 @@ function StepEvent() {
                 placeholder="Full event address"
               />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="label">City</label>
                 <input
@@ -247,81 +333,69 @@ function StepEvent() {
                   className="input-field"
                   value={event.deliveryZip || ''}
                   onChange={(e) => setEvent({ deliveryZip: e.target.value })}
-                  placeholder="75001"
+                  placeholder="75201"
                 />
               </div>
             </div>
-            <div className="col-span-2">
-              <label className="label">Live Catering Requirements</label>
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="label text-xs">Setup Arrival Time</label>
-                  <input
-                    type="time"
-                    className="input-field"
-                    value={event.liveSetupArrivalTime || ''}
-                    onChange={(e) => setEvent({ liveSetupArrivalTime: e.target.value })}
-                  />
-                </div>
-                <div>
-                  <label className="label text-xs">Number of Staff Required</label>
-                  <input
-                    type="number"
-                    min={1}
-                    className="input-field"
-                    value={event.liveStaffCount ?? ''}
-                    onChange={(e) =>
-                      setEvent({
-                        liveStaffCount: e.target.value ? parseInt(e.target.value, 10) : undefined,
-                      })
-                    }
-                  />
-                </div>
-                <div>
-                  <label className="label text-xs">Available Kitchen / Prep Space</label>
-                  <select
-                    className="input-field"
-                    value={event.liveKitchenType || ''}
-                    onChange={(e) => setEvent({ liveKitchenType: e.target.value })}
-                  >
-                    <option value="">Please select…</option>
-                    <option value="Full kitchen on-site">Full kitchen on-site</option>
-                    <option value="Outdoor cooking area">Outdoor cooking area</option>
-                    <option value="Tent / canopy">Tent / canopy</option>
-                    <option value="None — bring all equipment">None — bring all equipment</option>
-                  </select>
-                </div>
-              </div>
+            <div>
+              <label className="label">Setup Arrival Time <span className="text-red-500">*</span></label>
+              <input
+                type="time"
+                className="input-field"
+                value={event.liveSetupArrivalTime || ''}
+                onChange={(e) => setEvent({ liveSetupArrivalTime: e.target.value })}
+                placeholder="--:--"
+              />
+              <p className="text-xs text-gray-500 mt-0.5">Time the team should arrive to set up</p>
+            </div>
+            <div>
+              <label className="label">Number of Staff Required</label>
+              <input
+                type="number"
+                min={1}
+                className="input-field"
+                value={event.liveStaffCount ?? ''}
+                onChange={(e) =>
+                  setEvent({
+                    liveStaffCount: e.target.value ? parseInt(e.target.value, 10) : undefined,
+                  })
+                }
+                placeholder="e.g. 3"
+              />
+            </div>
+            <div>
+              <label className="label">Available Kitchen / Prep Space</label>
+              <select
+                className="input-field"
+                value={event.liveKitchenType || ''}
+                onChange={(e) => setEvent({ liveKitchenType: e.target.value })}
+              >
+                <option value="">Please select…</option>
+                <option value="Full kitchen on-site">Full kitchen on-site</option>
+                <option value="Outdoor cooking area">Outdoor cooking area</option>
+                <option value="Tent / canopy">Tent / canopy</option>
+                <option value="None — bring all equipment">None — bring all equipment</option>
+              </select>
+            </div>
+            <div>
+              <label className="label">Special Setup Notes</label>
               <textarea
-                className="input-field mt-2"
-                rows={2}
-                placeholder="Special setup notes (parking, elevator access, generator, etc.)"
+                className="input-field"
+                rows={3}
+                placeholder="e.g. Parking near venue, elevator access needed, generator required..."
                 value={event.liveSetupNotes || ''}
                 onChange={(e) => setEvent({ liveSetupNotes: e.target.value })}
               />
             </div>
-          </>
+          </div>
         )}
+
+        {/* Event Notes / Special Instructions - full width at bottom */}
         <div>
-          <label className="label">Setup Time Required</label>
-          <select
-            className="input-field"
-            value={event.setupTimeOption || ''}
-            onChange={(e) => setEvent({ setupTimeOption: e.target.value })}
-          >
-            <option value="">No setup needed</option>
-            <option value="30 minutes before">30 minutes before</option>
-            <option value="1 hour before">1 hour before</option>
-            <option value="2 hours before">2 hours before</option>
-            <option value="3 hours before">3 hours before</option>
-            <option value="Other (see notes)">Other (see notes)</option>
-          </select>
-        </div>
-        <div className="col-span-2">
           <label className="label">Event Notes / Special Instructions</label>
           <textarea
-            className="input-field"
-            rows={2}
+            className="input-field w-full resize-y"
+            rows={3}
             value={event.eventNotes || ''}
             onChange={(e) => setEvent({ eventNotes: e.target.value })}
             placeholder="Any additional event-level notes for the kitchen or delivery team..."
@@ -335,8 +409,35 @@ function StepEvent() {
 function StepCustomerAndEvent() {
   return (
     <div className="space-y-6">
-      <StepCustomer />
-      <StepEvent />
+      {/* Customer Information - separate card with icon, title, subheading, ample top spacing */}
+      <div className="card !pt-8">
+        <div className="flex items-start gap-3 pb-4">
+          <div className="w-10 h-10 rounded-lg bg-navy-100 flex items-center justify-center text-lg shrink-0 text-navy-600" aria-hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+              <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-lg font-bold text-navy-500">Customer Information</h2>
+            <p className="text-sm text-gray-500 mt-0.5">Primary contact for this order</p>
+          </div>
+        </div>
+        <StepCustomer showTitle={false} />
+      </div>
+
+      {/* Event Details - separate card with icon, title, subheading, ample top spacing */}
+      <div className="card !pt-8">
+        <div className="flex items-start gap-3 pb-4">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-pink-100 via-amber-100 to-sky-100 flex items-center justify-center text-xl shrink-0" aria-hidden>
+            🎉
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-lg font-bold text-navy-500">Event Details</h2>
+            <p className="text-sm text-gray-500 mt-0.5">Tell us about the occasion</p>
+          </div>
+        </div>
+        <StepEvent showTitle={false} />
+      </div>
     </div>
   );
 }
@@ -1084,18 +1185,20 @@ function StepReview() {
             <p className="text-xs text-gray-500 mt-0.5">Review before generating quote</p>
           </div>
         </div>
-        <div className="pt-4 space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500 uppercase font-semibold">Customer</span>
-            <span className="font-medium">{store.customer.name || '—'}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-gray-500 uppercase font-semibold">Event Date</span>
-            <span className="font-medium">{eventDateDisplay}</span>
-          </div>
-          <div className="flex justify-between text-sm pt-2 border-t border-gray-100">
-            <span className="text-gray-500 uppercase font-semibold">Order Total</span>
-            <span className="font-bold text-lg text-emerald-600">{formatCurrency(total)}</span>
+        <div className="pt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">CUSTOMER</p>
+              <p className="font-medium text-navy-700 mt-1">{store.customer.name || '—'}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">EVENT DATE</p>
+              <p className="font-medium text-navy-700 mt-1">{eventDateDisplay}</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">ORDER TOTAL</p>
+              <p className="font-bold text-lg text-emerald-600 mt-1">{formatCurrency(total)}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1218,11 +1321,20 @@ export default function NewOrderPage() {
   const router = useRouter();
   const store = useOrderWizard();
   const [submitting, setSubmitting] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  const [now, setNow] = useState(() => new Date());
 
   // Reset wizard on mount
   useEffect(() => {
     store.reset();
+    setLastSavedAt(new Date());
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update "seconds ago" every second
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
   }, []);
 
   const canProceed = () => {
@@ -1317,6 +1429,7 @@ export default function NewOrderPage() {
 
       if (data.success) {
         toast.success(redirectToQuote ? `Order ${data.data.orderNumber} created!` : 'Draft saved.');
+        setLastSavedAt(new Date());
         store.reset();
         if (redirectToQuote) {
           router.push(`/orders/${data.data._id}?sendQuote=1`);
@@ -1402,49 +1515,85 @@ export default function NewOrderPage() {
       </div>
 
       {/* Step content */}
-      <div className="card">
-        {store.currentStep === 0 && <StepCustomerAndEvent />}
-        {store.currentStep === 1 && <StepMenuItems />}
-        {store.currentStep === 2 && <StepReview />}
-      </div>
+      {store.currentStep === 0 && <StepCustomerAndEvent />}
+      {store.currentStep === 1 && (
+        <div className="card">
+          <StepMenuItems />
+        </div>
+      )}
+      {store.currentStep === 2 && (
+        <div className="card">
+          <StepReview />
+        </div>
+      )}
 
-      {/* Navigation footer */}
-      <div className="flex items-center justify-between">
-        <button
-          onClick={store.prevStep}
-          disabled={store.currentStep === 0}
-          className="btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          ← Back
-        </button>
-
-        {store.currentStep < 2 ? (
-          <button
-            onClick={store.nextStep}
-            disabled={!canProceed()}
-            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {store.currentStep === 0 && 'Next: Menu & Equipment →'}
-            {store.currentStep === 1 && 'Next: Payment & Review →'}
-          </button>
-        ) : (
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => handleSubmit(false)}
-              disabled={submitting || !canProceed()}
-              className="btn-outline disabled:opacity-50"
-            >
-              {submitting ? 'Saving...' : 'Save Draft'}
-            </button>
-            <button
-              onClick={() => handleSubmit(true)}
-              disabled={submitting || !canProceed()}
-              className="btn-primary bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-6 disabled:opacity-50"
-            >
-              {submitting ? 'Saving...' : 'Generate Quote & Email →'}
-            </button>
+      {/* Navigation footer - light cream/yellow bar */}
+      <div className="bg-saffron-50/80 border-t border-saffron-100 -mx-6 md:-mx-8 px-6 md:px-8 py-4 rounded-b-xl">
+        <div className="flex items-center justify-between gap-4">
+          {/* Auto-save status - left */}
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" aria-hidden />
+            {submitting ? (
+              <span>Saving...</span>
+            ) : lastSavedAt ? (
+              <span>
+                Auto-saved {Math.max(0, Math.floor((now.getTime() - lastSavedAt.getTime()) / 1000))} seconds ago
+              </span>
+            ) : (
+              <span>Auto-saved 0 seconds ago</span>
+            )}
           </div>
-        )}
+
+          {/* Actions - right */}
+          <div className="flex items-center gap-3">
+            {store.currentStep > 0 && (
+              <button
+                onClick={store.prevStep}
+                disabled={store.currentStep === 0}
+                className="btn-outline disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ← Back
+              </button>
+            )}
+
+            {store.currentStep < 2 ? (
+              <>
+                <button
+                  onClick={() => handleSubmit(false)}
+                  disabled={submitting}
+                  className="btn-outline disabled:opacity-50"
+                >
+                  {submitting ? 'Saving...' : 'Save Draft'}
+                </button>
+                <button
+                  onClick={store.nextStep}
+                  disabled={!canProceed()}
+                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {store.currentStep === 0 && 'Next: Menu & Equipment →'}
+                  {store.currentStep === 1 && 'Next: Payment & Review →'}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => handleSubmit(false)}
+                  disabled={submitting || !canProceed()}
+                  className="btn-outline disabled:opacity-50"
+                >
+                  {submitting ? 'Saving...' : 'Save Draft'}
+                </button>
+                <button
+                  onClick={() => handleSubmit(true)}
+                  disabled={submitting || !canProceed()}
+                  className="btn-primary bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-6 disabled:opacity-50"
+                >
+                  {submitting ? 'Saving...' : 'Generate Quote & Email →'}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

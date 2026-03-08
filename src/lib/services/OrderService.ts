@@ -1,6 +1,6 @@
 import { connectDB } from '@/lib/db';
 import Order from '@/lib/models/Order';
-import { getNextOrderNumber } from '@/lib/models/Counter';
+import { getNextOrderNumber, setOrderNumberCounterAtLeast } from '@/lib/models/Counter';
 import { invalidateCache } from '@/lib/redis';
 import type { CreateOrderInput, UpdateOrderInput } from '@/lib/validations';
 import type { Order as OrderType, OrderStatus } from '@/types';
@@ -36,41 +36,69 @@ export class OrderService {
   static async create(input: CreateOrderInput) {
     await connectDB();
 
-    const orderNumber = await getNextOrderNumber();
-    const { subtotal, tax, total, balanceDue } = calculateTotals({
-      lineItems: input.lineItems,
-      discount: input.discount,
-      discountType: input.discountType,
-      deliveryFee: input.deliveryFee,
-      taxRate: input.taxRate,
-      advancePayment: input.advancePayment,
-    });
+    let orderNumber = await getNextOrderNumber();
+    const maxRetries = 3;
 
-    const order = await Order.create({
-      orderNumber,
-      customer: input.customer,
-      event: {
-        ...input.event,
-        eventDate: new Date(input.event.eventDate),
-      },
-      lineItems: input.lineItems,
-      subtotal,
-      discount: input.discount,
-      discountType: input.discountType,
-      deliveryFee: input.deliveryFee,
-      tax,
-      taxRate: input.taxRate,
-      total,
-      advancePayment: input.advancePayment,
-      balanceDue,
-      status: 'draft',
-      adminNotes: input.adminNotes,
-      changeHistory: [],
-    });
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const { subtotal, tax, total, balanceDue } = calculateTotals({
+          lineItems: input.lineItems,
+          discount: input.discount,
+          discountType: input.discountType,
+          deliveryFee: input.deliveryFee,
+          taxRate: input.taxRate,
+          advancePayment: input.advancePayment,
+        });
 
-    await invalidateCache('kitchen:*');
+        const order = await Order.create({
+          orderNumber,
+          customer: input.customer,
+          event: {
+            ...input.event,
+            eventDate: new Date(input.event.eventDate),
+          },
+          lineItems: input.lineItems,
+          subtotal,
+          discount: input.discount,
+          discountType: input.discountType,
+          deliveryFee: input.deliveryFee,
+          tax,
+          taxRate: input.taxRate,
+          total,
+          advancePayment: input.advancePayment,
+          balanceDue,
+          status: 'draft',
+          adminNotes: input.adminNotes,
+          changeHistory: [],
+        });
 
-    return order.toObject();
+        await invalidateCache('kitchen:*');
+
+        return order.toObject();
+      } catch (err: unknown) {
+        const isDuplicateOrderNumber =
+          typeof err === 'object' &&
+          err !== null &&
+          (err as { code?: number }).code === 11000 &&
+          (err as { keyValue?: { orderNumber?: string } }).keyValue?.orderNumber;
+
+        if (isDuplicateOrderNumber && attempt < maxRetries - 1) {
+          const orders = await Order.find({ orderNumber: /^NC-\d+$/ }, { orderNumber: 1 })
+            .lean()
+            .limit(5000);
+          const maxNum = orders.reduce((max, o) => {
+            const num = parseInt(o.orderNumber.slice(3), 10);
+            return Number.isNaN(num) ? max : Math.max(max, num);
+          }, 0);
+          await setOrderNumberCounterAtLeast(maxNum);
+          orderNumber = await getNextOrderNumber();
+          continue;
+        }
+        throw err;
+      }
+    }
+
+    throw new Error('Failed to generate unique order number');
   }
 
   static async getAll(filters?: {
