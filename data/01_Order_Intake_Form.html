@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nidhi Catering — New Order</title>
+<style>
+  :root {
+    --saffron:  #E07B1A;
+    --saffron-d:#B85F0D;
+    --saffron-l:#FFF3E8;
+    --maroon:   #8B1A1A;
+    --gold:     #C9A227;
+    --gold-l:   #FDF6DC;
+    --navy:     #1C2B4A;
+    --navy-l:   #2E3F63;
+    --cream:    #FFFAF5;
+    --grey:     #F4F5F7;
+    --border:   #DDD5C8;
+    --text:     #2C3A52;
+    --muted:    #7A7A8A;
+    --green:    #1B6B4A;
+    --green-l:  #E8F5EF;
+    --red:      #C0392B;
+    --red-l:    #FDEDEC;
+    --shadow:   0 2px 12px rgba(28,43,74,.10);
+    --radius:   10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--grey); color: var(--text); min-height: 100vh; }
+
+  /* ── Top Nav ── */
+  .topbar {
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 56px;
+  }
+  .topbar .logo { display: flex; align-items: center; gap: 12px; }
+  .topbar .logo-mark {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--saffron), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; color: #fff; font-size: 16px; letter-spacing: -1px;
+  }
+  .topbar .logo-text { color: #fff; font-size: 17px; font-weight: 700; letter-spacing: .3px; }
+  .topbar .logo-text span { color: var(--gold); }
+  .topbar .nav-links { display: flex; gap: 6px; }
+  .topbar .nav-links a {
+    color: rgba(255,255,255,.65); text-decoration: none; font-size: 13px;
+    padding: 6px 14px; border-radius: 6px; transition: all .2s;
+  }
+  .topbar .nav-links a:hover, .topbar .nav-links a.active {
+    background: rgba(255,255,255,.12); color: #fff;
+  }
+  .topbar .nav-links a.active { background: var(--saffron); color: #fff; }
+
+  /* ── Page shell ── */
+  .page { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 22px; font-weight: 800; color: var(--navy); }
+  .page-header p  { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+  /* ── Step bar ── */
+  .steps { display: flex; gap: 0; margin-bottom: 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .step { flex: 1; display: flex; align-items: center; gap: 10px; padding: 14px 20px; cursor: pointer; border-bottom: 3px solid transparent; transition: all .2s; }
+  .step.active  { border-color: var(--saffron); background: var(--saffron-l); }
+  .step.done    { border-color: var(--green); background: var(--green-l); }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; background: var(--border); color: var(--muted); }
+  .step.active  .step-num { background: var(--saffron); color: #fff; }
+  .step.done    .step-num { background: var(--green); color: #fff; }
+  .step-label   { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .step.active  .step-label { color: var(--saffron-d); }
+  .step.done    .step-label { color: var(--green); }
+
+  /* ── Cards ── */
+  .card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+  .card-header { padding: 16px 24px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .card-header .ch-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: var(--saffron-l); }
+  .card-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .card-header p  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .card-body { padding: 22px 24px; }
+
+  /* ── Form grid ── */
+  .form-grid { display: grid; gap: 18px; }
+  .form-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: span 4; }
+
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .field label .req { color: var(--red); margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 13px; border: 1.5px solid var(--border);
+    border-radius: 7px; font-size: 13.5px; color: var(--text);
+    background: #fff; transition: border-color .2s, box-shadow .2s;
+    font-family: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--saffron); box-shadow: 0 0 0 3px rgba(224,123,26,.12);
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .field .hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* Radio / checkbox group */
+  .radio-group, .check-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 2px; }
+  .radio-opt, .check-opt {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 16px; border: 1.5px solid var(--border);
+    border-radius: 7px; cursor: pointer; font-size: 13px;
+    transition: all .2s; background: #fff;
+  }
+  .radio-opt:has(input:checked), .check-opt:has(input:checked) {
+    border-color: var(--saffron); background: var(--saffron-l); color: var(--saffron-d); font-weight: 600;
+  }
+  .radio-opt input, .check-opt input { accent-color: var(--saffron); }
+
+  /* ── Order items table ── */
+  .order-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .order-table th {
+    background: var(--navy); color: #fff; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .5px; padding: 10px 12px; text-align: left;
+  }
+  .order-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .order-table tr:last-child td { border-bottom: none; }
+  .order-table tr:nth-child(even) td { background: var(--cream); }
+  .order-table input, .order-table select {
+    width: 100%; padding: 7px 9px; border: 1.5px solid var(--border);
+    border-radius: 6px; font-size: 12.5px; color: var(--text); font-family: inherit;
+    background: #fff;
+  }
+  .order-table input:focus, .order-table select:focus {
+    outline: none; border-color: var(--saffron);
+  }
+  .order-table .price-cell { font-weight: 700; color: var(--green); text-align: right; white-space: nowrap; }
+  .order-table .del-btn {
+    background: var(--red-l); color: var(--red); border: none; border-radius: 5px;
+    width: 28px; height: 28px; cursor: pointer; font-size: 15px; display: flex;
+    align-items: center; justify-content: center; transition: background .2s;
+  }
+  .order-table .del-btn:hover { background: var(--red); color: #fff; }
+
+  .add-item-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 18px; background: var(--saffron-l); color: var(--saffron-d);
+    border: 1.5px dashed var(--saffron); border-radius: 7px; cursor: pointer;
+    font-size: 13px; font-weight: 600; margin-top: 12px; transition: all .2s;
+  }
+  .add-item-btn:hover { background: var(--saffron); color: #fff; border-style: solid; }
+
+  /* ── Totals ── */
+  .totals-box {
+    background: var(--navy); color: #fff; border-radius: var(--radius);
+    padding: 20px 24px; margin-top: 20px;
+  }
+  .totals-box .t-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .totals-box .t-row:last-child { border: none; font-size: 18px; font-weight: 800; padding-top: 12px; color: var(--gold); }
+  .totals-box .t-label { color: rgba(255,255,255,.75); }
+  .totals-box .t-val { font-weight: 600; }
+
+  /* ── Equipment section ── */
+  .equip-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr; gap: 12px; align-items: end; padding: 12px; background: var(--cream); border-radius: 8px; margin-bottom: 8px; }
+  .equip-row:nth-child(even) { background: #fff; }
+
+  /* ── Payment section ── */
+  .payment-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pay-field label { display: block; font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 5px; }
+  .pay-field input, .pay-field select { width: 100%; padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 7px; font-size: 14px; font-family: inherit; }
+  .pay-field input:focus, .pay-field select:focus { outline: none; border-color: var(--saffron); }
+  .pay-field .balance-display { padding: 10px 13px; background: var(--gold-l); border: 1.5px solid var(--gold); border-radius: 7px; font-size: 16px; font-weight: 800; color: var(--maroon); }
+
+  /* ── Action footer ── */
+  .action-bar {
+    position: sticky; bottom: 0; background: #fff;
+    border-top: 1px solid var(--border); padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 -4px 16px rgba(28,43,74,.08); z-index: 50;
+  }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all .2s; font-family: inherit; }
+  .btn-primary { background: var(--saffron); color: #fff; }
+  .btn-primary:hover { background: var(--saffron-d); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(224,123,26,.35); }
+  .btn-secondary { background: var(--grey); color: var(--text); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-danger { background: var(--red-l); color: var(--red); border: 1.5px solid #f5c6c1; }
+  .btn-success { background: var(--green); color: #fff; }
+  .btn-success:hover { background: #155438; }
+  .btn-group { display: flex; gap: 10px; }
+  .auto-save { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .dot-green { width: 7px; height: 7px; background: var(--green); border-radius: 50%; }
+
+  /* ── Badges ── */
+  .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-new { background: var(--saffron-l); color: var(--saffron-d); }
+
+  /* ── Divider ── */
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+  /* ── Conditional ── */
+  .delivery-fields { display: none; }
+  .delivery-fields.visible { display: contents; }
+
+  /* ── Section label ── */
+  .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* ── Category chip ── */
+  .cat-chip { display: inline-flex; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; }
+  .cat-veg    { background: #E8F5EF; color: #1B6B4A; }
+  .cat-nonveg { background: #FDE8E8; color: #8B1A1A; }
+  .cat-dessert{ background: #EDE8F5; color: #5B3A8F; }
+  .cat-puja   { background: #E8F0F5; color: #1B5E8F; }
+  .cat-live   { background: #F5EAE8; color: #8F4B1B; }
+
+  @media (max-width: 768px) {
+    .form-grid.cols-2, .form-grid.cols-3, .form-grid.cols-4 { grid-template-columns: 1fr; }
+    .span-2, .span-3, .span-4 { grid-column: span 1; }
+    .steps { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top Navigation ── -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">NC</div>
+    <div class="logo-text">Nidhi <span>Catering</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#">Dashboard</a>
+    <a href="#" class="active">New Order</a>
+    <a href="#">Orders</a>
+    <a href="#">Weekly Plan</a>
+    <a href="#">Reports</a>
+  </div>
+</div>
+
+<!-- ── Page Content ── -->
+<div class="page">
+  <div class="page-header">
+    <h1>New Catering Order <span class="badge badge-new">Draft</span></h1>
+    <p>Fill in all required fields. Order will be saved automatically as you type.</p>
+  </div>
+
+  <!-- ── Step Indicator ── -->
+  <div class="steps">
+    <div class="step active" onclick="goStep(1)">
+      <div class="step-num">1</div>
+      <div><div class="step-label">Customer & Event</div></div>
+    </div>
+    <div class="step" onclick="goStep(2)">
+      <div class="step-num">2</div>
+      <div><div class="step-label">Menu Selection</div></div>
+    </div>
+    <div class="step" onclick="goStep(3)">
+      <div class="step-num">3</div>
+      <div><div class="step-label">Equipment & Extras</div></div>
+    </div>
+    <div class="step" onclick="goStep(4)">
+      <div class="step-num">4</div>
+      <div><div class="step-label">Payment & Review</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- STEP 1 — Customer & Event                      -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="step-1">
+
+    <!-- Customer Info -->
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">👤</div>
+        <div><h2>Customer Information</h2><p>Primary contact for this order</p></div>
+      </div>
+      <div class="card-body">
+        <div class="form-grid cols-3">
+          <div class="field">
+            <label>Customer Name <span class="req">*</span></label>
+            <input type="text" id="cust-name" placeholder="Full name" oninput="updatePreview()"/>
+          </div>
+          <div class="field">
+            <label>Phone Number <span class="req">*</span></label>
+            <input type="tel" id="cust-phone" placeholder="(___) ___-____"/>
+          </div>
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" id="cust-email" placeholder="email@example.com" oninput="updatePreview()"/>
+          </div>
+          <div class="field span-3">
+            <label>Special Dietary Requirements / Allergies</label>
+            <input type="text" placeholder="e.g. No garlic or onion, nut-free, jain food..."/>
+            <div class="hint">This will be noted on the order and communicated to the kitchen.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Details -->
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">🎉</div>
+        <div><h2>Event Details</h2><p>Tell us about the occasion</p></div>
+      </div>
+      <div class="card-body">
+        <div class="form-grid cols-4">
+          <div class="field">
+            <label>Event Date <span class="req">*</span></label>
+            <input type="date" id="event-date" oninput="updatePreview()"/>
+          </div>
+          <div class="field">
+            <label>Event Time <span class="req">*</span></label>
+            <input type="time" id="event-time"/>
+          </div>
+          <div class="field">
+            <label>Number of Guests <span class="req">*</span></label>
+            <input type="number" id="guest-count" placeholder="e.g. 75" min="1" oninput="updatePreview()"/>
+          </div>
+          <div class="field">
+            <label>Event Type <span class="req">*</span></label>
+            <select id="event-type">
+              <option value="">Select type...</option>
+              <option>Wedding / Shaadi</option>
+              <option>Birthday Party</option>
+              <option>Corporate Event</option>
+              <option>Puja / Religious Ceremony</option>
+              <option>Anniversary</option>
+              <option>Baby Shower / Bridal Shower</option>
+              <option>Graduation Party</option>
+              <option>Housewarming</option>
+              <option>Festival Gathering</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- Delivery Type -->
+          <div class="field span-4">
+            <label>Delivery Type <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-opt">
+                <input type="radio" name="delivery" value="delivery" onchange="toggleDelivery(this)"/> 🚚 Delivery
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="delivery" value="pickup" onchange="toggleDelivery(this)"/> 🏠 Pickup
+              </label>
+              <label class="radio-opt">
+                <input type="radio" name="delivery" value="live" onchange="toggleDelivery(this)"/> 🍳 Live Catering (On-site)
+              </label>
+            </div>
+          </div>
+
+          <!-- Conditional delivery address -->
+          <div class="field delivery-fields span-4" id="delivery-addr-group">
+            <label>Delivery Address <span class="req">*</span></label>
+            <input type="text" placeholder="Street address, Suite / Apt"/>
+          </div>
+          <div class="delivery-fields" id="delivery-city-group">
+            <div class="field">
+              <label>City</label>
+              <input type="text" placeholder="Dallas"/>
+            </div>
+          </div>
+          <div class="delivery-fields" id="delivery-state-group">
+            <div class="field">
+              <label>State</label>
+              <input type="text" value="TX"/>
+            </div>
+          </div>
+          <div class="delivery-fields" id="delivery-zip-group">
+            <div class="field">
+              <label>ZIP Code</label>
+              <input type="text" placeholder="75001"/>
+            </div>
+          </div>
+
+          <div class="field span-2">
+            <label>Venue / Location Name</label>
+            <input type="text" placeholder="e.g. Grand Ballroom, Marriott Dallas"/>
+          </div>
+          <div class="field span-2">
+            <label>Setup Time Required</label>
+            <select>
+              <option value="">No setup needed</option>
+              <option>30 minutes before</option>
+              <option>1 hour before</option>
+              <option>2 hours before</option>
+              <option>Other (see notes)</option>
+            </select>
+          </div>
+
+          <div class="field span-4">
+            <label>Event Notes / Special Instructions</label>
+            <textarea placeholder="Any additional event-level notes for the kitchen or delivery team..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end step-1 -->
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- STEP 2 — Menu Selection                        -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="step-2" style="display:none;">
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">🍽️</div>
+        <div><h2>Menu Selection</h2><p>Add all items and sizes. Each row is one item–size combination.</p></div>
+      </div>
+      <div class="card-body">
+
+        <table class="order-table" id="items-table">
+          <thead>
+            <tr>
+              <th style="width:14%">Category</th>
+              <th style="width:26%">Item Name</th>
+              <th style="width:17%">Size / Option</th>
+              <th style="width:8%">Qty</th>
+              <th style="width:10%">Unit Price</th>
+              <th style="width:10%">Total</th>
+              <th style="width:12%">Item Notes</th>
+              <th style="width:3%"></th>
+            </tr>
+          </thead>
+          <tbody id="items-body">
+            <!-- rows injected by JS -->
+          </tbody>
+        </table>
+
+        <button class="add-item-btn" onclick="addItemRow()">＋ Add Menu Item</button>
+
+        <!-- Order Totals -->
+        <div class="totals-box">
+          <div class="t-row"><span class="t-label">Subtotal (Food)</span><span class="t-val" id="subtotal-food">$0.00</span></div>
+          <div class="t-row"><span class="t-label">Equipment (if any)</span><span class="t-val" id="subtotal-equip">$0.00</span></div>
+          <div class="t-row"><span class="t-label">Taxes / Fees</span><span class="t-val">—</span></div>
+          <div class="t-row"><span>ESTIMATED TOTAL</span><span id="grand-total">$0.00</span></div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end step-2 -->
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- STEP 3 — Equipment & Extras                    -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="step-3" style="display:none;">
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">🔧</div>
+        <div><h2>Equipment & Rental</h2><p>Track what equipment is needed, rental cost, and return details.</p></div>
+      </div>
+      <div class="card-body">
+
+        <div class="section-label">Chafing Dishes</div>
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Include?</th>
+              <th>Type</th>
+              <th>Quantity</th>
+              <th>Unit Rental ($)</th>
+              <th>Rental Total</th>
+              <th>Return Date</th>
+              <th>Return Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" id="chk-economic" onchange="calcEquip()" style="width:auto;accent-color:var(--saffron)"/> &nbsp;Yes</td>
+              <td>Economic Chafing Dish</td>
+              <td><input type="number" id="qty-economic" placeholder="0" min="0" oninput="calcEquip()" style="width:70px"/></td>
+              <td><input type="number" id="price-economic" value="10.00" step="0.01" oninput="calcEquip()" style="width:80px"/></td>
+              <td class="price-cell" id="total-economic">$0.00</td>
+              <td><input type="date" id="return-economic"/></td>
+              <td><select><option>Pending</option><option>Returned</option><option>Overdue</option></select></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" id="chk-rotating" onchange="calcEquip()" style="width:auto;accent-color:var(--saffron)"/> &nbsp;Yes</td>
+              <td>Rotating Chafing Dish</td>
+              <td><input type="number" id="qty-rotating" placeholder="0" min="0" oninput="calcEquip()" style="width:70px"/></td>
+              <td><input type="number" id="price-rotating" value="35.00" step="0.01" oninput="calcEquip()" style="width:80px"/></td>
+              <td class="price-cell" id="total-rotating">$0.00</td>
+              <td><input type="date" id="return-rotating"/></td>
+              <td><select><option>Pending</option><option>Returned</option><option>Overdue</option></select></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="divider"></div>
+        <div class="section-label">Disposable Plates</div>
+        <div class="form-grid cols-4">
+          <div class="field">
+            <label>Include Disposable Plates?</label>
+            <div class="radio-group">
+              <label class="radio-opt"><input type="radio" name="plates" value="yes"/> Yes</label>
+              <label class="radio-opt"><input type="radio" name="plates" value="no" checked/> No</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Plate Type</label>
+            <select><option>Plate One</option><option>Plate Two</option><option>Plate Three</option><option>Plate Four</option></select>
+          </div>
+          <div class="field">
+            <label>Quantity</label>
+            <input type="number" placeholder="0" min="0"/>
+          </div>
+          <div class="field">
+            <label>Unit Price ($)</label>
+            <input type="number" placeholder="0.00" step="0.01"/>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="section-label">Live Catering Stations</div>
+        <div class="form-grid cols-2">
+          <div class="field">
+            <label>Stations Required</label>
+            <div class="check-group">
+              <label class="check-opt"><input type="checkbox"/> 🍕 Pizza Oven</label>
+              <label class="check-opt"><input type="checkbox"/> 🌮 Taco Bar</label>
+              <label class="check-opt"><input type="checkbox"/> 🍝 Pasta Station</label>
+              <label class="check-opt"><input type="checkbox"/> 🥘 Chaat Station</label>
+              <label class="check-opt"><input type="checkbox"/> 🍛 Biryani Station</label>
+              <label class="check-opt"><input type="checkbox"/> 🍰 Dessert Station</label>
+              <label class="check-opt"><input type="checkbox"/> 🥢 Indo-Chinese</label>
+              <label class="check-opt"><input type="checkbox"/> 🌯 Indo-Mexican</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Station Notes</label>
+            <textarea placeholder="Any specific requirements for live stations, staffing notes, space requirements..."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- end step-3 -->
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- STEP 4 — Payment & Review                      -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div id="step-4" style="display:none;">
+    <!-- Order summary preview -->
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">📋</div>
+        <div><h2>Order Summary</h2><p>Review before generating quote</p></div>
+      </div>
+      <div class="card-body">
+        <div class="form-grid cols-3" style="background:var(--cream);padding:16px;border-radius:8px;margin-bottom:16px;">
+          <div><div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px;">CUSTOMER</div><div style="font-weight:700;font-size:15px;" id="prev-name">—</div><div style="font-size:12px;color:var(--muted);" id="prev-email">—</div></div>
+          <div><div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px;">EVENT DATE</div><div style="font-weight:700;font-size:15px;" id="prev-date">—</div><div style="font-size:12px;color:var(--muted);" id="prev-guests">—</div></div>
+          <div><div style="font-size:11px;color:var(--muted);font-weight:600;margin-bottom:4px;">ORDER TOTAL</div><div style="font-weight:800;font-size:20px;color:var(--green);" id="prev-total">$0.00</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">💰</div>
+        <div><h2>Payment Details</h2><p>Record advance payment and outstanding balance</p></div>
+      </div>
+      <div class="card-body">
+        <div class="payment-summary">
+          <div class="pay-field">
+            <label>Order Total (auto)</label>
+            <div class="balance-display" id="pay-total">$0.00</div>
+          </div>
+          <div class="pay-field">
+            <label>Payment Method</label>
+            <select>
+              <option>Cash</option><option>Check</option><option>Zelle</option>
+              <option>Venmo</option><option>Credit Card</option><option>Other</option>
+            </select>
+          </div>
+          <div class="pay-field">
+            <label>Advance Payment Received ($) <span class="req">*</span></label>
+            <input type="number" id="advance-pay" placeholder="0.00" step="0.01" oninput="calcBalance()"/>
+          </div>
+          <div class="pay-field">
+            <label>Advance Payment Date</label>
+            <input type="date"/>
+          </div>
+          <div class="pay-field">
+            <label>Balance Due</label>
+            <div class="balance-display" id="balance-due" style="color:var(--maroon);">$0.00</div>
+          </div>
+          <div class="pay-field">
+            <label>Balance Due Date</label>
+            <input type="date"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin notes -->
+    <div class="card">
+      <div class="card-header">
+        <div class="ch-icon">📝</div>
+        <div><h2>Admin Notes</h2><p>Internal notes — not visible to customer</p></div>
+      </div>
+      <div class="card-body">
+        <div class="field">
+          <textarea placeholder="Any internal notes about this order, kitchen instructions, special handling..." style="min-height:100px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end step-4 -->
+
+</div><!-- end .page -->
+
+<!-- ── Action Bar ── -->
+<div class="action-bar">
+  <div class="auto-save"><div class="dot-green"></div> Auto-saved 2 seconds ago</div>
+  <div class="btn-group">
+    <button class="btn btn-secondary" id="btn-back" onclick="prevStep()" style="display:none;">← Back</button>
+    <button class="btn btn-secondary" onclick="alert('Draft saved.')">Save Draft</button>
+    <button class="btn btn-primary" id="btn-next" onclick="nextStep()">Next: Menu Selection →</button>
+    <button class="btn btn-success" id="btn-generate" style="display:none;" onclick="alert('Generating quote PDF...')">Generate Quote & Email →</button>
+  </div>
+</div>
+
+<script>
+// ── Menu data ──────────────────────────────────────────────────────────────
+const MENU_DATA = {
+  'Veg – Appetizer':       [['Aloo Tikki With Chole','per pc',2.50],['Samosa Chat','per pc',2.25],['Dahi ke Kabab','per pc',1.75],['Samosa','per pc',1.50],['Mix Veg Pakora','Small Tray',45],['Mix Veg Pakora','Large Tray',75],['Mix Veg Pakora','Extra Large Tray',100],['Hara Bhara Kebab','per pc',1.75],['Paneer Tikka','Small Tray',55],['Paneer Tikka','Large Tray',95],['Paneer Tikka','Extra Large Tray',145]],
+  'Veg – Paneer Items':    [['Palak Paneer','Small Tray',45],['Palak Paneer','Large Tray',75],['Palak Paneer','Extra Large Tray',100],['Shahi Paneer','Small Tray',55],['Shahi Paneer','Large Tray',90],['Shahi Paneer','Extra Large Tray',130],['Kadai Paneer','Small Tray',55],['Kadai Paneer','Large Tray',90]],
+  'Veg – Rice & Bread':    [['Veg Biryani','Small Tray',45],['Veg Biryani','Large Tray',80],['Veg Biryani','Extra Large Tray',120],['Naan','per pc',1.50],['Laccha Paratha','per pc',1.50],['Phulka Roti','2 pcs',1.50]],
+  'Veg – Lentils / Dals':  [['Dal Makhani','Small Tray',40],['Dal Makhani','Large Tray',70],['Dal Makhani','Extra Large Tray',100],['Dal Tadka','Small Tray',35],['Dal Tadka','Large Tray',65]],
+  'Non-Veg – Appetizer':   [['Chicken 65','Small Tray',55],['Chicken 65','Large Tray',95],['Chicken 65','Extra Large Tray',145],['Chicken Tikka','Small Tray',55],['Chicken Tikka','Large Tray',95],['Chicken Tikka','Extra Large Tray',145],['Chicken Pakora','Small Tray',50],['Chicken Pakora','Large Tray',88]],
+  'Non-Veg – Main Course': [['Butter Chicken','Small Tray',55],['Butter Chicken','Large Tray',95],['Butter Chicken','Extra Large Tray',145],['Chicken Curry','Small Tray',50],['Chicken Curry','Large Tray',88],['Mutton Curry','Small Tray',65],['Mutton Curry','Large Tray',110]],
+  'Non-Veg – Biryani':     [['Chicken Biryani','Small Tray',55],['Chicken Biryani','Large Tray',95],['Chicken Biryani','Extra Large Tray',145],['Mutton Biryani','Small Tray',65],['Mutton Biryani','Large Tray',110]],
+  'Desserts':              [['Gulab Jamun','per pc',1.75],['Gulab Jamun','Small Tray',50],['Gulab Jamun','Large Tray',82],['Gulab Jamun','Extra Large Tray',110],['Kheer','Small Tray',45],['Kheer','Large Tray',75],['Kheer','Extra Large Tray',115],['Gajar Ka Halwa','per lb',13],['Moong Dal Halwa','Desi Ghee per lb',15.50],['Ras Malai','per pc',2.50],['Jalebi','per lb',12]],
+  'Puja Food':             [['Paneer Pakoda','per pc',1.50],['Samosa','per pc',0.70],['Mix Veg Pakoda','Small Tray',55],['Mix Veg Pakoda','Large Tray',95],['Mix Veg Pakoda','Extra Large Tray',145],['Puja Biryani','Small Tray',45],['Puja Biryani','Large Tray',75]],
+};
+
+const CATEGORIES = Object.keys(MENU_DATA);
+let itemRows = 0;
+let currentStep = 1;
+
+// ── Add item row ───────────────────────────────────────────────────────────
+function addItemRow() {
+  itemRows++;
+  const id = `row-${itemRows}`;
+  const tbody = document.getElementById('items-body');
+  const tr = document.createElement('tr');
+  tr.id = id;
+
+  const catOpts = CATEGORIES.map(c=>`<option>${c}</option>`).join('');
+  tr.innerHTML = `
+    <td>
+      <select onchange="updateItemOptions(this,'item-${itemRows}','price-${itemRows}')" id="cat-${itemRows}">
+        <option value="">Select…</option>${catOpts}
+      </select>
+    </td>
+    <td>
+      <select id="item-${itemRows}" onchange="autoFillPrice(this,'price-${itemRows}')">
+        <option value="">Select category first</option>
+      </select>
+    </td>
+    <td><input type="text" id="size-${itemRows}" placeholder="e.g. Large Tray" readonly style="background:var(--grey)"/></td>
+    <td><input type="number" id="qty-${itemRows}" value="1" min="1" style="width:60px" oninput="recalcRow(${itemRows})"/></td>
+    <td><input type="number" id="price-${itemRows}" placeholder="0.00" step="0.01" oninput="recalcRow(${itemRows})" style="width:80px"/></td>
+    <td class="price-cell" id="linetotal-${itemRows}">$0.00</td>
+    <td><input type="text" placeholder="Notes…"/></td>
+    <td><button class="del-btn" onclick="delRow('${id}')">✕</button></td>
+  `;
+  tbody.appendChild(tr);
+}
+
+function updateItemOptions(catSel, itemId, priceId) {
+  const cat = catSel.value;
+  const itemSel = document.getElementById(itemId);
+  const items = MENU_DATA[cat] || [];
+  itemSel.innerHTML = `<option value="">Select item…</option>` +
+    items.map(([name,size,price],i) => `<option value="${i}">${name} — ${size}</option>`).join('');
+  document.getElementById(priceId).value = '';
+  const rowNum = itemId.replace('item-','');
+  const sizeFld = document.getElementById(`size-${rowNum}`);
+  if (sizeFld) sizeFld.value = '';
+  recalcAll();
+}
+
+function autoFillPrice(itemSel, priceId) {
+  const rowNum = priceId.replace('price-','');
+  const catSel = document.getElementById(`cat-${rowNum}`);
+  const cat = catSel.value;
+  const items = MENU_DATA[cat] || [];
+  const idx = parseInt(itemSel.value);
+  if (!isNaN(idx) && items[idx]) {
+    document.getElementById(priceId).value = items[idx][2].toFixed(2);
+    const sizeFld = document.getElementById(`size-${rowNum}`);
+    if (sizeFld) sizeFld.value = items[idx][1];
+  }
+  recalcRow(rowNum);
+}
+
+function recalcRow(n) {
+  const qty   = parseFloat(document.getElementById(`qty-${n}`)?.value) || 0;
+  const price = parseFloat(document.getElementById(`price-${n}`)?.value) || 0;
+  const total = qty * price;
+  const cell  = document.getElementById(`linetotal-${n}`);
+  if (cell) cell.textContent = `$${total.toFixed(2)}`;
+  recalcAll();
+}
+
+function recalcAll() {
+  let sub = 0;
+  document.querySelectorAll('[id^="linetotal-"]').forEach(cell => {
+    sub += parseFloat(cell.textContent.replace('$','')) || 0;
+  });
+  document.getElementById('subtotal-food').textContent = `$${sub.toFixed(2)}`;
+  const equipTotal = parseFloat(document.getElementById('subtotal-equip').textContent.replace('$','')) || 0;
+  const grand = sub + equipTotal;
+  document.getElementById('grand-total').textContent = `$${grand.toFixed(2)}`;
+  document.getElementById('pay-total').textContent = `$${grand.toFixed(2)}`;
+  document.getElementById('prev-total').textContent = `$${grand.toFixed(2)}`;
+  calcBalance();
+}
+
+function calcEquip() {
+  let total = 0;
+  ['economic','rotating'].forEach(type => {
+    const chk = document.getElementById(`chk-${type}`);
+    const qty = parseFloat(document.getElementById(`qty-${type}`)?.value) || 0;
+    const price = parseFloat(document.getElementById(`price-${type}`)?.value) || 0;
+    const t = chk?.checked ? qty * price : 0;
+    const cell = document.getElementById(`total-${type}`);
+    if (cell) cell.textContent = `$${t.toFixed(2)}`;
+    total += t;
+  });
+  document.getElementById('subtotal-equip').textContent = `$${total.toFixed(2)}`;
+  recalcAll();
+}
+
+function calcBalance() {
+  const grand = parseFloat(document.getElementById('grand-total').textContent.replace('$','')) || 0;
+  const advance = parseFloat(document.getElementById('advance-pay')?.value) || 0;
+  const balance = Math.max(0, grand - advance);
+  const el = document.getElementById('balance-due');
+  if (el) el.textContent = `$${balance.toFixed(2)}`;
+}
+
+function delRow(id) { document.getElementById(id)?.remove(); recalcAll(); }
+
+// ── Steps ──────────────────────────────────────────────────────────────────
+function goStep(n) {
+  [1,2,3,4].forEach(i => {
+    const s = document.getElementById(`step-${i}`);
+    if (s) s.style.display = i === n ? '' : 'none';
+    const stepEl = document.querySelectorAll('.step')[i-1];
+    if (stepEl) { stepEl.classList.remove('active','done'); if (i===n) stepEl.classList.add('active'); if (i<n) stepEl.classList.add('done'); }
+  });
+  currentStep = n;
+  document.getElementById('btn-back').style.display = n > 1 ? '' : 'none';
+  document.getElementById('btn-next').style.display = n < 4 ? '' : 'none';
+  document.getElementById('btn-generate').style.display = n === 4 ? '' : 'none';
+  const labels = ['','Next: Menu Selection →','Next: Equipment & Extras →','Next: Payment & Review →',''];
+  const btn = document.getElementById('btn-next');
+  if (btn) btn.textContent = labels[n];
+  updatePreview();
+}
+function nextStep() { if (currentStep < 4) goStep(currentStep + 1); }
+function prevStep() { if (currentStep > 1) goStep(currentStep - 1); }
+
+function toggleDelivery(radio) {
+  const show = radio.value !== 'pickup';
+  ['delivery-addr-group','delivery-city-group','delivery-state-group','delivery-zip-group'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { show ? el.classList.add('visible') : el.classList.remove('visible'); }
+  });
+}
+
+function updatePreview() {
+  const name = document.getElementById('cust-name')?.value || '—';
+  const email = document.getElementById('cust-email')?.value || '—';
+  const date = document.getElementById('event-date')?.value;
+  const guests = document.getElementById('guest-count')?.value;
+  document.getElementById('prev-name').textContent = name || '—';
+  document.getElementById('prev-email').textContent = email || '—';
+  document.getElementById('prev-date').textContent = date ? new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric',year:'numeric'}) : '—';
+  document.getElementById('prev-guests').textContent = guests ? `${guests} Guests` : '—';
+}
+
+// init
+addItemRow();
+</script>
+</body>
+</html>

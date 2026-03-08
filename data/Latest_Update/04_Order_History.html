@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nidhi Catering — Order History</title>
+<style>
+  :root {
+    --saffron:#E07B1A; --saffron-d:#B85F0D; --saffron-l:#FFF3E8;
+    --maroon:#8B1A1A; --gold:#C9A227; --gold-l:#FDF6DC;
+    --navy:#1C2B4A; --navy-l:#2E3F63;
+    --cream:#FFFAF5; --grey:#F4F5F7; --border:#DDD5C8;
+    --text:#2C3A52; --muted:#7A7A8A;
+    --green:#1B6B4A; --green-l:#E8F5EF;
+    --red:#C0392B; --red-l:#FDEDEC;
+    --shadow:0 2px 12px rgba(28,43,74,.10); --radius:10px;
+  }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Segoe UI',Arial,sans-serif; background:var(--grey); color:var(--text); min-height:100vh; }
+
+  /* ── Top Nav ── */
+  .topbar { background:var(--navy); display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:56px; }
+  .logo { display:flex; align-items:center; gap:12px; }
+  .logo-mark { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--saffron),var(--gold)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:16px; }
+  .logo-text { color:#fff; font-size:17px; font-weight:700; }
+  .logo-text span { color:var(--gold); }
+  .nav-links { display:flex; gap:6px; }
+  .nav-links a { color:rgba(255,255,255,.65); text-decoration:none; font-size:13px; padding:6px 14px; border-radius:6px; transition:all .2s; }
+  .nav-links a:hover { background:rgba(255,255,255,.12); color:#fff; }
+  .nav-links a.active { background:var(--saffron); color:#fff; }
+
+  /* ── Page layout ── */
+  .page { max-width:1280px; margin:0 auto; padding:28px 24px 80px; }
+  .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+  .page-header h1 { font-size:22px; font-weight:800; color:var(--navy); }
+  .page-header p  { font-size:13px; color:var(--muted); margin-top:3px; }
+
+  /* ── Search & filter bar ── */
+  .search-bar {
+    background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:18px 22px; margin-bottom:20px;
+    display:flex; gap:14px; align-items:flex-end; flex-wrap:wrap;
+  }
+  .sb-group { display:flex; flex-direction:column; gap:5px; }
+  .sb-group label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .sb-group input, .sb-group select {
+    padding:9px 13px; border:1.5px solid var(--border); border-radius:7px;
+    font-size:13px; color:var(--text); font-family:inherit; background:#fff;
+    min-width:160px; transition:border-color .2s;
+  }
+  .sb-group input:focus, .sb-group select:focus { outline:none; border-color:var(--saffron); box-shadow:0 0 0 3px rgba(224,123,26,.1); }
+  .sb-group.grow { flex:1; min-width:220px; }
+  .sb-group.grow input { width:100%; }
+  .btn { display:inline-flex; align-items:center; gap:7px; padding:10px 20px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer; border:none; font-family:inherit; transition:all .2s; }
+  .btn-primary { background:var(--saffron); color:#fff; }
+  .btn-primary:hover { background:var(--saffron-d); }
+  .btn-secondary { background:var(--grey); color:var(--text); border:1.5px solid var(--border); }
+  .btn-secondary:hover { background:var(--border); }
+  .btn-navy { background:var(--navy); color:#fff; }
+  .btn-navy:hover { background:var(--navy-l); }
+  .btn-green { background:var(--green); color:#fff; }
+  .btn-green:hover { background:#155438; }
+  .btn-sm { padding:6px 13px; font-size:12px; }
+  .btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); }
+  .btn-ghost:hover { background:var(--grey); color:var(--text); }
+  .btn-outline-saffron { background:#fff; color:var(--saffron-d); border:2px solid var(--saffron); }
+  .btn-outline-saffron:hover { background:var(--saffron-l); }
+
+  /* ── Stats strip ── */
+  .stats-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+  .stat-card { background:#fff; border-radius:var(--radius); padding:16px 20px; box-shadow:var(--shadow); border-left:4px solid var(--saffron); }
+  .stat-card.green { border-color:var(--green); }
+  .stat-card.gold  { border-color:var(--gold); }
+  .stat-card.navy  { border-color:var(--navy); }
+  .stat-card .sc-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:6px; }
+  .stat-card .sc-val   { font-size:26px; font-weight:900; color:var(--navy); }
+  .stat-card .sc-sub   { font-size:11px; color:var(--muted); margin-top:3px; }
+
+  /* ── Orders table ── */
+  .orders-table-wrap { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+  .orders-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .orders-table thead tr { background:var(--navy); }
+  .orders-table th { padding:11px 16px; text-align:left; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#fff; white-space:nowrap; }
+  .orders-table th.sortable { cursor:pointer; user-select:none; }
+  .orders-table th.sortable:hover { background:var(--navy-l); }
+  .orders-table td { padding:12px 16px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .orders-table tr:last-child td { border-bottom:none; }
+  .orders-table tbody tr { cursor:pointer; transition:background .15s; }
+  .orders-table tbody tr:hover td { background:var(--saffron-l); }
+  .orders-table tbody tr.active-row td { background:var(--saffron-l); border-left:3px solid var(--saffron); }
+
+  /* Order # */
+  .order-num { font-weight:700; color:var(--navy); font-size:12px; }
+  .order-rev { display:inline-block; margin-left:6px; background:var(--gold-l); color:#7A5A0D; border:1px solid var(--gold); border-radius:10px; padding:1px 7px; font-size:10px; font-weight:700; }
+  .order-rev.many { background:var(--red-l); color:var(--red); border-color:#f5c6c1; }
+
+  /* Status badges */
+  .badge { display:inline-flex; align-items:center; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+  .badge-draft    { background:#F4F5F7; color:var(--muted); }
+  .badge-sent     { background:var(--saffron-l); color:var(--saffron-d); }
+  .badge-approved { background:var(--green-l); color:var(--green); }
+  .badge-paid     { background:#E8F5EF; color:#155438; }
+  .badge-cancelled{ background:var(--red-l); color:var(--red); }
+  .badge-modified { background:var(--gold-l); color:#7A5A0D; }
+
+  /* Category tags */
+  .cat-tag { display:inline-block; font-size:9px; padding:1px 6px; border-radius:8px; font-weight:700; margin-right:2px; }
+  .ct-veg  { background:#E8F5EF; color:#1B6B4A; }
+  .ct-nv   { background:#FDE8E8; color:#8B1A1A; }
+  .ct-des  { background:#EDE8F5; color:#5B3A8F; }
+  .ct-puja { background:#E0EDF7; color:#1B5E8F; }
+
+  /* ── Detail drawer ── */
+  .detail-drawer {
+    display:none; background:var(--cream); border-top:2px solid var(--saffron);
+    padding:28px 32px; animation:slideIn .2s ease;
+  }
+  .detail-drawer.open { display:block; }
+  @keyframes slideIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+
+  .drawer-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .drawer-section h3 { font-size:13px; font-weight:800; color:var(--navy); margin-bottom:12px; display:flex; align-items:center; gap:6px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+
+  /* Order detail summary */
+  .detail-meta { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px; }
+  .detail-field label { display:block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:3px; }
+  .detail-field .val { font-size:14px; font-weight:700; color:var(--navy); }
+  .detail-field .val.green { color:var(--green); }
+  .detail-field .val.gold  { color:var(--gold); }
+  .detail-field .val.red   { color:var(--red); }
+
+  /* Items mini-table */
+  .mini-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .mini-table th { background:var(--navy); color:#fff; padding:7px 10px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; }
+  .mini-table td { padding:7px 10px; border-bottom:1px solid var(--border); }
+  .mini-table tr:last-child td { border-bottom:none; }
+  .mini-table tr:nth-child(even) td { background:#fff; }
+  .mini-table .right { text-align:right; font-weight:700; color:var(--green); }
+
+  /* ── Change log / revision history ── */
+  .changelog { }
+  .cl-entry { display:flex; gap:14px; padding:10px 0; border-bottom:1px dashed var(--border); position:relative; }
+  .cl-entry:last-child { border-bottom:none; }
+  .cl-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+  .cl-dot.created  { background:var(--green); }
+  .cl-dot.modified { background:var(--saffron); }
+  .cl-dot.sent     { background:var(--navy); }
+  .cl-dot.approved { background:var(--green); }
+  .cl-dot.note     { background:var(--gold); }
+  .cl-content { flex:1; }
+  .cl-title { font-size:12.5px; font-weight:700; color:var(--text); }
+  .cl-desc  { font-size:11.5px; color:var(--muted); margin-top:2px; line-height:1.5; }
+  .cl-time  { font-size:10.5px; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:5px; }
+  .cl-diff  { display:inline-block; background:#fff; border:1px solid var(--border); border-radius:5px; padding:4px 8px; font-size:11px; color:var(--text); margin-top:5px; font-family:monospace; }
+  .cl-diff .del { color:var(--red); text-decoration:line-through; }
+  .cl-diff .add { color:var(--green); }
+
+  /* ── Drawer action buttons ── */
+  .drawer-actions { display:flex; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); flex-wrap:wrap; }
+
+  /* ── Edit modal overlay ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(28,43,74,.55); z-index:200; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:#fff; border-radius:var(--radius); box-shadow:0 12px 48px rgba(28,43,74,.25); width:620px; max-width:95vw; max-height:90vh; overflow-y:auto; }
+  .modal-header { padding:20px 24px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--navy); border-radius:var(--radius) var(--radius) 0 0; }
+  .modal-header h2 { font-size:16px; font-weight:800; color:#fff; }
+  .modal-header .close-btn { background:rgba(255,255,255,.15); border:none; color:#fff; border-radius:50%; width:30px; height:30px; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+  .modal-header .close-btn:hover { background:rgba(255,255,255,.3); }
+  .modal-body { padding:22px 24px; }
+  .modal-footer { padding:14px 24px; border-top:1px solid var(--border); display:flex; gap:10px; justify-content:flex-end; background:var(--grey); border-radius:0 0 var(--radius) var(--radius); }
+  .field label { display:block; font-size:12px; font-weight:600; color:var(--navy); margin-bottom:5px; }
+  .field input, .field select, .field textarea {
+    width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:7px;
+    font-size:13px; color:var(--text); font-family:inherit; background:#fff; transition:border-color .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--saffron); }
+  .field textarea { resize:vertical; min-height:70px; }
+  .field .hint { font-size:11px; color:var(--muted); margin-top:3px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+
+  /* ── Pagination ── */
+  .pagination { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; background:#fff; border-top:1px solid var(--border); border-radius:0 0 var(--radius) var(--radius); }
+  .pg-info { font-size:12px; color:var(--muted); }
+  .pg-btns { display:flex; gap:6px; }
+  .pg-btn { width:32px; height:32px; border:1.5px solid var(--border); border-radius:6px; background:#fff; cursor:pointer; font-size:13px; font-weight:600; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+  .pg-btn:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .pg-btn.active { background:var(--saffron); color:#fff; border-color:var(--saffron); }
+
+  /* ── Note box ── */
+  .note-box { background:var(--gold-l); border:1.5px solid var(--gold); border-radius:8px; padding:10px 14px; font-size:12px; color:#7A5A0D; display:flex; gap:8px; align-items:flex-start; margin-top:8px; }
+</style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">NC</div>
+    <div class="logo-text">Nidhi <span>Catering</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#">Dashboard</a>
+    <a href="#">New Order</a>
+    <a href="#" class="active">Orders</a>
+    <a href="#">Send Quote</a>
+    <a href="#">Weekly Plan</a>
+    <a href="#">Reports</a>
+    <a href="#" style="margin-left:8px;">Signout</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Page Header: Order History + Export CSV (outline) + New Order (primary) -->
+  <div class="page-header">
+    <div>
+      <h1>Order History</h1>
+      <p>Search, review, and update past orders. Click any row to expand details and change log.</p>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline-saffron" onclick="alert('Exporting to CSV…')">⬇ Export CSV</button>
+      <button class="btn btn-primary" onclick="window.location='01_Order_Intake_Form.html'">＋ New Order</button>
+    </div>
+  </div>
+
+  <!-- Stats strip: TOTAL ORDERS, APPROVED/CONFIRMED, AWAITING APPROVAL, REVISED ORDERS -->
+  <div class="stats-strip">
+    <div class="stat-card">
+      <div class="sc-label">TOTAL ORDERS</div>
+      <div class="sc-val">47</div>
+      <div class="sc-sub">All time</div>
+    </div>
+    <div class="stat-card green">
+      <div class="sc-label">APPROVED / CONFIRMED</div>
+      <div class="sc-val">31</div>
+      <div class="sc-sub">This year</div>
+    </div>
+    <div class="stat-card gold">
+      <div class="sc-label">AWAITING APPROVAL</div>
+      <div class="sc-val">8</div>
+      <div class="sc-sub">Quote sent</div>
+    </div>
+    <div class="stat-card navy">
+      <div class="sc-label">REVISED ORDERS</div>
+      <div class="sc-val">14</div>
+      <div class="sc-sub">Modified after send</div>
+    </div>
+  </div>
+
+  <!-- Search Bar: SEARCH, STATUS, EVENT TYPE, FROM DATE, TO DATE, Clear -->
+  <div class="search-bar">
+    <div class="sb-group grow">
+      <label>SEARCH</label>
+      <input type="text" id="search-input" placeholder="Customer name, order #, event type…" oninput="filterOrders()"/>
+    </div>
+    <div class="sb-group">
+      <label>STATUS</label>
+      <select id="filter-status" onchange="filterOrders()">
+        <option value="">All Statuses</option>
+        <option>Draft</option>
+        <option>Quote Sent</option>
+        <option>Approved</option>
+        <option>Paid</option>
+        <option>Cancelled</option>
+      </select>
+    </div>
+    <div class="sb-group">
+      <label>EVENT TYPE</label>
+      <select id="filter-type" onchange="filterOrders()">
+        <option value="">All Types</option>
+        <option>Wedding</option>
+        <option>Birthday</option>
+        <option>Corporate</option>
+        <option>Puja</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="sb-group">
+      <label>FROM DATE</label>
+      <input type="date" id="filter-from" onchange="filterOrders()"/>
+    </div>
+    <div class="sb-group">
+      <label>TO DATE</label>
+      <input type="date" id="filter-to" onchange="filterOrders()"/>
+    </div>
+    <button class="btn btn-ghost" onclick="clearFilters()">✕ Clear</button>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="orders-table-wrap">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th class="sortable" onclick="sortBy('num')">Order # ↕</th>
+          <th class="sortable" onclick="sortBy('customer')">Customer ↕</th>
+          <th class="sortable" onclick="sortBy('date')">Event Date ↕</th>
+          <th>Event Type</th>
+          <th>Items</th>
+          <th>Delivery</th>
+          <th class="sortable" onclick="sortBy('total')">Total ↕</th>
+          <th>Status</th>
+          <th>Revisions</th>
+          <th>Last Updated</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="orders-tbody">
+        <!-- Injected by JS -->
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="pg-info" id="pg-info">Showing 1–10 of 47 orders</div>
+      <div class="pg-btns">
+        <button class="pg-btn">‹</button>
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">5</button>
+        <button class="pg-btn">›</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .page -->
+
+<!-- ── Edit / Re-send Modal ── -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">Edit Order — #NC-2026-0047</h2>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="note-box">
+        ⚠️ Editing this order will create a new revision entry in the change log. The previous version will be preserved.
+      </div>
+      <div style="height:16px;"></div>
+      <div class="form-row">
+        <div class="field">
+          <label>Customer Name</label>
+          <input type="text" id="edit-customer" value="Priya Sharma"/>
+        </div>
+        <div class="field">
+          <label>Event Date</label>
+          <input type="date" id="edit-date" value="2026-03-15"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Number of Guests</label>
+          <input type="number" id="edit-guests" value="120"/>
+        </div>
+        <div class="field">
+          <label>Event Type</label>
+          <select id="edit-type">
+            <option selected>Wedding / Shaadi</option>
+            <option>Birthday Party</option>
+            <option>Corporate Event</option>
+            <option>Puja / Religious Ceremony</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label>Order Total ($)</label>
+          <input type="number" id="edit-total" value="1420.00" step="0.01"/>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="edit-status">
+            <option>Draft</option>
+            <option selected>Quote Sent</option>
+            <option>Approved</option>
+            <option>Paid</option>
+            <option>Cancelled</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:14px;">
+        <label>Change Notes (what was updated?)</label>
+        <textarea id="edit-change-note" placeholder="e.g. Customer requested 2 extra trays of Paneer Tikka, adjusted total accordingly…"></textarea>
+        <div class="hint">This note will be saved in the order's revision history.</div>
+      </div>
+      <div class="field">
+        <label>Re-send Quote After Saving?</label>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;">
+            <input type="radio" name="resend" value="email" checked style="accent-color:var(--saffron)"/> ✉️ Re-send via Email
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;">
+            <input type="radio" name="resend" value="whatsapp" style="accent-color:var(--saffron)"/> 💬 Re-send via WhatsApp
+          </label>
+          <label style="display:flex;align-items:center;gap:7px;padding:8px 14px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;">
+            <input type="radio" name="resend" value="none" style="accent-color:var(--saffron)"/> Save Only
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEdit()">💾 Save Revision</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Order data ────────────────────────────────────────────────────────────
+const ORDERS = [
+  {
+    id:'NC-2026-0047', customer:'Priya Sharma', phone:'(972) 555-8844', email:'priya.sharma@email.com',
+    date:'2026-03-15', type:'Wedding', delivery:'Delivery', guests:120, total:1420,
+    advance:500, balance:920,
+    status:'Quote Sent', revisions:2, lastUpdated:'Feb 24, 2026',
+    items:[
+      {cat:'Veg', name:'Paneer Tikka', size:'XL Tray', qty:2, price:145},
+      {cat:'Non-Veg', name:'Butter Chicken', size:'XL Tray', qty:2, price:145},
+      {cat:'Veg', name:'Dal Makhani', size:'LG Tray', qty:2, price:70},
+      {cat:'Veg', name:'Veg Biryani', size:'XL Tray', qty:1, price:120},
+      {cat:'Non-Veg', name:'Chicken Biryani', size:'XL Tray', qty:2, price:145},
+      {cat:'Dessert', name:'Gulab Jamun', size:'XL Tray', qty:1, price:110},
+      {cat:'Dessert', name:'Kheer', size:'LG Tray', qty:1, price:75},
+    ],
+    changelog:[
+      {type:'created',  ts:'Jan 10, 2026 · 2:14 PM', title:'Order Created', desc:'Initial order drafted for Priya Sharma wedding event.', by:'Nidhi'},
+      {type:'modified', ts:'Feb 5, 2026 · 4:30 PM',  title:'Revision 1 — Menu Update', desc:'Customer called and requested Chicken Biryani changed from 1 XL to 2 XL trays. Total adjusted from $1,275 → $1,420.', by:'Nidhi',
+       diff:[{label:'Chicken Biryani qty', from:'1 XL Tray ($145)', to:'2 XL Trays ($290)'},
+             {label:'Order Total', from:'$1,275.00', to:'$1,420.00'}]},
+      {type:'sent',     ts:'Feb 5, 2026 · 5:02 PM',  title:'Revised Quote Sent', desc:'Updated invoice emailed to priya.sharma@email.com.', by:'Nidhi'},
+      {type:'modified', ts:'Feb 20, 2026 · 11:20 AM', title:'Revision 2 — Advance Payment Recorded', desc:'Customer paid $500 advance via Zelle. Balance updated to $920.', by:'Nidhi',
+       diff:[{label:'Advance Paid', from:'$0', to:'$500.00'},
+             {label:'Balance Due', from:'$1,420.00', to:'$920.00'}]},
+      {type:'note',     ts:'Feb 24, 2026 · 9:00 AM',  title:'Internal Note Added', desc:'Client confirmed final headcount: 120 guests (no change). Kitchen to prepare by 4:00 PM.', by:'Nidhi'},
+    ]
+  },
+  {
+    id:'NC-2026-0046', customer:'TechCorp Inc.', phone:'(214) 555-3300', email:'events@techcorp.com',
+    date:'2026-03-02', type:'Corporate', delivery:'Pickup', guests:45, total:680,
+    advance:680, balance:0,
+    status:'Paid', revisions:0, lastUpdated:'Jan 28, 2026',
+    items:[
+      {cat:'Veg', name:'Palak Paneer', size:'LG Tray', qty:1, price:75},
+      {cat:'Veg', name:'Dal Tadka', size:'LG Tray', qty:1, price:65},
+      {cat:'Non-Veg', name:'Butter Chicken', size:'LG Tray', qty:1, price:95},
+      {cat:'Non-Veg', name:'Chicken Biryani', size:'LG Tray', qty:1, price:95},
+      {cat:'Dessert', name:'Gulab Jamun', size:'LG Tray', qty:1, price:82},
+    ],
+    changelog:[
+      {type:'created', ts:'Jan 22, 2026 · 10:05 AM', title:'Order Created', desc:'Corporate lunch order for TechCorp Inc.', by:'Nidhi'},
+      {type:'sent',    ts:'Jan 22, 2026 · 10:30 AM', title:'Quote Sent', desc:'Invoice emailed to events@techcorp.com.', by:'Nidhi'},
+      {type:'approved',ts:'Jan 25, 2026 · 2:15 PM',  title:'Order Approved', desc:'Client confirmed via email. Full payment of $680 received via Check.', by:'Nidhi'},
+    ]
+  },
+  {
+    id:'NC-2026-0045', customer:'Ramesh Iyer', phone:'(469) 555-7711', email:'ramesh.iyer@email.com',
+    date:'2026-03-03', type:'Puja', delivery:'Delivery', guests:60, total:522,
+    advance:200, balance:322,
+    status:'Approved', revisions:1, lastUpdated:'Feb 1, 2026',
+    items:[
+      {cat:'Puja', name:'Paneer Pakoda', size:'LG Tray', qty:1, price:95},
+      {cat:'Puja', name:'Mix Veg Pakoda', size:'LG Tray', qty:2, price:95},
+      {cat:'Puja', name:'Puja Biryani', size:'LG Tray', qty:2, price:75},
+      {cat:'Puja', name:'Cocktail Samosa', size:'per pc', qty:60, price:0.70},
+    ],
+    changelog:[
+      {type:'created',  ts:'Jan 15, 2026 · 3:20 PM', title:'Order Created', desc:'Puja ceremony order for Ramesh Iyer.', by:'Nidhi'},
+      {type:'modified', ts:'Jan 29, 2026 · 6:00 PM', title:'Revision 1 — Add Samosa', desc:'Customer added 60 Cocktail Samosas to the order.', by:'Nidhi',
+       diff:[{label:'Cocktail Samosa', from:'Not included', to:'60 pcs × $0.70 = $42'}]},
+      {type:'sent',     ts:'Jan 29, 2026 · 6:30 PM', title:'Revised Quote Sent via WhatsApp', desc:'Updated invoice sent to +1 (469) 555-7711.', by:'Nidhi'},
+      {type:'approved', ts:'Feb 1, 2026 · 9:00 AM',  title:'Order Approved', desc:'Client confirmed. Advance of $200 received.', by:'Nidhi'},
+    ]
+  },
+  {
+    id:'NC-2026-0044', customer:'Anika Patel', phone:'(972) 555-2200', email:'anika.patel@email.com',
+    date:'2026-03-04', type:'Birthday', delivery:'Live Catering', guests:80, total:1180,
+    advance:400, balance:780,
+    status:'Approved', revisions:3, lastUpdated:'Feb 15, 2026',
+    items:[
+      {cat:'Veg', name:'Paneer Tikka', size:'LG Tray', qty:2, price:95},
+      {cat:'Non-Veg', name:'Chicken Tikka', size:'LG Tray', qty:2, price:95},
+      {cat:'Dessert', name:'Gulab Jamun', size:'LG Tray', qty:1, price:82},
+      {cat:'Dessert', name:'Gajar Ka Halwa', size:'per lb', qty:5, price:13},
+    ],
+    changelog:[
+      {type:'created',  ts:'Dec 20, 2025 · 11:00 AM', title:'Order Created', desc:'Birthday party live catering order.', by:'Nidhi'},
+      {type:'modified', ts:'Jan 10, 2026 · 3:00 PM', title:'Revision 1 — Station Added', desc:'Customer added Chaat Live Station to the event.', by:'Nidhi',
+       diff:[{label:'Chaat Station', from:'Not included', to:'Added (contact pricing)'}]},
+      {type:'modified', ts:'Jan 25, 2026 · 1:00 PM', title:'Revision 2 — Guest Count Change', desc:'Guests increased from 60 to 80.', by:'Nidhi',
+       diff:[{label:'Guest Count', from:'60', to:'80'}, {label:'Total', from:'$980', to:'$1,180'}]},
+      {type:'sent',     ts:'Jan 25, 2026 · 2:00 PM', title:'Revised Quote Sent', desc:'Updated invoice emailed.', by:'Nidhi'},
+      {type:'modified', ts:'Feb 15, 2026 · 10:30 AM', title:'Revision 3 — Advance Payment', desc:'$400 advance received via Venmo.', by:'Nidhi',
+       diff:[{label:'Advance Paid', from:'$0', to:'$400'}, {label:'Balance', from:'$1,180', to:'$780'}]},
+    ]
+  },
+  {
+    id:'NC-2026-0043', customer:'Mehta & Associates', phone:'(214) 555-9900', email:'admin@mehta.com',
+    date:'2026-03-06', type:'Corporate', delivery:'Delivery', guests:100, total:1540,
+    advance:1540, balance:0,
+    status:'Paid', revisions:0, lastUpdated:'Feb 10, 2026',
+    items:[
+      {cat:'Veg', name:'Shahi Paneer', size:'XL Tray', qty:2, price:130},
+      {cat:'Non-Veg', name:'Butter Chicken', size:'XL Tray', qty:2, price:145},
+      {cat:'Dessert', name:'Gulab Jamun', size:'XL Tray', qty:1, price:110},
+    ],
+    changelog:[
+      {type:'created', ts:'Feb 1, 2026 · 9:00 AM', title:'Order Created', desc:'Corporate dinner order for Mehta & Associates.', by:'Nidhi'},
+      {type:'sent',    ts:'Feb 1, 2026 · 9:45 AM', title:'Quote Sent', desc:'Invoice emailed to admin@mehta.com.', by:'Nidhi'},
+      {type:'approved',ts:'Feb 5, 2026 · 11:00 AM', title:'Approved & Paid in Full', desc:'Full payment received via Check.', by:'Nidhi'},
+    ]
+  },
+  {
+    id:'NC-2026-0042', customer:'Singh Family', phone:'(972) 555-4411', email:'singh.family@email.com',
+    date:'2026-03-07', type:'Wedding', delivery:'Live Catering', guests:180, total:3200,
+    advance:1000, balance:2200,
+    status:'Quote Sent', revisions:2, lastUpdated:'Feb 22, 2026',
+    items:[
+      {cat:'Veg', name:'Paneer Tikka', size:'XL Tray', qty:3, price:145},
+      {cat:'Non-Veg', name:'Butter Chicken', size:'XL Tray', qty:3, price:145},
+      {cat:'Non-Veg', name:'Chicken Biryani', size:'XL Tray', qty:2, price:145},
+      {cat:'Dessert', name:'Gulab Jamun', size:'XL Tray', qty:2, price:110},
+    ],
+    changelog:[
+      {type:'created',  ts:'Jan 5, 2026 · 2:00 PM', title:'Order Created', desc:'Large wedding order for Singh family.', by:'Nidhi'},
+      {type:'modified', ts:'Feb 10, 2026 · 4:00 PM', title:'Revision 1 — Menu Expansion', desc:'3 additional live stations added. Total revised upward.', by:'Nidhi',
+       diff:[{label:'Live Stations', from:'2', to:'5'}, {label:'Total', from:'$2,800', to:'$3,200'}]},
+      {type:'sent',     ts:'Feb 10, 2026 · 5:00 PM', title:'Revised Quote Sent', desc:'Updated invoice emailed to singh.family@email.com.', by:'Nidhi'},
+      {type:'modified', ts:'Feb 22, 2026 · 9:00 AM', title:'Revision 2 — Advance Payment', desc:'$1,000 advance paid via Zelle.', by:'Nidhi',
+       diff:[{label:'Advance Paid', from:'$0', to:'$1,000'}, {label:'Balance', from:'$3,200', to:'$2,200'}]},
+    ]
+  },
+  {
+    id:'NC-2026-0041', customer:'Kumar Family', phone:'(469) 555-1122', email:'kumar@email.com',
+    date:'2026-03-07', type:'Birthday', delivery:'Pickup', guests:40, total:390,
+    advance:390, balance:0,
+    status:'Paid', revisions:0, lastUpdated:'Feb 18, 2026',
+    items:[
+      {cat:'Veg', name:'Paneer Tikka', size:'SM Tray', qty:2, price:55},
+      {cat:'Dessert', name:'Gulab Jamun', size:'LG Tray', qty:1, price:82},
+      {cat:'Dessert', name:'Kheer', size:'LG Tray', qty:1, price:75},
+    ],
+    changelog:[
+      {type:'created', ts:'Feb 10, 2026 · 3:00 PM', title:'Order Created', desc:'Birthday pickup order for Kumar family.', by:'Nidhi'},
+      {type:'sent',    ts:'Feb 10, 2026 · 3:30 PM', title:'Quote Sent', desc:'Invoice emailed.', by:'Nidhi'},
+      {type:'approved',ts:'Feb 15, 2026 · 10:00 AM', title:'Approved & Paid', desc:'Full amount paid via Cash.', by:'Nidhi'},
+    ]
+  },
+];
+
+let activeDrawer = null;
+
+const STATUS_CLASS = {
+  'Draft':'badge-draft','Quote Sent':'badge-sent','Approved':'badge-approved',
+  'Paid':'badge-paid','Cancelled':'badge-cancelled'
+};
+const DELIVERY_ICON = { 'Delivery':'🚚', 'Pickup':'🏠', 'Live Catering':'🍳' };
+const CAT_CLASS = { 'Veg':'ct-veg','Non-Veg':'ct-nv','Dessert':'ct-des','Puja':'ct-puja' };
+const CL_DOT = { created:'created', modified:'modified', sent:'sent', approved:'approved', note:'note' };
+
+function renderOrders(list) {
+  const tbody = document.getElementById('orders-tbody');
+  tbody.innerHTML = '';
+  list.forEach(o => {
+    // Category tags
+    const cats = [...new Set(o.items.map(i=>i.cat))];
+    const catTags = cats.map(c=>`<span class="cat-tag ${CAT_CLASS[c]||''}">${c}</span>`).join('');
+
+    const revClass = o.revisions >= 3 ? 'order-rev many' : 'order-rev';
+    const revLabel = o.revisions > 0 ? `<span class="${revClass}">Rev ${o.revisions}</span>` : '';
+
+    // Row
+    const tr = document.createElement('tr');
+    tr.id = `row-${o.id}`;
+    tr.innerHTML = `
+      <td><span class="order-num">#${o.id}</span>${revLabel}</td>
+      <td>
+        <div style="font-weight:700;">${o.customer}</div>
+        <div style="font-size:11px;color:var(--muted);">${o.email}</div>
+      </td>
+      <td>
+        <div style="font-weight:600;">${formatDate(o.date)}</div>
+        <div style="font-size:11px;color:var(--muted);">👥 ${o.guests} guests</div>
+      </td>
+      <td>${o.type}</td>
+      <td>${catTags}</td>
+      <td>${DELIVERY_ICON[o.delivery]||''} ${o.delivery}</td>
+      <td style="font-weight:700;color:var(--green);">$${o.total.toLocaleString()}</td>
+      <td><span class="badge ${STATUS_CLASS[o.status]||''}">${o.status}</span></td>
+      <td style="text-align:center;font-weight:700;color:${o.revisions>=3?'var(--red)':'var(--navy)'};">${o.revisions}</td>
+      <td style="font-size:12px;color:var(--muted);">${o.lastUpdated}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();openModal('${o.id}')">✏️ Edit</button>
+          <button class="btn btn-sm btn-navy" onclick="event.stopPropagation();alert('Opening compose screen for ${o.id}…')">📨</button>
+        </div>
+      </td>
+    `;
+    tr.addEventListener('click', () => toggleDrawer(o));
+    tbody.appendChild(tr);
+
+    // Drawer row
+    const drawerTr = document.createElement('tr');
+    drawerTr.id = `drawer-${o.id}`;
+    drawerTr.innerHTML = `<td colspan="11" style="padding:0;border-bottom:2px solid var(--saffron);">${buildDrawer(o)}</td>`;
+    tbody.appendChild(drawerTr);
+  });
+  document.getElementById('pg-info').textContent = `Showing 1–${list.length} of ${ORDERS.length} orders`;
+}
+
+function buildDrawer(o) {
+  // Items table
+  const itemRows = o.items.map((it,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td><span class="cat-tag ${CAT_CLASS[it.cat]||''}">${it.cat}</span> ${it.name}</td>
+      <td>${it.size}</td>
+      <td style="text-align:center;">${it.qty}</td>
+      <td style="text-align:right;">$${it.price.toFixed(2)}</td>
+      <td class="right">$${(it.qty*it.price).toFixed(2)}</td>
+    </tr>`).join('');
+
+  // Changelog
+  const clEntries = [...o.changelog].reverse().map(cl=>{
+    const diffHtml = (cl.diff||[]).map(d=>`
+      <div class="cl-diff">
+        <span class="del">${d.from}</span> → <span class="add">${d.to}</span>
+        <span style="color:var(--muted);margin-left:4px;">(${d.label})</span>
+      </div>`).join('');
+    return `
+      <div class="cl-entry">
+        <div class="cl-dot ${CL_DOT[cl.type]||'modified'}"></div>
+        <div class="cl-content">
+          <div class="cl-title">${cl.title}</div>
+          <div class="cl-desc">${cl.desc}</div>
+          ${diffHtml}
+          <div class="cl-time">🕐 ${cl.ts} &nbsp;·&nbsp; By ${cl.by}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+  <div class="detail-drawer open" id="dd-${o.id}">
+    <div class="detail-meta">
+      <div class="detail-field"><label>Customer</label><div class="val">${o.customer}</div></div>
+      <div class="detail-field"><label>Phone</label><div class="val">${o.phone}</div></div>
+      <div class="detail-field"><label>Email</label><div class="val">${o.email}</div></div>
+      <div class="detail-field"><label>Event Date</label><div class="val">${formatDate(o.date)}</div></div>
+      <div class="detail-field"><label>Guests</label><div class="val">${o.guests}</div></div>
+      <div class="detail-field"><label>Delivery Type</label><div class="val">${DELIVERY_ICON[o.delivery]} ${o.delivery}</div></div>
+      <div class="detail-field"><label>Order Total</label><div class="val green">$${o.total.toLocaleString()}</div></div>
+      <div class="detail-field"><label>Advance Paid</label><div class="val">$${o.advance.toLocaleString()}</div></div>
+      <div class="detail-field"><label>Balance Due</label><div class="val red">$${o.balance.toLocaleString()}</div></div>
+    </div>
+
+    <div class="drawer-grid">
+      <!-- Left: Order items -->
+      <div class="drawer-section">
+        <h3>🍽️ Order Items</h3>
+        <table class="mini-table">
+          <thead><tr><th>#</th><th>Item</th><th>Size</th><th>Qty</th><th>Unit</th><th>Total</th></tr></thead>
+          <tbody>${itemRows}</tbody>
+        </table>
+      </div>
+
+      <!-- Right: Change log -->
+      <div class="drawer-section">
+        <h3>📋 Revision History <span style="font-size:11px;font-weight:400;color:var(--muted);">${o.changelog.length} entries · ${o.revisions} revision${o.revisions!==1?'s':''}</span></h3>
+        <div class="changelog">${clEntries}</div>
+      </div>
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn btn-primary" onclick="openModal('${o.id}')">✏️ Edit & Create Revision</button>
+      <button class="btn btn-navy" onclick="alert('Opening send quote screen for ${o.id}…')">📨 Re-send Quote</button>
+      <button class="btn btn-secondary" onclick="alert('Adding note to ${o.id}…')">📝 Add Note</button>
+      <button class="btn btn-secondary" onclick="alert('Opening invoice PDF for ${o.id}…')">📄 View Invoice</button>
+    </div>
+  </div>`;
+}
+
+function toggleDrawer(o) {
+  // Close all other drawers
+  document.querySelectorAll('.detail-drawer').forEach(d => {
+    if (d.id !== `dd-${o.id}`) { d.closest('tr')?.remove(); renderRow(findOrder(d.id.replace('dd-',''))); }
+  });
+  const drawerTr = document.getElementById(`drawer-${o.id}`);
+  const row      = document.getElementById(`row-${o.id}`);
+  if (!drawerTr) return;
+  const drawer = drawerTr.querySelector('.detail-drawer');
+  if (!drawer) return;
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) {
+    drawer.classList.remove('open');
+    drawerTr.style.display = 'none';
+    row.classList.remove('active-row');
+  } else {
+    drawerTr.style.display = '';
+    drawer.classList.add('open');
+    row.classList.add('active-row');
+    drawerTr.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+}
+
+// init: hide all drawers
+function initDrawers() {
+  document.querySelectorAll('[id^="drawer-"]').forEach(tr => tr.style.display = 'none');
+}
+
+function findOrder(id) { return ORDERS.find(o=>o.id===id); }
+
+function formatDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T12:00');
+  return dt.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+}
+
+function filterOrders() {
+  const q    = document.getElementById('search-input').value.toLowerCase();
+  const st   = document.getElementById('filter-status').value;
+  const tp   = document.getElementById('filter-type').value;
+  const from = document.getElementById('filter-from').value;
+  const to   = document.getElementById('filter-to').value;
+  const filtered = ORDERS.filter(o => {
+    if (q && !`${o.customer} ${o.id} ${o.type}`.toLowerCase().includes(q)) return false;
+    if (st && o.status !== st) return false;
+    if (tp && o.type !== tp) return false;
+    if (from && o.date < from) return false;
+    if (to   && o.date > to)   return false;
+    return true;
+  });
+  renderOrders(filtered);
+  initDrawers();
+}
+
+function clearFilters() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('filter-status').value = '';
+  document.getElementById('filter-type').value = '';
+  document.getElementById('filter-from').value = '';
+  document.getElementById('filter-to').value = '';
+  filterOrders();
+}
+
+function sortBy(field) {
+  const map = { num:'id', customer:'customer', date:'date', total:'total' };
+  const key = map[field] || field;
+  ORDERS.sort((a,b) => {
+    if (a[key] < b[key]) return -1;
+    if (a[key] > b[key]) return  1;
+    return 0;
+  });
+  renderOrders(ORDERS);
+  initDrawers();
+}
+
+// ── Edit modal ─────────────────────────────────────────────────────────────
+let currentEditId = null;
+function openModal(id) {
+  currentEditId = id;
+  const o = findOrder(id);
+  if (!o) return;
+  document.getElementById('modal-title').textContent = `Edit Order — #${o.id}`;
+  document.getElementById('edit-customer').value = o.customer;
+  document.getElementById('edit-date').value = o.date;
+  document.getElementById('edit-guests').value = o.guests;
+  document.getElementById('edit-total').value = o.total.toFixed(2);
+  document.getElementById('edit-change-note').value = '';
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('edit-modal').classList.remove('open');
+  currentEditId = null;
+}
+function saveEdit() {
+  const note = document.getElementById('edit-change-note').value.trim();
+  if (!note) { alert('Please add a change note describing what was updated.'); return; }
+  const resend = document.querySelector('input[name="resend"]:checked').value;
+  const o = findOrder(currentEditId);
+  if (o) {
+    o.revisions++;
+    o.lastUpdated = 'Feb 27, 2026';
+    o.changelog.push({
+      type:'modified',
+      ts: 'Feb 27, 2026 · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+      title: `Revision ${o.revisions} — Manual Edit`,
+      desc: note,
+      by: 'Nidhi'
+    });
+    if (resend === 'email')    o.changelog.push({type:'sent', ts:'Feb 27, 2026 · Now', title:'Revised Quote Re-sent via Email', desc:`Updated invoice emailed to ${o.email}.`, by:'Nidhi'});
+    if (resend === 'whatsapp') o.changelog.push({type:'sent', ts:'Feb 27, 2026 · Now', title:'Revised Quote Re-sent via WhatsApp', desc:`Updated invoice sent to ${o.phone}.`, by:'Nidhi'});
+  }
+  closeModal();
+  renderOrders(ORDERS);
+  initDrawers();
+  alert(`✅ Revision saved successfully!\n\nOrder #${currentEditId || o?.id} now has ${o?.revisions} revision(s) logged.${resend !== 'none' ? '\n\nUpdated quote has been re-sent to the client.' : ''}`);
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+renderOrders(ORDERS);
+initDrawers();
+</script>
+</body>
+</html>

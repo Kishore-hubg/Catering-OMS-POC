@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nidhi Catering – Phase 1: How It Works</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #fdf6ee;
+      color: #2d2d2d;
+      padding: 30px 20px 70px;
+    }
+
+    /* ── Header ──────────────────────────────── */
+    .header { text-align: center; margin-bottom: 40px; }
+    .header .badge {
+      display: inline-block;
+      background: #e67e22; color: #fff;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 10px;
+    }
+    .header h1 { font-size: 28px; font-weight: 800; color: #1a1a1a; }
+    .header p {
+      margin-top: 8px; font-size: 15px; color: #666;
+      max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.6;
+    }
+
+    /* ── Section titles ──────────────────────── */
+    .section-title {
+      text-align: center; font-size: 17px; font-weight: 800;
+      color: #e67e22; margin: 52px 0 22px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ── Stays the same box ──────────────────── */
+    .stay-box {
+      max-width: 720px; margin: 0 auto;
+      background: #eafaf1; border-radius: 14px;
+      padding: 22px 28px; border: 2px dashed #27ae60;
+    }
+    .stay-box h3 { font-size: 15px; font-weight: 800; color: #1e8449; margin-bottom: 12px; }
+    .stay-box ul { list-style: none; }
+    .stay-box ul li {
+      font-size: 13.5px; color: #1a5c32;
+      padding: 5px 0 5px 26px; position: relative; line-height: 1.5;
+    }
+    .stay-box ul li::before { content: "✅"; position: absolute; left: 0; }
+
+    /* ── Journey flow ────────────────────────── */
+    .flow-outer {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; align-items: flex-start; gap: 0;
+    }
+    .flow-item { display: flex; flex-direction: column; align-items: center; width: 148px; }
+    .flow-card {
+      background: #fff; border-radius: 14px;
+      padding: 15px 10px; text-align: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.09);
+      border-top: 4px solid #e67e22;
+      width: 128px; min-height: 128px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start; gap: 7px;
+    }
+    .flow-card.green-top { border-top-color: #27ae60; }
+    .flow-card.blue-top  { border-top-color: #2980b9; }
+    .flow-card .icon  { font-size: 26px; }
+    .flow-card .label { font-size: 12px; font-weight: 800; color: #1a1a1a; line-height: 1.3; }
+    .flow-card .sub   { font-size: 10.5px; color: #777; line-height: 1.4; }
+    .tag {
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: 10px; white-space: nowrap;
+    }
+    .tag-same  { background: #eafaf1; color: #27ae60; }
+    .tag-new   { background: #fdebd0; color: #c0581a; }
+    .tag-key   { background: #fdebd0; color: #c0581a; border: 1px solid #e67e22; }
+    .flow-arrow {
+      font-size: 20px; color: #e67e22;
+      margin-top: 40px; flex-shrink: 0; width: 22px; text-align: center;
+    }
+
+    /* connector label */
+    .conn-block {
+      display: flex; flex-direction: column; align-items: center;
+      width: 22px; margin-top: 40px;
+    }
+    .conn-block .conn-arrow { font-size: 18px; color: #aaa; }
+    .conn-block .conn-label {
+      font-size: 9px; color: #aaa; text-align: center;
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      margin-top: 2px;
+    }
+
+    /* ── Key clarification note ──────────────── */
+    .key-note {
+      max-width: 720px; margin: 20px auto 0;
+      background: #fff8e1; border-radius: 12px;
+      padding: 16px 20px; border-left: 5px solid #f39c12;
+      font-size: 13px; color: #7d5a00; line-height: 1.6;
+    }
+    .key-note strong { color: #c0581a; }
+
+    /* ── Equipment table ─────────────────────── */
+    .equip-card {
+      max-width: 560px; margin: 0 auto;
+      background: #fff; border-radius: 14px;
+      padding: 24px 28px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.09);
+      border-top: 5px solid #e67e22;
+    }
+    .equip-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 16px; color: #1a1a1a; }
+    .equip-table { width: 100%; border-collapse: collapse; }
+    .equip-table th {
+      background: #fdebd0; font-size: 11.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.3px;
+      padding: 9px 12px; text-align: left; color: #7d4d0c;
+    }
+    .equip-table td {
+      font-size: 13px; padding: 9px 12px; color: #333;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .equip-table tr:last-child td { border-bottom: none; }
+    .badge-yes { background: #eafaf1; color: #1e8449; font-weight: 700; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+    .badge-pend { background: #fff3cd; color: #856404; font-weight: 700; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+    .badge-ret  { background: #eafaf1; color: #1e8449; font-weight: 700; padding: 2px 8px; border-radius: 8px; font-size: 11px; }
+    .equip-note {
+      margin-top: 14px; font-size: 12px; color: #888;
+      background: #f9f9f9; border-radius: 8px; padding: 10px 14px;
+    }
+
+    /* ── Order Status Timeline ───────────────── */
+    .tl-wrap {
+      max-width: 960px; margin: 0 auto;
+      display: flex; justify-content: center;
+      align-items: flex-start; flex-wrap: wrap; gap: 0;
+    }
+    .tl-step { display: flex; flex-direction: column; align-items: center; width: 116px; }
+    .tl-dot {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.13);
+    }
+    .tl-label { margin-top: 8px; font-size: 12px; font-weight: 800; text-align: center; color: #1a1a1a; }
+    .tl-desc  { font-size: 10.5px; color: #777; text-align: center; line-height: 1.4; margin-top: 5px; max-width: 100px; }
+    .tl-arrow { font-size: 18px; color: #ddd; margin-top: 10px; padding: 0 2px; }
+
+    /* ── Weekly summary ──────────────────────── */
+    .weekly-wrap {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 24px; max-width: 960px; margin: 0 auto;
+    }
+    .weekly-card {
+      background: #fff; border-radius: 14px;
+      padding: 24px 26px; flex: 1; min-width: 280px; max-width: 440px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.09); border-top: 5px solid #e67e22;
+    }
+    .weekly-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .weekly-card .sub-date { font-size: 11px; color: #999; margin-bottom: 14px; }
+    .weekly-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px;
+    }
+    .weekly-row:last-child { border-bottom: none; }
+    .weekly-row .dish { color: #333; font-weight: 600; }
+    .weekly-row .qty  { color: #e67e22; font-weight: 700; }
+    .weekly-note {
+      margin-top: 14px; background: #fdebd0; border-radius: 8px;
+      padding: 10px 14px; font-size: 11.5px; color: #7d4d0c; line-height: 1.5;
+    }
+
+    /* Day view card */
+    .day-card {
+      background: #fff; border-radius: 14px;
+      padding: 24px 26px; flex: 1; min-width: 280px; max-width: 440px;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.09); border-top: 5px solid #2980b9;
+    }
+    .day-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 4px; color: #1a1a1a; }
+    .day-card .sub-date { font-size: 11px; color: #999; margin-bottom: 14px; }
+    .event-block {
+      background: #f0f6ff; border-radius: 10px;
+      padding: 12px 14px; margin-bottom: 10px;
+      border-left: 4px solid #2980b9;
+    }
+    .event-block:last-of-type { margin-bottom: 0; }
+    .event-block .ev-name { font-size: 13px; font-weight: 800; color: #1a3c6b; }
+    .event-block .ev-time { font-size: 11px; color: #2980b9; margin: 2px 0 6px; }
+    .event-block .ev-items { font-size: 11.5px; color: #444; line-height: 1.6; }
+    .ev-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 1px 7px; border-radius: 8px; margin-left: 4px;
+    }
+    .ev-badge.pickup { background: #e8f5e9; color: #2e7d32; }
+    .ev-badge.delivery { background: #fff3e0; color: #e65100; }
+
+    /* ── Email templates ─────────────────────── */
+    .email-wrap {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 24px; max-width: 1000px; margin: 0 auto;
+    }
+    .email-card {
+      background: #fff; border-radius: 14px;
+      padding: 0; flex: 1; min-width: 300px; max-width: 460px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10); overflow: hidden;
+    }
+    .email-header {
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .email-header.warm   { background: #fdebd0; }
+    .email-header.formal { background: #eaf0fb; }
+    .email-header .eh-icon { font-size: 24px; }
+    .email-header .eh-title { font-size: 14px; font-weight: 800; color: #1a1a1a; }
+    .email-header .eh-sub   { font-size: 11px; color: #888; }
+    .email-meta {
+      padding: 10px 20px; background: #fafafa;
+      border-bottom: 1px solid #eee; font-size: 11.5px; color: #555; line-height: 1.7;
+    }
+    .email-meta span { font-weight: 700; color: #333; }
+    .email-body {
+      padding: 18px 20px; font-size: 13px; color: #333;
+      line-height: 1.75; white-space: pre-wrap;
+    }
+    .email-footer {
+      padding: 10px 20px; background: #f7f7f7;
+      border-top: 1px solid #eee;
+      font-size: 11px; color: #aaa; font-style: italic;
+    }
+
+    /* ── Footer ──────────────────────────────── */
+    .page-footer {
+      text-align: center; margin-top: 56px;
+      font-size: 13px; color: #bbb;
+    }
+    .page-footer strong { color: #e67e22; }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HEADER ══════════════════════════════════════════════ -->
+  <div class="header">
+    <div class="badge">Phase 1 · Baseline Plan</div>
+    <h1>🍽️ Nidhi Catering – How Phase 1 Works</h1>
+    <p>A plain-English look at what changes and what stays exactly the same once Phase 1 is live.</p>
+  </div>
+
+
+  <!-- ══ WHAT STAYS THE SAME ══════════════════════════════════ -->
+  <div class="section-title">✅ What Stays Exactly the Same</div>
+  <div class="stay-box">
+    <h3>Your ordering style doesn't change at all.</h3>
+    <ul>
+      <li>Customers still browse your website and call you directly</li>
+      <li>You still chat, upsell, and build the order over the phone</li>
+      <li>Rough notes on paper — still perfectly fine</li>
+      <li>You still create your own Excel estimate the same way you do today</li>
+      <li>You still send the estimate to the customer over WhatsApp / Email for their OK</li>
+    </ul>
+  </div>
+
+
+  <!-- ══ ORDER JOURNEY ════════════════════════════════════════ -->
+  <div class="section-title">📋 The Full Order Journey — Step by Step</div>
+  <div class="flow-outer">
+
+    <!-- 1. Browse -->
+    <div class="flow-item">
+      <div class="flow-card green-top">
+        <div class="icon">🌐</div>
+        <div class="label">Customer Browses Website</div>
+        <div class="sub">Looks at menu & pricing</div>
+        <span class="tag tag-same">UNCHANGED</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 2. Call -->
+    <div class="flow-item">
+      <div class="flow-card green-top">
+        <div class="icon">📞</div>
+        <div class="label">Customer Calls</div>
+        <div class="sub">You discuss, upsell & build the order</div>
+        <span class="tag tag-same">UNCHANGED</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 3. Portal entry -->
+    <div class="flow-item">
+      <div class="flow-card">
+        <div class="icon">🖥️</div>
+        <div class="label">Owner Creates Order in Portal</div>
+        <div class="sub">Name, date, delivery info — ~2 mins</div>
+        <span class="tag tag-new">NEW ✨</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 4. Create Excel -->
+    <div class="flow-item">
+      <div class="flow-card green-top">
+        <div class="icon">📊</div>
+        <div class="label">Owner Creates Excel Estimate</div>
+        <div class="sub">Same as today — outside the system</div>
+        <span class="tag tag-same">UNCHANGED</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 5. Send to customer -->
+    <div class="flow-item">
+      <div class="flow-card green-top">
+        <div class="icon">📲</div>
+        <div class="label">Owner Sends Excel to Customer</div>
+        <div class="sub">Via WhatsApp / Email for their confirmation</div>
+        <span class="tag tag-same">UNCHANGED</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 6. Customer approves -->
+    <div class="flow-item">
+      <div class="flow-card green-top">
+        <div class="icon">👍</div>
+        <div class="label">Customer Approves</div>
+        <div class="sub">Replies with confirmation</div>
+        <span class="tag tag-same">UNCHANGED</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 7. Upload to portal -->
+    <div class="flow-item">
+      <div class="flow-card">
+        <div class="icon">📎</div>
+        <div class="label">Owner Uploads Approved Estimate to Portal</div>
+        <div class="sub">Stored safely, versions kept</div>
+        <span class="tag tag-key">KEY STEP ✨</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 8. Payment -->
+    <div class="flow-item">
+      <div class="flow-card">
+        <div class="icon">💰</div>
+        <div class="label">Owner Records Payment Details</div>
+        <div class="sub">Total, advance paid, balance, method</div>
+        <span class="tag tag-new">NEW ✨</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 9. Equipment -->
+    <div class="flow-item">
+      <div class="flow-card">
+        <div class="icon">🍲</div>
+        <div class="label">Owner Logs Equipment</div>
+        <div class="sub">Chafing dish qty, rental, return date</div>
+        <span class="tag tag-new">NEW ✨</span>
+      </div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <!-- 10. Send summary -->
+    <div class="flow-item">
+      <div class="flow-card">
+        <div class="icon">📧</div>
+        <div class="label">Owner Sends Formal Summary</div>
+        <div class="sub">Clean message via email or WhatsApp copy</div>
+        <span class="tag tag-new">NEW ✨</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Key clarification note -->
+  <div class="key-note">
+    💡 <strong>Important:</strong> The estimate is first created in Excel and sent to the customer for confirmation the same way as today (WhatsApp / email). Only <strong>after the customer approves</strong> does the owner upload that final estimate to the portal. The system stores it securely, keeps a full version history, and triggers the formal customer summary message.
+  </div>
+
+
+  <!-- ══ WEEKLY + DAY VIEW ═════════════════════════════════════ -->
+  <div class="section-title">📅 Kitchen Planning — Weekly & Daily View</div>
+  <div class="weekly-wrap">
+
+    <!-- Weekly summary -->
+    <div class="weekly-card">
+      <h3>📬 Weekly Prep Summary</h3>
+      <div class="sub-date">Week of Mon 02 Feb 2026 — auto-emailed Monday morning</div>
+      <div class="weekly-row">
+        <span class="dish">Orders this week</span>
+        <span class="qty">6 Events</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Paneer Lababdar (XL)</span>
+        <span class="qty">9 trays</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Paneer Lababdar (L)</span>
+        <span class="qty">4 trays</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Veg Manchurian w/ Gravy (XL)</span>
+        <span class="qty">6 trays</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Dal Makhani (XL)</span>
+        <span class="qty">5 trays</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Phulka Roti</span>
+        <span class="qty">420 pcs</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Gulab Jamun (box)</span>
+        <span class="qty">8 boxes</span>
+      </div>
+      <div class="weekly-row">
+        <span class="dish">Chafing Dishes Out</span>
+        <span class="qty">14 units</span>
+      </div>
+      <div class="weekly-note">
+        💡 Download as CSV for printing or sharing with the kitchen team.
+      </div>
+    </div>
+
+    <!-- Day view -->
+    <div class="day-card">
+      <h3>📆 Day View — What's On Today</h3>
+      <div class="sub-date">Monday, 03 Feb 2026</div>
+
+      <div class="event-block">
+        <div class="ev-name">Sharma Birthday Party <span class="ev-badge delivery">Delivery</span></div>
+        <div class="ev-time">🕐 Drop-off by 12:00 PM · 45 Maple Ave, Fremont</div>
+        <div class="ev-items">
+          • Paneer Lababdar XL × 2<br>
+          • Dal Makhani XL × 1<br>
+          • Phulka Roti × 80 pcs<br>
+          • Gulab Jamun × 2 boxes<br>
+          🍲 Chafing Dishes: 4 · Return by 04 Feb
+        </div>
+      </div>
+
+      <div class="event-block">
+        <div class="ev-name">Patel Corporate Lunch <span class="ev-badge pickup">Pickup</span></div>
+        <div class="ev-time">🕐 Ready by 11:00 AM · Customer picking up</div>
+        <div class="ev-items">
+          • Veg Manchurian w/ Gravy XL × 2<br>
+          • Paneer Lababdar L × 2<br>
+          • Phulka Roti × 100 pcs<br>
+          🍲 No chafing dishes (pickup)
+        </div>
+      </div>
+
+      <div class="event-block">
+        <div class="ev-name">Verma Puja Gathering <span class="ev-badge delivery">Delivery</span></div>
+        <div class="ev-time">🕐 Drop-off by 5:00 PM · 12 Oak St, Milpitas</div>
+        <div class="ev-items">
+          • Dal Makhani XL × 2<br>
+          • Paneer Lababdar XL × 1<br>
+          • Phulka Roti × 60 pcs<br>
+          🍲 Chafing Dishes: 3 · Return by 05 Feb
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ══ EMAIL TEMPLATES ═══════════════════════════════════════ -->
+  <div class="section-title">✉️ Customer Message Templates</div>
+  <div class="email-wrap">
+
+    <!-- Regular / personal customer -->
+    <div class="email-card">
+      <div class="email-header warm">
+        <div class="eh-icon">😊</div>
+        <div>
+          <div class="eh-title">Regular / Personal Customer</div>
+          <div class="eh-sub">Warm, friendly tone — first-name basis</div>
+        </div>
+      </div>
+      <div class="email-meta">
+        <span>To:</span> priya@email.com<br>
+        <span>Subject:</span> Your Order Confirmation — Nidhi Catering 🎉
+      </div>
+      <div class="email-body">Hi Priya! 😊
+
+Hope you're doing well! It was lovely speaking with you today. Here's a quick summary of your order so you have everything in one place.
+
+📅 Event Date:  Saturday, 15 Mar 2026
+🕐 Delivery Time:  By 12:00 PM
+📍 Location:  45 Maple Ave, Fremont
+
+🍽️ Your Order:
+  • Paneer Lababdar (XL) × 2
+  • Dal Makhani (XL) × 1
+  • Phulka Roti × 80 pcs
+  • Gulab Jamun × 2 boxes
+
+💰 Payment Summary:
+  Total:       $420.00
+  Advance Paid:   $100.00
+  Balance Due:   $320.00  (due on delivery)
+  Payment Method:  Zelle
+
+🍲 Equipment:
+  6 chafing dishes included ($30 rental)
+  Please return by Sunday, 16 Mar 2026.
+
+Your estimate is attached. Please let me know if you'd like any changes — happy to help!
+
+Looking forward to making your event special! 🙏
+
+Warm regards,
+Nidhi
+Nidhi Catering
+📞 (408) 555-0192</div>
+      <div class="email-footer">Template is editable — owner can add a custom note before sending.</div>
+    </div>
+
+    <!-- Small business / corporate -->
+    <div class="email-card">
+      <div class="email-header formal">
+        <div class="eh-icon">🏢</div>
+        <div>
+          <div class="eh-title">Small Business / Corporate Client</div>
+          <div class="eh-sub">Professional, formal tone</div>
+        </div>
+      </div>
+      <div class="email-meta">
+        <span>To:</span> events@techcorp.com<br>
+        <span>Subject:</span> Order Confirmation — Nidhi Catering | Ref #NC-2026-047
+      </div>
+      <div class="email-body">Dear Ms. Patel,
+
+Thank you for choosing Nidhi Catering for your upcoming corporate event. Please find below a confirmation of your order details for your records.
+
+Order Reference:  NC-2026-047
+Event Date:      Monday, 03 Feb 2026
+Service Time:    Ready by 11:00 AM (Pickup)
+Contact Person:  Meera Patel
+
+<span style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:#1a1a1a;">Order Summary</span>
+</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;margin:0 0 0 0;">
+        <thead>
+          <tr style="background:#eaf0fb;">
+            <th style="text-align:left;padding:8px 20px;color:#1a3c6b;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:0.3px;">Item</th>
+            <th style="text-align:center;padding:8px 12px;color:#1a3c6b;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:0.3px;">Size</th>
+            <th style="text-align:center;padding:8px 20px;color:#1a3c6b;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:0.3px;">Qty</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:9px 20px;color:#333;">Veg Manchurian w/ Gravy</td>
+            <td style="padding:9px 12px;text-align:center;color:#555;">XL</td>
+            <td style="padding:9px 20px;text-align:center;font-weight:700;color:#2980b9;">× 2</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:9px 20px;color:#333;">Paneer Lababdar</td>
+            <td style="padding:9px 12px;text-align:center;color:#555;">L</td>
+            <td style="padding:9px 20px;text-align:center;font-weight:700;color:#2980b9;">× 2</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 20px;color:#333;">Phulka Roti</td>
+            <td style="padding:9px 12px;text-align:center;color:#555;">—</td>
+            <td style="padding:9px 20px;text-align:center;font-weight:700;color:#2980b9;">100 pcs</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="email-body" style="padding-bottom:4px;">
+<span style="font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;color:#1a1a1a;">Payment Summary</span>
+</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px;">
+        <thead>
+          <tr style="background:#eaf0fb;">
+            <th style="text-align:left;padding:8px 20px;color:#1a3c6b;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:0.3px;">Field</th>
+            <th style="text-align:left;padding:8px 20px;color:#1a3c6b;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:0.3px;">Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 20px;color:#555;">Order Total</td>
+            <td style="padding:8px 20px;color:#333;font-weight:700;">$580.00</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 20px;color:#555;">Advance Received</td>
+            <td style="padding:8px 20px;color:#333;font-weight:700;">$200.00</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 20px;color:#555;">Balance Due</td>
+            <td style="padding:8px 20px;color:#c0392b;font-weight:700;">$380.00</td>
+          </tr>
+          <tr style="border-bottom:1px solid #f0f0f0;">
+            <td style="padding:8px 20px;color:#555;">Payment Method</td>
+            <td style="padding:8px 20px;color:#333;">Corporate Cheque</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 20px;color:#555;">Balance Due By</td>
+            <td style="padding:8px 20px;color:#333;">Day of pickup</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="email-body">
+Please find the detailed estimate attached for your approval and records. Should you require any amendments, please do not hesitate to contact us at your earliest convenience.
+
+We look forward to serving your team.
+
+Sincerely,
+Nidhi
+Owner, Nidhi Catering
+📞 (408) 555-0192
+📧 info@nidhicatering.com</div>
+      <div class="email-footer">Template is editable — owner can add a custom note before sending.</div>
+    </div>
+
+  </div>
+
+
+  <!-- ══ PAGE FOOTER ═══════════════════════════════════════════ -->
+  <div class="page-footer">
+    <strong>Phase 1</strong> sets the foundation — everything organised, nothing disrupted. Phase 2 builds on top of this with automation and smarter planning. 🚀
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nidhi Catering — Weekly Kitchen Lineup</title>
+<style>
+  :root {
+    --saffron:#E07B1A; --saffron-d:#B85F0D; --saffron-l:#FFF3E8;
+    --maroon:#8B1A1A; --gold:#C9A227; --gold-l:#FDF6DC;
+    --navy:#1C2B4A; --navy-l:#2E3F63;
+    --cream:#FFFAF5; --grey:#F4F5F7; --border:#DDD5C8;
+    --text:#2C3A52; --muted:#7A7A8A;
+    --green:#1B6B4A; --green-l:#E8F5EF;
+    --red:#C0392B; --red-l:#FDEDEC;
+    --veg-dk:#1B6B4A; --veg-lt:#E8F5EF;
+    --nv-dk:#8B1A1A;  --nv-lt:#FDEDED;
+    --des-dk:#5B3A8F; --des-lt:#EDE8F5;
+    --pu-dk:#1B5E8F;  --pu-lt:#E0EDF7;
+    --shadow:0 2px 12px rgba(28,43,74,.10); --radius:10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--grey); color: var(--text); }
+
+  /* ── Top bar ── */
+  .topbar { background:var(--navy); display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:56px; }
+  .logo { display:flex; align-items:center; gap:12px; }
+  .logo-mark { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--saffron),var(--gold)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:16px; }
+  .logo-text { color:#fff; font-size:17px; font-weight:700; }
+  .logo-text span { color:var(--gold); }
+  .nav-links { display:flex; gap:6px; }
+  .nav-links a { color:rgba(255,255,255,.65); text-decoration:none; font-size:13px; padding:6px 14px; border-radius:6px; transition:all .2s; }
+  .nav-links a:hover { background:rgba(255,255,255,.12); color:#fff; }
+  .nav-links a.active { background:var(--saffron); color:#fff; }
+
+  /* ── Controls bar ── */
+  .controls-bar { background:#fff; border-bottom:1px solid var(--border); padding:12px 32px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .ctrl-group { display:flex; align-items:center; gap:8px; }
+  .ctrl-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .ctrl-input { padding:7px 12px; border:1.5px solid var(--border); border-radius:7px; font-size:13px; color:var(--text); font-family:inherit; }
+  .ctrl-input:focus { outline:none; border-color:var(--saffron); }
+  .ctrl-sep { height:28px; width:1px; background:var(--border); }
+  .btn { display:inline-flex; align-items:center; gap:7px; padding:8px 18px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; border:none; font-family:inherit; transition:all .2s; }
+  .btn-primary { background:var(--saffron); color:#fff; }
+  .btn-primary:hover { background:var(--saffron-d); }
+  .btn-navy { background:var(--navy); color:#fff; }
+  .btn-navy:hover { background:var(--navy-l); }
+  .btn-outline { background:#fff; color:var(--text); border:1.5px solid var(--border); }
+  .btn-outline:hover { background:var(--grey); }
+  .btn-print { background:var(--green); color:#fff; }
+  .btn-print:hover { background:#155438; }
+  .filter-chip { padding:5px 12px; border-radius:20px; border:1.5px solid var(--border); font-size:12px; font-weight:600; cursor:pointer; background:#fff; color:var(--text); transition:all .15s; }
+  .filter-chip.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+  /* ── Page ── */
+  .page { max-width:1280px; margin:0 auto; padding:24px 24px 80px; }
+
+  /* ── Week navigation ── */
+  .week-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .week-title { font-size:20px; font-weight:800; color:var(--navy); }
+  .week-title span { color:var(--saffron); }
+  .week-sub { font-size:13px; color:var(--muted); margin-top:2px; }
+  .week-arrows { display:flex; gap:8px; }
+  .week-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:#fff; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .week-btn:hover { background:var(--navy); color:#fff; border-color:var(--navy); }
+
+  /* ── Summary strip ── */
+  .summary-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:24px; }
+  .summary-card { background:#fff; border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow); border-left:4px solid var(--saffron); }
+  .summary-card.green { border-color:var(--veg-dk); }
+  .summary-card.red   { border-color:var(--nv-dk); }
+  .summary-card.purple{ border-color:var(--des-dk); }
+  .summary-card.blue  { border-color:var(--pu-dk); }
+  .summary-card .sc-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:6px; }
+  .summary-card .sc-val { font-size:24px; font-weight:900; color:var(--navy); }
+  .summary-card .sc-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+
+  /* ── Day columns ── */
+  .days-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:12px; }
+  .day-col { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+  .day-col.today { box-shadow:0 0 0 2.5px var(--saffron), 0 4px 20px rgba(224,123,26,.2); }
+  .day-header { padding:10px 12px; display:flex; align-items:center; justify-content:space-between; }
+  .day-header.weekend { background:var(--gold-l); }
+  .day-header.weekday { background:var(--navy); }
+  .day-header.today-hdr { background:var(--saffron); }
+  .day-name { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; }
+  .day-header.weekday .day-name, .day-header.today-hdr .day-name { color:rgba(255,255,255,.7); }
+  .day-header.weekend .day-name { color:var(--muted); }
+  .day-date { font-size:20px; font-weight:900; }
+  .day-header.weekday .day-date, .day-header.today-hdr .day-date { color:#fff; }
+  .day-header.weekend .day-date { color:var(--navy); }
+  .day-header.today-hdr .day-date { color:#fff; font-size:22px; }
+  .day-event-count { font-size:10px; padding:2px 7px; border-radius:10px; font-weight:700; }
+  .day-header.weekday .day-event-count { background:rgba(255,255,255,.15); color:#fff; }
+  .day-header.today-hdr .day-event-count { background:rgba(255,255,255,.25); color:#fff; }
+  .day-header.weekend .day-event-count { background:var(--border); color:var(--muted); }
+  .day-body { padding:8px; }
+  .day-empty { padding:16px 8px; text-align:center; font-size:11px; color:var(--border); }
+
+  /* ── Event card ── */
+  .event-card { border-radius:7px; padding:8px 10px; margin-bottom:7px; cursor:pointer; transition:transform .15s, box-shadow .15s; border-left:3px solid transparent; }
+  .event-card:hover { transform:translateY(-1px); box-shadow:0 3px 10px rgba(28,43,74,.12); }
+  .event-card .ev-time { font-size:10px; font-weight:700; color:var(--muted); margin-bottom:3px; }
+  .event-card .ev-name { font-size:12px; font-weight:700; line-height:1.3; }
+  .event-card .ev-type { font-size:10px; margin-top:2px; }
+  .event-card .ev-guests { font-size:10px; font-weight:600; margin-top:4px; display:flex; align-items:center; gap:3px; }
+  .event-card .ev-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:5px; }
+  .ev-tag { font-size:9px; padding:1px 6px; border-radius:8px; font-weight:700; }
+
+  /* Category colours for event cards */
+  .ec-wedding  { background:#FFF8EC; border-left-color:var(--gold); }
+  .ec-birthday { background:#FFF0F0; border-left-color:var(--maroon); }
+  .ec-corp     { background:#EDF2FA; border-left-color:var(--navy); }
+  .ec-puja     { background:#F0F7FF; border-left-color:var(--pu-dk); }
+  .ec-other    { background:var(--cream); border-left-color:var(--border); }
+
+  /* ── Category breakdown section ── */
+  .breakdown-section { margin-top:28px; }
+  .breakdown-title { font-size:16px; font-weight:800; color:var(--navy); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+
+  /* Category group panels */
+  .cat-panels { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .cat-panel { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+  .cat-panel-header { padding:12px 18px; display:flex; align-items:center; justify-content:space-between; }
+  .cat-panel-header h3 { font-size:13px; font-weight:800; color:#fff; }
+  .cat-panel-header .count-badge { background:rgba(255,255,255,.2); color:#fff; padding:3px 9px; border-radius:12px; font-size:11px; font-weight:700; }
+  .cp-veg  .cat-panel-header { background:var(--veg-dk); }
+  .cp-nv   .cat-panel-header { background:var(--nv-dk); }
+  .cp-des  .cat-panel-header { background:var(--des-dk); }
+  .cp-puja .cat-panel-header { background:var(--pu-dk); }
+
+  .cat-panel-body { padding:0; }
+  .cat-item-row { display:grid; grid-template-columns:2fr 1.2fr 1fr 0.8fr; gap:0; border-bottom:1px solid var(--border); font-size:12px; }
+  .cat-item-row:last-child { border-bottom:none; }
+  .cat-item-row.header { background:var(--grey); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+  .cat-item-row > div { padding:9px 14px; }
+  .cat-item-row > div:not(:last-child) { border-right:1px solid var(--border); }
+  .cat-item-row.alt > div { background:var(--cream); }
+  .item-name-col { font-weight:600; color:var(--text); }
+  .size-col { color:var(--muted); font-size:11px; }
+  .qty-col { font-weight:800; color:var(--navy); text-align:center; }
+  .total-col { font-weight:700; color:var(--green); text-align:right; }
+
+  /* ── Print styles ── */
+  @media print {
+    .topbar, .controls-bar, .week-nav .week-arrows, .no-print { display:none !important; }
+    body { background:#fff; font-size:11px; }
+    .page { padding:10px; max-width:none; }
+    .days-grid { grid-template-columns:repeat(7,1fr); gap:6px; }
+    .cat-panels { grid-template-columns:1fr 1fr; }
+    .summary-strip { grid-template-columns:repeat(5,1fr); gap:8px; }
+    .event-card { break-inside:avoid; }
+    .cat-panel { break-inside:avoid; }
+    @page { margin:1cm; size:A3 landscape; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Top Nav ── -->
+<div class="topbar no-print">
+  <div class="logo">
+    <div class="logo-mark">NC</div>
+    <div class="logo-text">Nidhi <span>Catering</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#">Dashboard</a>
+    <a href="#">New Order</a>
+    <a href="#">Orders</a>
+    <a href="#" class="active">Weekly Plan</a>
+    <a href="#">Reports</a>
+  </div>
+</div>
+
+<!-- ── Controls ── -->
+<div class="controls-bar no-print">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Week of</span>
+    <input class="ctrl-input" type="date" value="2026-03-02" onchange="updateWeek(this.value)"/>
+  </div>
+  <div class="ctrl-sep"></div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">View</span>
+    <div class="filter-chip active" onclick="setView('all',this)">All</div>
+    <div class="filter-chip" onclick="setView('veg',this)">🟢 Veg</div>
+    <div class="filter-chip" onclick="setView('nonveg',this)">🔴 Non-Veg</div>
+    <div class="filter-chip" onclick="setView('dessert',this)">🟣 Desserts</div>
+    <div class="filter-chip" onclick="setView('puja',this)">🔵 Puja</div>
+  </div>
+  <div class="ctrl-sep"></div>
+  <button class="btn btn-outline no-print" onclick="window.print()">🖨 Print / Save PDF</button>
+  <button class="btn btn-navy no-print" onclick="alert('CSV exported!')">⬇ Export CSV</button>
+</div>
+
+<!-- ── Page ── -->
+<div class="page">
+
+  <!-- Week navigation -->
+  <div class="week-nav">
+    <div>
+      <div class="week-title">Week of <span id="week-range">March 2 – 8, 2026</span></div>
+      <div class="week-sub" id="week-sub">7 events this week · 3 delivery · 2 pickup · 2 live catering</div>
+    </div>
+    <div class="week-arrows no-print">
+      <button class="week-btn" title="Previous week">‹</button>
+      <button class="week-btn" onclick="goToday()" title="Current week" style="font-size:11px;font-weight:700;width:auto;padding:0 12px;border-radius:7px;">Today</button>
+      <button class="week-btn" title="Next week">›</button>
+    </div>
+  </div>
+
+  <!-- Summary strip -->
+  <div class="summary-strip">
+    <div class="summary-card">
+      <div class="sc-label">Total Events</div>
+      <div class="sc-val">7</div>
+      <div class="sc-sub">This week</div>
+    </div>
+    <div class="summary-card green">
+      <div class="sc-label">Veg Items</div>
+      <div class="sc-val">28</div>
+      <div class="sc-sub">Across all events</div>
+    </div>
+    <div class="summary-card red">
+      <div class="sc-label">Non-Veg Items</div>
+      <div class="sc-val">19</div>
+      <div class="sc-sub">Across all events</div>
+    </div>
+    <div class="summary-card purple">
+      <div class="sc-label">Dessert Items</div>
+      <div class="sc-val">11</div>
+      <div class="sc-sub">Across all events</div>
+    </div>
+    <div class="summary-card blue">
+      <div class="sc-label">Total Guests</div>
+      <div class="sc-val">645</div>
+      <div class="sc-sub">This week</div>
+    </div>
+  </div>
+
+  <!-- 7-day grid -->
+  <div class="days-grid">
+
+    <!-- MON Mar 2 -->
+    <div class="day-col today">
+      <div class="day-header today-hdr">
+        <div>
+          <div class="day-name">Monday</div>
+          <div class="day-date">2</div>
+        </div>
+        <div class="day-event-count">2 Events</div>
+      </div>
+      <div class="day-body">
+        <div class="event-card ec-wedding" onclick="expandEvent('sharma')">
+          <div class="ev-time">6:00 PM · Delivery</div>
+          <div class="ev-name">Priya Sharma</div>
+          <div class="ev-type">🎉 Wedding Reception</div>
+          <div class="ev-guests">👥 120 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E8F5EF;color:#1B6B4A;">Veg ×5</span>
+            <span class="ev-tag" style="background:#FDE8E8;color:#8B1A1A;">Non-Veg ×4</span>
+            <span class="ev-tag" style="background:#EDE8F5;color:#5B3A8F;">Dessert ×2</span>
+          </div>
+        </div>
+        <div class="event-card ec-corp" onclick="expandEvent('techcorp')">
+          <div class="ev-time">12:00 PM · Pickup</div>
+          <div class="ev-name">TechCorp Inc.</div>
+          <div class="ev-type">🏢 Corporate Lunch</div>
+          <div class="ev-guests">👥 45 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E8F5EF;color:#1B6B4A;">Veg ×4</span>
+            <span class="ev-tag" style="background:#FDE8E8;color:#8B1A1A;">Non-Veg ×2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TUE Mar 3 -->
+    <div class="day-col">
+      <div class="day-header weekday">
+        <div>
+          <div class="day-name">Tuesday</div>
+          <div class="day-date">3</div>
+        </div>
+        <div class="day-event-count">1 Event</div>
+      </div>
+      <div class="day-body">
+        <div class="event-card ec-puja">
+          <div class="ev-time">5:00 PM · Delivery</div>
+          <div class="ev-name">Ramesh Iyer</div>
+          <div class="ev-type">🪔 Puja / Ceremony</div>
+          <div class="ev-guests">👥 60 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E0EDF7;color:#1B5E8F;">Puja ×6</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WED Mar 4 -->
+    <div class="day-col">
+      <div class="day-header weekday">
+        <div>
+          <div class="day-name">Wednesday</div>
+          <div class="day-date">4</div>
+        </div>
+        <div class="day-event-count">1 Event</div>
+      </div>
+      <div class="day-body">
+        <div class="event-card ec-birthday">
+          <div class="ev-time">7:00 PM · Live Catering</div>
+          <div class="ev-name">Anika Patel</div>
+          <div class="ev-type">🎂 Birthday Party</div>
+          <div class="ev-guests">👥 80 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E8F5EF;color:#1B6B4A;">Veg ×6</span>
+            <span class="ev-tag" style="background:#FDE8E8;color:#8B1A1A;">Non-Veg ×3</span>
+            <span class="ev-tag" style="background:#EDE8F5;color:#5B3A8F;">Dessert ×3</span>
+            <span class="ev-tag" style="background:#F5EAE8;color:#8F4B1B;">Live ×2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THU Mar 5 -->
+    <div class="day-col">
+      <div class="day-header weekday">
+        <div>
+          <div class="day-name">Thursday</div>
+          <div class="day-date">5</div>
+        </div>
+        <div class="day-event-count">No Events</div>
+      </div>
+      <div class="day-body">
+        <div class="day-empty">No orders scheduled</div>
+      </div>
+    </div>
+
+    <!-- FRI Mar 6 -->
+    <div class="day-col">
+      <div class="day-header weekday">
+        <div>
+          <div class="day-name">Friday</div>
+          <div class="day-date">6</div>
+        </div>
+        <div class="day-event-count">1 Event</div>
+      </div>
+      <div class="day-body">
+        <div class="event-card ec-corp">
+          <div class="ev-time">6:30 PM · Delivery</div>
+          <div class="ev-name">Mehta & Associates</div>
+          <div class="ev-type">🏢 Corporate Dinner</div>
+          <div class="ev-guests">👥 100 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E8F5EF;color:#1B6B4A;">Veg ×7</span>
+            <span class="ev-tag" style="background:#FDE8E8;color:#8B1A1A;">Non-Veg ×5</span>
+            <span class="ev-tag" style="background:#EDE8F5;color:#5B3A8F;">Dessert ×3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAT Mar 7 -->
+    <div class="day-col">
+      <div class="day-header weekend">
+        <div>
+          <div class="day-name">Saturday</div>
+          <div class="day-date">7</div>
+        </div>
+        <div class="day-event-count">2 Events</div>
+      </div>
+      <div class="day-body">
+        <div class="event-card ec-wedding">
+          <div class="ev-time">5:00 PM · Live Catering</div>
+          <div class="ev-name">Singh Family</div>
+          <div class="ev-type">🎉 Wedding</div>
+          <div class="ev-guests">👥 180 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E8F5EF;color:#1B6B4A;">Veg ×6</span>
+            <span class="ev-tag" style="background:#FDE8E8;color:#8B1A1A;">Non-Veg ×4</span>
+            <span class="ev-tag" style="background:#EDE8F5;color:#5B3A8F;">Dessert ×3</span>
+            <span class="ev-tag" style="background:#F5EAE8;color:#8F4B1B;">Live ×3</span>
+          </div>
+        </div>
+        <div class="event-card ec-birthday">
+          <div class="ev-time">1:00 PM · Pickup</div>
+          <div class="ev-name">Kumar Birthday</div>
+          <div class="ev-type">🎂 Birthday</div>
+          <div class="ev-guests">👥 40 guests</div>
+          <div class="ev-tags">
+            <span class="ev-tag" style="background:#E8F5EF;color:#1B6B4A;">Veg ×3</span>
+            <span class="ev-tag" style="background:#EDE8F5;color:#5B3A8F;">Dessert ×2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUN Mar 8 -->
+    <div class="day-col">
+      <div class="day-header weekend">
+        <div>
+          <div class="day-name">Sunday</div>
+          <div class="day-date">8</div>
+        </div>
+        <div class="day-event-count">No Events</div>
+      </div>
+      <div class="day-body">
+        <div class="day-empty">No orders scheduled</div>
+      </div>
+    </div>
+
+  </div><!-- end days-grid -->
+
+  <!-- ══════════════════════════════════════════════════════════════
+       CATEGORY BREAKDOWN
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="breakdown-section">
+    <div class="breakdown-title">📊 Weekly Category Breakdown — Prep Quantities</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">All items sorted by category, then subcategory, then item name. Quantities represent totals across all events this week.</div>
+
+    <div class="cat-panels">
+
+      <!-- VEG -->
+      <div class="cat-panel cp-veg">
+        <div class="cat-panel-header">
+          <h3>🟢 Vegetarian Items</h3>
+          <span class="count-badge">28 trays / units</span>
+        </div>
+        <div class="cat-panel-body">
+          <div class="cat-item-row header">
+            <div>Item Name</div><div>Size / Option</div><div>Qty</div><div>Subtotal</div>
+          </div>
+          <div class="cat-item-row"><div class="item-name-col">Paneer Tikka</div><div class="size-col">Extra Large Tray</div><div class="qty-col">4</div><div class="total-col">$580</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Palak Paneer</div><div class="size-col">Large Tray</div><div class="qty-col">3</div><div class="total-col">$225</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Shahi Paneer</div><div class="size-col">Extra Large Tray</div><div class="qty-col">2</div><div class="total-col">$260</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Dal Makhani</div><div class="size-col">Large Tray</div><div class="qty-col">5</div><div class="total-col">$350</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Dal Tadka</div><div class="size-col">Large Tray</div><div class="qty-col">2</div><div class="total-col">$130</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Veg Biryani</div><div class="size-col">Extra Large Tray</div><div class="qty-col">3</div><div class="total-col">$360</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Aloo Tikki With Chole</div><div class="size-col">per pc</div><div class="qty-col">60</div><div class="total-col">$150</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Samosa</div><div class="size-col">per pc</div><div class="qty-col">80</div><div class="total-col">$120</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Naan</div><div class="size-col">per pc</div><div class="qty-col">200</div><div class="total-col">$300</div></div>
+          <div class="cat-item-row alt" style="background:var(--veg-lt);font-weight:700;">
+            <div style="grid-column:span 2;padding:9px 14px;color:var(--veg-dk);">VEG TOTAL</div>
+            <div class="qty-col" style="color:var(--veg-dk);">28+</div>
+            <div class="total-col" style="color:var(--veg-dk);">$2,475</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NON-VEG -->
+      <div class="cat-panel cp-nv">
+        <div class="cat-panel-header">
+          <h3>🔴 Non-Vegetarian Items</h3>
+          <span class="count-badge">19 trays / units</span>
+        </div>
+        <div class="cat-panel-body">
+          <div class="cat-item-row header">
+            <div>Item Name</div><div>Size / Option</div><div>Qty</div><div>Subtotal</div>
+          </div>
+          <div class="cat-item-row"><div class="item-name-col">Butter Chicken</div><div class="size-col">Extra Large Tray</div><div class="qty-col">4</div><div class="total-col">$580</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Chicken Tikka</div><div class="size-col">Large Tray</div><div class="qty-col">3</div><div class="total-col">$285</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Chicken Biryani</div><div class="size-col">Extra Large Tray</div><div class="qty-col">4</div><div class="total-col">$580</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Mutton Curry</div><div class="size-col">Large Tray</div><div class="qty-col">2</div><div class="total-col">$220</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Chicken 65</div><div class="size-col">Large Tray</div><div class="qty-col">3</div><div class="total-col">$285</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Chicken Pakora</div><div class="size-col">Small Tray</div><div class="qty-col">2</div><div class="total-col">$100</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Mutton Biryani</div><div class="size-col">Large Tray</div><div class="qty-col">1</div><div class="total-col">$110</div></div>
+          <div class="cat-item-row alt" style="background:var(--nv-lt);font-weight:700;">
+            <div style="grid-column:span 2;padding:9px 14px;color:var(--nv-dk);">NON-VEG TOTAL</div>
+            <div class="qty-col" style="color:var(--nv-dk);">19</div>
+            <div class="total-col" style="color:var(--nv-dk);">$2,160</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESSERTS -->
+      <div class="cat-panel cp-des">
+        <div class="cat-panel-header">
+          <h3>🟣 Desserts</h3>
+          <span class="count-badge">11 trays / units</span>
+        </div>
+        <div class="cat-panel-body">
+          <div class="cat-item-row header">
+            <div>Item Name</div><div>Size / Option</div><div>Qty</div><div>Subtotal</div>
+          </div>
+          <div class="cat-item-row"><div class="item-name-col">Gulab Jamun</div><div class="size-col">Extra Large Tray</div><div class="qty-col">3</div><div class="total-col">$330</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Kheer</div><div class="size-col">Large Tray</div><div class="qty-col">3</div><div class="total-col">$225</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Gajar Ka Halwa</div><div class="size-col">per lb</div><div class="qty-col">8 lb</div><div class="total-col">$104</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Ras Malai</div><div class="size-col">per pc</div><div class="qty-col">40</div><div class="total-col">$100</div></div>
+          <div class="cat-item-row alt" style="background:var(--des-lt);font-weight:700;">
+            <div style="grid-column:span 2;padding:9px 14px;color:var(--des-dk);">DESSERTS TOTAL</div>
+            <div class="qty-col" style="color:var(--des-dk);">11</div>
+            <div class="total-col" style="color:var(--des-dk);">$759</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PUJA FOOD -->
+      <div class="cat-panel cp-puja">
+        <div class="cat-panel-header">
+          <h3>🔵 Puja Food (No Onion / Garlic)</h3>
+          <span class="count-badge">6 trays / units</span>
+        </div>
+        <div class="cat-panel-body">
+          <div class="cat-item-row header">
+            <div>Item Name</div><div>Size / Option</div><div>Qty</div><div>Subtotal</div>
+          </div>
+          <div class="cat-item-row"><div class="item-name-col">Paneer Pakoda</div><div class="size-col">Large Tray</div><div class="qty-col">1</div><div class="total-col">$95</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Mix Veg Pakoda</div><div class="size-col">Large Tray</div><div class="qty-col">2</div><div class="total-col">$190</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Cocktail Samosa</div><div class="size-col">per pc</div><div class="qty-col">60</div><div class="total-col">$42</div></div>
+          <div class="cat-item-row alt"><div class="item-name-col">Puja Biryani</div><div class="size-col">Large Tray</div><div class="qty-col">2</div><div class="total-col">$190</div></div>
+          <div class="cat-item-row"><div class="item-name-col">Aloo Tikki</div><div class="size-col">per pc</div><div class="qty-col">40</div><div class="total-col">$60</div></div>
+          <div class="cat-item-row alt" style="background:var(--pu-lt);font-weight:700;">
+            <div style="grid-column:span 2;padding:9px 14px;color:var(--pu-dk);">PUJA TOTAL</div>
+            <div class="qty-col" style="color:var(--pu-dk);">6+</div>
+            <div class="total-col" style="color:var(--pu-dk);">$577</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end cat-panels -->
+  </div><!-- end breakdown-section -->
+
+  <!-- ── Print footer (only shows in print) ── -->
+  <div style="margin-top:28px;padding-top:14px;border-top:2px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+    <div style="font-size:12px;color:var(--muted);">Nidhi Catering · nidhicatering.com · Kitchen Prep Plan · Week of March 2–8, 2026</div>
+    <div style="font-size:12px;color:var(--muted);">Printed: <span id="print-date"></span></div>
+  </div>
+
+</div><!-- end .page -->
+
+<script>
+document.getElementById('print-date').textContent = new Date().toLocaleString('en-US',{dateStyle:'medium',timeStyle:'short'});
+function setView(type, el) {
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+}
+function goToday() { document.querySelector('input[type=date]').value = new Date().toISOString().split('T')[0]; }
+function updateWeek(val) { console.log('Week updated to:', val); }
+</script>
+
+</body>
+</html>

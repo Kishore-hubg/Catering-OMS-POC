@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nidhi Catering — Send Quote</title>
+<style>
+  :root {
+    --saffron:#E07B1A; --saffron-d:#B85F0D; --saffron-l:#FFF3E8;
+    --maroon:#8B1A1A; --gold:#C9A227; --gold-l:#FDF6DC;
+    --navy:#1C2B4A; --navy-l:#2E3F63;
+    --cream:#FFFAF5; --grey:#F4F5F7; --border:#DDD5C8;
+    --text:#2C3A52; --muted:#7A7A8A;
+    --green:#1B6B4A; --green-l:#E8F5EF;
+    --red:#C0392B; --red-l:#FDEDEC;
+    --shadow:0 2px 12px rgba(28,43,74,.10); --radius:10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--grey); color: var(--text); min-height: 100vh; }
+
+  .topbar { background:var(--navy); display:flex; align-items:center; justify-content:space-between; padding:0 32px; height:56px; }
+  .logo { display:flex; align-items:center; gap:12px; }
+  .logo-mark { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--saffron),var(--gold)); display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:16px; }
+  .logo-text { color:#fff; font-size:17px; font-weight:700; }
+  .logo-text span { color:var(--gold); }
+  .nav-links { display:flex; gap:6px; }
+  .nav-links a { color:rgba(255,255,255,.65); text-decoration:none; font-size:13px; padding:6px 14px; border-radius:6px; transition:all .2s; }
+  .nav-links a:hover { background:rgba(255,255,255,.12); color:#fff; }
+  .nav-links a.active { background:var(--saffron); color:#fff; }
+
+  /* ── Split layout ── */
+  .workspace { display:grid; grid-template-columns:1fr 1fr; height:calc(100vh - 56px); overflow:hidden; }
+  .compose-pane { padding:24px; overflow-y:auto; background:#fff; border-right:1px solid var(--border); }
+  .preview-pane { overflow-y:auto; background:var(--grey); }
+
+  /* ── Pane headers ── */
+  .pane-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; padding-bottom:14px; border-bottom:2px solid var(--border); }
+  .pane-header h2 { font-size:16px; font-weight:800; color:var(--navy); display:flex; align-items:center; gap:8px; }
+  .pane-header .sub { font-size:12px; color:var(--muted); margin-top:2px; }
+
+  /* ── Email compose fields ── */
+  .email-field { margin-bottom:14px; }
+  .email-field label { display:block; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:5px; }
+  .email-field input, .email-field select {
+    width:100%; padding:9px 13px; border:1.5px solid var(--border); border-radius:7px;
+    font-size:13.5px; color:var(--text); font-family:inherit; background:#fff;
+    transition:border-color .2s;
+  }
+  .email-field input:focus, .email-field select:focus { outline:none; border-color:var(--saffron); box-shadow:0 0 0 3px rgba(224,123,26,.1); }
+  .email-field .pill-row { display:flex; flex-wrap:wrap; gap:6px; padding:8px 10px; border:1.5px solid var(--border); border-radius:7px; min-height:40px; cursor:text; }
+  .pill-tag { background:var(--navy); color:#fff; border-radius:20px; padding:3px 10px; font-size:12px; display:flex; align-items:center; gap:5px; }
+  .pill-tag .x { cursor:pointer; opacity:.65; }
+  .pill-tag .x:hover { opacity:1; }
+
+  /* ── Body editor ── */
+  .body-editor {
+    width:100%; min-height:200px; padding:12px 14px;
+    border:1.5px solid var(--border); border-radius:7px;
+    font-size:13.5px; line-height:1.7; color:var(--text);
+    font-family:'Segoe UI',Arial,sans-serif; resize:vertical;
+    transition:border-color .2s;
+  }
+  .body-editor:focus { outline:none; border-color:var(--saffron); box-shadow:0 0 0 3px rgba(224,123,26,.1); }
+
+  /* ── Template chips ── */
+  .tmpl-chips { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .tmpl-chip { padding:6px 13px; border-radius:20px; border:1.5px solid var(--border); font-size:12px; font-weight:600; cursor:pointer; background:#fff; color:var(--text); transition:all .2s; }
+  .tmpl-chip:hover, .tmpl-chip.active { background:var(--saffron); color:#fff; border-color:var(--saffron); }
+
+  /* ── Attachment badge ── */
+  .attachment-area { margin-top:14px; padding:12px 14px; background:var(--cream); border:1.5px solid var(--border); border-radius:8px; }
+  .attachment-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:8px; }
+  .attach-item { display:flex; align-items:center; gap:10px; padding:8px 10px; background:#fff; border-radius:7px; border:1px solid var(--border); margin-bottom:6px; }
+  .attach-icon { width:30px; height:30px; background:var(--maroon); color:#fff; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+  .attach-info { flex:1; }
+  .attach-info .fname { font-size:13px; font-weight:600; color:var(--text); }
+  .attach-info .fsize { font-size:11px; color:var(--muted); }
+
+  /* ── Toolbar ── */
+  .editor-toolbar { display:flex; gap:4px; padding:6px 8px; background:var(--grey); border:1.5px solid var(--border); border-bottom:none; border-radius:7px 7px 0 0; }
+  .editor-toolbar button { padding:4px 10px; border:none; background:transparent; border-radius:4px; cursor:pointer; font-size:12px; color:var(--text); font-weight:600; transition:background .15s; }
+  .editor-toolbar button:hover { background:var(--border); }
+  .editor-toolbar .sep { width:1px; background:var(--border); margin:2px 4px; }
+  .body-editor.has-toolbar { border-radius:0 0 7px 7px; }
+
+  /* ── Warning banner ── */
+  .warn-bar { background:var(--gold-l); border:1.5px solid var(--gold); border-radius:8px; padding:10px 16px; margin-bottom:16px; font-size:13px; color:#7A5A0D; display:flex; align-items:center; gap:8px; }
+
+  /* ── Channel toggle ── */
+  .channel-toggle { display:flex; gap:0; border:1.5px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:18px; }
+  .ch-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; border:none; background:#fff; color:var(--muted); transition:all .2s; font-family:inherit; }
+  .ch-btn:not(:last-child) { border-right:1px solid var(--border); }
+  .ch-btn.active-email { background:var(--saffron); color:#fff; }
+  .ch-btn.active-wa { background:#25D366; color:#fff; }
+  .ch-btn:hover:not(.active-email):not(.active-wa) { background:var(--grey); color:var(--text); }
+
+  /* WhatsApp fields */
+  .wa-fields { display:none; }
+  .wa-fields.visible { display:block; }
+  .email-fields-block { display:block; }
+  .email-fields-block.hidden { display:none; }
+
+  /* WA number row */
+  .wa-num-row { display:flex; align-items:center; gap:10px; padding:9px 13px; border:1.5px solid #25D366; border-radius:7px; background:#F0FDF5; margin-bottom:14px; font-size:13.5px; }
+  .wa-num-row .wa-icon { font-size:20px; }
+  .wa-num-row input { flex:1; border:none; background:transparent; font-size:13.5px; font-family:inherit; color:var(--text); }
+  .wa-num-row input:focus { outline:none; }
+
+  /* ── Send actions ── */
+  .send-actions { position:sticky; bottom:0; background:#fff; border-top:1px solid var(--border); padding:14px 24px; display:flex; gap:10px; align-items:center; }
+  .btn { display:inline-flex; align-items:center; gap:7px; padding:11px 20px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer; border:none; font-family:inherit; transition:all .2s; }
+  .btn-send { background:var(--saffron); color:#fff; }
+  .btn-send:hover { background:var(--saffron-d); box-shadow:0 4px 14px rgba(224,123,26,.35); transform:translateY(-1px); }
+  .btn-wa { background:#25D366; color:#fff; display:none; }
+  .btn-wa:hover { background:#1fae56; box-shadow:0 4px 14px rgba(37,211,102,.35); transform:translateY(-1px); }
+  .btn-draft { background:var(--grey); color:var(--text); border:1.5px solid var(--border); }
+  .btn-draft:hover { background:var(--border); }
+  .btn-preview { background:var(--navy); color:#fff; }
+  .btn-cancel { background:transparent; color:var(--muted); border:none; }
+  .confirm-bar { display:none; background:var(--red-l); border:2px solid var(--red); border-radius:8px; padding:12px 16px; margin-top:10px; font-size:13px; color:var(--red); }
+  .confirm-bar.visible { display:flex; align-items:center; gap:12px; }
+  .confirm-bar.visible-wa { display:flex; align-items:center; gap:12px; background:#F0FDF5; border-color:#25D366; color:#1a6b3a; }
+  .confirm-bar strong { font-weight:700; }
+
+  /* ══════════════════════════════════════════════════════════
+     INVOICE PREVIEW (right pane)
+  ══════════════════════════════════════════════════════════ */
+  .preview-inner { padding:24px; }
+  .preview-title { font-size:13px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+  .invoice-paper {
+    background:#fff; border-radius:10px; box-shadow:0 4px 24px rgba(28,43,74,.12);
+    overflow:hidden; max-width:700px; margin:0 auto;
+  }
+
+  /* Invoice header */
+  .inv-header { background:linear-gradient(135deg, var(--navy) 0%, #2E3F63 100%); padding:30px 36px; display:flex; justify-content:space-between; align-items:flex-start; }
+  .inv-logo-block .brand { font-size:24px; font-weight:900; color:#fff; letter-spacing:-1px; }
+  .inv-logo-block .brand span { color:var(--gold); }
+  .inv-logo-block .tagline { font-size:11px; color:rgba(255,255,255,.55); margin-top:3px; letter-spacing:.5px; text-transform:uppercase; }
+  .inv-logo-block .contact { font-size:11px; color:rgba(255,255,255,.7); margin-top:10px; line-height:1.8; }
+  .inv-meta { text-align:right; }
+  .inv-meta .label { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.45); }
+  .inv-meta .val { font-size:13px; font-weight:700; color:#fff; margin-top:1px; }
+  .inv-meta .inv-num { font-size:20px; font-weight:900; color:var(--gold); margin-top:6px; }
+  .inv-meta .status-badge { display:inline-block; margin-top:8px; padding:4px 12px; background:var(--saffron); border-radius:20px; font-size:10px; font-weight:700; color:#fff; letter-spacing:.5px; text-transform:uppercase; }
+
+  /* Gold divider line */
+  .inv-gold-bar { height:4px; background:linear-gradient(90deg, var(--saffron), var(--gold), var(--saffron)); }
+
+  /* Billing section */
+  .inv-billing { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+  .inv-bill-col { padding:20px 36px; }
+  .inv-bill-col:first-child { border-right:1px solid var(--border); }
+  .inv-bill-label { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  .inv-bill-name { font-size:16px; font-weight:800; color:var(--navy); }
+  .inv-bill-detail { font-size:12px; color:var(--muted); line-height:1.8; margin-top:3px; }
+  .inv-event-chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .inv-chip { padding:3px 10px; border-radius:12px; font-size:10px; font-weight:700; background:var(--saffron-l); color:var(--saffron-d); border:1px solid #F5D5AF; }
+
+  /* Items table */
+  .inv-body { padding:0 36px 24px; }
+  .inv-table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:20px; }
+  .inv-table thead tr { background:var(--navy); }
+  .inv-table th { padding:10px 12px; text-align:left; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#fff; }
+  .inv-table th:last-child { text-align:right; }
+  .inv-table td { padding:9px 12px; border-bottom:1px solid #EEE8E0; color:var(--text); }
+  .inv-table td:last-child { text-align:right; font-weight:700; color:var(--green); }
+  .inv-table tr:nth-child(even) td { background:var(--cream); }
+  .inv-table .cat-tag { display:inline-block; font-size:9px; padding:1px 7px; border-radius:10px; margin-bottom:2px; font-weight:700; }
+  .cat-veg  { background:#E8F5EF; color:#1B6B4A; }
+  .cat-nv   { background:#FDE8E8; color:#8B1A1A; }
+  .cat-des  { background:#EDE8F5; color:#5B3A8F; }
+
+  /* Totals */
+  .inv-totals { margin-top:16px; border-top:2px solid var(--border); }
+  .inv-tot-row { display:flex; justify-content:space-between; padding:7px 0; font-size:13px; border-bottom:1px solid #EEE8E0; }
+  .inv-tot-row .tot-label { color:var(--muted); }
+  .inv-tot-row .tot-val { font-weight:600; }
+  .inv-grand { display:flex; justify-content:space-between; padding:12px 16px; margin-top:10px; background:var(--navy); border-radius:8px; font-size:16px; font-weight:800; color:#fff; }
+  .inv-grand .grand-val { color:var(--gold); }
+
+  /* Payment summary */
+  .inv-payment { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; margin-top:20px; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .inv-pay-block { padding:14px 16px; text-align:center; }
+  .inv-pay-block:not(:last-child) { border-right:1px solid var(--border); }
+  .inv-pay-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; color:var(--muted); margin-bottom:5px; }
+  .inv-pay-val { font-size:18px; font-weight:800; }
+  .val-total { color:var(--navy); }
+  .val-paid  { color:var(--green); }
+  .val-due   { color:var(--maroon); }
+
+  /* Footer */
+  .inv-footer { margin-top:24px; padding:16px 36px 24px; background:var(--cream); border-top:1px solid var(--border); }
+  .inv-footer .footer-note { font-size:11px; color:var(--muted); line-height:1.8; }
+  .inv-footer .thank-you { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+  .inv-footer .brand-footer { margin-top:12px; display:flex; align-items:center; gap:6px; }
+  .inv-footer .brand-footer .dot { width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg,var(--saffron),var(--gold)); display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:900; color:#fff; }
+  .inv-footer .brand-footer span { font-size:11px; font-weight:700; color:var(--navy); }
+
+  .divider { height:1px; background:var(--border); margin:16px 0; }
+  .char-count { font-size:11px; color:var(--muted); text-align:right; margin-top:4px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">NC</div>
+    <div class="logo-text">Nidhi <span>Catering</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#">Dashboard</a>
+    <a href="#">New Order</a>
+    <a href="#">Orders</a>
+    <a href="#" class="active">Send Quote</a>
+    <a href="#">Weekly Plan</a>
+    <a href="#">Reports</a>
+    <a href="#" style="margin-left:8px;">Signout</a>
+  </div>
+</div>
+
+<div class="workspace">
+
+  <!-- ══ LEFT: Compose ══ -->
+  <div class="compose-pane">
+    <div class="pane-header">
+      <div>
+        <h2>✉️ Compose & Send Quote</h2>
+        <div class="sub">Order #NC-2026-0047 · Priya Sharma · Event: Mar 15, 2026</div>
+      </div>
+    </div>
+
+    <div class="warn-bar">⚠️ Review the invoice preview on the right before sending. Once sent, a copy will be logged automatically.</div>
+
+    <!-- ── Channel Selector ── -->
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;">Send Via</div>
+      <div class="channel-toggle">
+        <button class="ch-btn active-email" id="btn-ch-email" onclick="setChannel('email')">✉️ Email</button>
+        <button class="ch-btn" id="btn-ch-wa" onclick="setChannel('whatsapp')">💬 WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- WhatsApp number (shown when WA selected) -->
+    <div class="wa-fields" id="wa-fields-block">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#1a6b3a;margin-bottom:6px;">WhatsApp Number</div>
+      <div class="wa-num-row">
+        <span class="wa-icon">💬</span>
+        <input type="tel" id="wa-number" placeholder="+1 (972) 555-8844" value="+1 (972) 555-8844"/>
+      </div>
+    </div>
+
+    <!-- Email-only fields (hidden when WA selected) -->
+    <div class="email-fields-block" id="email-fields-block">
+
+    <!-- From -->
+    <div class="email-field">
+      <label>From</label>
+      <input type="text" value="Nidhi Catering &lt;orders@nidhicatering.com&gt;" readonly style="background:var(--grey);color:var(--muted);"/>
+    </div>
+
+    <!-- To -->
+    <div class="email-field">
+      <label>To <span style="color:var(--red)">*</span></label>
+      <div class="pill-row" id="to-field" onclick="document.getElementById('to-input').focus()">
+        <div class="pill-tag">Priya Sharma &lt;priya.sharma@email.com&gt; <span class="x" onclick="removeTag(this)">✕</span></div>
+        <input id="to-input" type="text" placeholder="Add email…" style="border:none;outline:none;font-size:13px;flex:1;min-width:120px;background:transparent;" onkeydown="addTag(event)"/>
+      </div>
+    </div>
+
+    <!-- Subject -->
+    <div class="email-field">
+      <label>Subject <span style="color:var(--red)">*</span></label>
+      <input type="text" id="subject-field" value="Your Catering Quote — Nidhi Catering | Event: March 15, 2026"/>
+    </div>
+
+    <!-- Body -->
+    <div class="email-field">
+      <label>Message Body</label>
+      <div class="body-editor" id="email-body" contenteditable="true" oninput="countChars()"></div>
+      <div class="char-count" id="char-count">0 characters</div>
+    </div>
+
+    <!-- Attachment -->
+    <div class="attachment-area">
+      <div class="attachment-label">📎 Attachments</div>
+      <div class="attach-item">
+        <div class="attach-icon">📄</div>
+        <div class="attach-info">
+          <div class="fname" id="attach-name">Nidhi-Catering-Quote-NC-2026-0047.pdf</div>
+          <div class="fsize">Quote PDF will be attached automatically when the email is sent.</div>
+        </div>
+        <span style="font-size:12px;color:var(--green);font-weight:600;">✓ Ready</span>
+      </div>
+    </div>
+
+    </div><!-- end email-fields-block -->
+
+    <!-- Confirm before send (email) -->
+    <div class="confirm-bar" id="confirm-bar">
+      <span>📨 Ready to send to <strong id="confirm-email">priya.sharma@email.com</strong>?</span>
+      <button class="btn btn-send" onclick="doSend()" style="padding:8px 16px;font-size:13px;">Confirm & Send</button>
+      <button class="btn btn-cancel" onclick="hideConfirm()">Cancel</button>
+    </div>
+
+    <!-- Confirm before send (WhatsApp) -->
+    <div class="confirm-bar" id="confirm-wa-bar">
+      <span>💬 Ready to send WhatsApp to <strong id="confirm-wa-num">+1 (972) 555-8844</strong>?</span>
+      <button class="btn btn-wa" onclick="doSendWA()" style="display:inline-flex;padding:8px 16px;font-size:13px;">Confirm & Send</button>
+      <button class="btn btn-cancel" onclick="hideConfirm()">Cancel</button>
+    </div>
+
+    <!-- Action bar -->
+    <div class="send-actions">
+      <button class="btn btn-draft">Save Draft</button>
+      <button class="btn btn-send" id="action-send-email" onclick="showConfirm()">📨 Send via Email →</button>
+      <button class="btn btn-wa" id="action-send-wa" onclick="showConfirmWA()" style="display:none;">💬 Send via WhatsApp →</button>
+    </div>
+
+  </div><!-- end compose-pane -->
+
+  <!-- ══ RIGHT: Invoice Preview ══ -->
+  <div class="preview-pane">
+    <div class="preview-inner">
+      <div class="preview-title">
+        <span>📄 Invoice Preview — Quote PDF</span>
+        <button class="btn btn-draft" style="font-size:12px;padding:6px 14px;">🖨 Print Preview</button>
+      </div>
+
+      <div class="invoice-paper">
+
+        <!-- Header -->
+        <div class="inv-header">
+          <div class="inv-logo-block">
+            <div class="brand">Nidhi <span>Catering</span></div>
+            <div class="tagline">Authentic Indian Cuisine · Dallas, TX</div>
+            <div class="contact">
+              📞 (469) 555-0192<br/>
+              ✉ orders@nidhicatering.com<br/>
+              🌐 nidhicatering.com
+            </div>
+          </div>
+          <div class="inv-meta">
+            <div class="label">Invoice Number</div>
+            <div class="inv-num">#NC-2026-0047</div>
+            <div style="margin-top:10px;">
+              <div class="label">Issue Date</div>
+              <div class="val">February 25, 2026</div>
+            </div>
+            <div style="margin-top:8px;">
+              <div class="label">Event Date</div>
+              <div class="val">March 15, 2026</div>
+            </div>
+            <div class="status-badge">Quote Pending Approval</div>
+          </div>
+        </div>
+
+        <div class="inv-gold-bar"></div>
+
+        <!-- Billing -->
+        <div class="inv-billing">
+          <div class="inv-bill-col">
+            <div class="inv-bill-label">Bill To</div>
+            <div class="inv-bill-name" id="inv-customer">Priya Sharma</div>
+            <div class="inv-bill-detail" id="inv-contact">
+              📞 (972) 555-8844<br/>
+              ✉ priya.sharma@email.com
+            </div>
+          </div>
+          <div class="inv-bill-col">
+            <div class="inv-bill-label">Event Details</div>
+            <div class="inv-bill-name">Wedding Reception</div>
+            <div class="inv-bill-detail">
+              📅 March 15, 2026 at 6:00 PM<br/>
+              📍 Grand Ballroom, Marriott Dallas<br/>
+              👥 120 Guests
+            </div>
+            <div class="inv-event-chips">
+              <span class="inv-chip">🚚 Delivery</span>
+              <span class="inv-chip">🎉 Wedding</span>
+              <span class="inv-chip">120 Guests</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Items -->
+        <div class="inv-body">
+          <table class="inv-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Item</th>
+                <th>Size / Option</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="inv-items">
+              <tr>
+                <td>1</td>
+                <td><div class="cat-tag cat-veg">Veg</div><div>Paneer Tikka</div></td>
+                <td>Extra Large Tray</td>
+                <td>2</td>
+                <td>$145.00</td>
+                <td>$290.00</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><div class="cat-tag cat-nv">Non-Veg</div><div>Butter Chicken</div></td>
+                <td>Extra Large Tray</td>
+                <td>2</td>
+                <td>$145.00</td>
+                <td>$290.00</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><div class="cat-tag cat-veg">Veg</div><div>Dal Makhani</div></td>
+                <td>Large Tray</td>
+                <td>2</td>
+                <td>$70.00</td>
+                <td>$140.00</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><div class="cat-tag cat-veg">Veg</div><div>Veg Biryani</div></td>
+                <td>Extra Large Tray</td>
+                <td>1</td>
+                <td>$120.00</td>
+                <td>$120.00</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><div class="cat-tag cat-nv">Non-Veg</div><div>Chicken Biryani</div></td>
+                <td>Extra Large Tray</td>
+                <td>2</td>
+                <td>$145.00</td>
+                <td>$290.00</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><div class="cat-tag cat-des">Dessert</div><div>Gulab Jamun</div></td>
+                <td>Extra Large Tray</td>
+                <td>1</td>
+                <td>$110.00</td>
+                <td>$110.00</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><div class="cat-tag cat-des">Dessert</div><div>Kheer</div></td>
+                <td>Large Tray</td>
+                <td>1</td>
+                <td>$75.00</td>
+                <td>$75.00</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td colspan="4" style="color:var(--muted);font-size:11px;">Chafing Dishes — Rotating (3 units × $35)</td>
+                <td>$105.00</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Totals -->
+          <div class="inv-totals">
+            <div class="inv-tot-row"><span class="tot-label">Food Subtotal</span><span class="tot-val">$1,315.00</span></div>
+            <div class="inv-tot-row"><span class="tot-label">Equipment Rental</span><span class="tot-val">$105.00</span></div>
+            <div class="inv-tot-row"><span class="tot-label">Taxes / Service Fees</span><span class="tot-val">—</span></div>
+          </div>
+          <div class="inv-grand">
+            <span>TOTAL AMOUNT</span>
+            <span class="grand-val">$1,420.00</span>
+          </div>
+
+          <!-- Payment summary -->
+          <div class="inv-payment">
+            <div class="inv-pay-block">
+              <div class="inv-pay-label">Total Amount</div>
+              <div class="inv-pay-val val-total">$1,420.00</div>
+            </div>
+            <div class="inv-pay-block">
+              <div class="inv-pay-label">Advance Paid</div>
+              <div class="inv-pay-val val-paid">$500.00</div>
+            </div>
+            <div class="inv-pay-block">
+              <div class="inv-pay-label">Balance Due</div>
+              <div class="inv-pay-val val-due">$920.00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="inv-footer">
+          <div class="thank-you">Thank you for choosing Nidhi Catering! 🙏</div>
+          <div class="footer-note">
+            Payment is due before or on the event date. Please retain this invoice for your records.
+            For questions, contact us at orders@nidhicatering.com or (469) 555-0192.<br/>
+            This quote is valid for 14 days from the issue date.
+          </div>
+          <div class="brand-footer">
+            <div class="dot">NC</div>
+            <span>Nidhi Catering · nidhicatering.com · Dallas, TX</span>
+          </div>
+        </div>
+
+      </div><!-- end invoice-paper -->
+    </div>
+  </div><!-- end preview-pane -->
+
+</div><!-- end workspace -->
+
+<script>
+const BOILERPLATE = `Dear [Customer Name],
+
+Thank you so much for considering Nidhi Catering for your upcoming event. We truly appreciate the opportunity to be a part of your celebration.
+
+Please find your catering quote attached to this email for your review. Should you have any questions or need any changes, please don't hesitate to reach out — we are always happy to help.
+
+We look forward to making your event truly special!
+
+Warm regards,
+Nidhi
+Nidhi Catering
+📞 (469) 555-0192
+🌐 nidhicatering.com`;
+
+function countChars() {
+  const txt = document.getElementById('email-body').innerText;
+  document.getElementById('char-count').textContent = txt.length + ' characters';
+}
+
+function fmt(cmd) { document.execCommand(cmd, false, null); }
+function insertSig() {
+  document.getElementById('email-body').focus();
+  document.execCommand('insertText', false, '\n\nWarm regards,\nNidhi\nNidhi Catering\n📞 (469) 555-0192\n🌐 nidhicatering.com');
+  countChars();
+}
+function clearBody() { document.getElementById('email-body').innerText = ''; countChars(); }
+
+function showConfirm() {
+  const bar = document.getElementById('confirm-bar');
+  bar.classList.add('visible');
+  bar.scrollIntoView({ behavior: 'smooth' });
+}
+function hideConfirm() { document.getElementById('confirm-bar').classList.remove('visible'); }
+function doSend() { alert('✅ Quote sent successfully!\n\nA log entry has been created and the order status has been updated to "Quote Sent".'); hideConfirm(); }
+
+function setChannel(ch) {
+  const isWA = ch === 'whatsapp';
+  // Toggle channel buttons
+  document.getElementById('btn-ch-email').className = 'ch-btn' + (isWA ? '' : ' active-email');
+  document.getElementById('btn-ch-wa').className = 'ch-btn' + (isWA ? ' active-wa' : '');
+  // Show/hide fields
+  document.getElementById('wa-fields-block').classList.toggle('visible', isWA);
+  document.getElementById('email-fields-block').classList.toggle('hidden', isWA);
+  // Swap send buttons
+  document.getElementById('action-send-email').style.display = isWA ? 'none' : '';
+  document.getElementById('action-send-wa').style.display = isWA ? '' : 'none';
+  hideConfirm();
+}
+
+function showConfirmWA() {
+  const num = document.getElementById('wa-number')?.value || '';
+  document.getElementById('confirm-wa-num').textContent = num;
+  const bar = document.getElementById('confirm-wa-bar');
+  bar.classList.add('visible-wa');
+  bar.scrollIntoView({ behavior: 'smooth' });
+}
+
+function doSendWA() {
+  alert('✅ WhatsApp message sent successfully via Twilio!\n\nThe invoice PDF link and order summary have been sent to the client\'s WhatsApp. A delivery receipt will be logged.');
+  document.getElementById('confirm-wa-bar').classList.remove('visible-wa');
+}
+
+function addTag(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim();
+    if (!val) return;
+    const tag = document.createElement('div');
+    tag.className = 'pill-tag';
+    tag.innerHTML = `${val} <span class="x" onclick="removeTag(this)">✕</span>`;
+    e.target.before(tag);
+    e.target.value = '';
+  }
+}
+function removeTag(x) { x.closest('.pill-tag').remove(); }
+
+// Load boilerplate on init
+document.getElementById('email-body').innerText = BOILERPLATE;
+countChars();
+</script>
+</body>
+</html>

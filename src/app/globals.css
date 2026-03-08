@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  body {
+    @apply bg-cream-50 text-navy-500 font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-saffron-500 hover:bg-saffron-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-150 shadow-sm;
+  }
+  .btn-secondary {
+    @apply bg-navy-500 hover:bg-navy-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-150 shadow-sm;
+  }
+  .btn-outline {
+    @apply border-2 border-navy-500 text-navy-500 hover:bg-navy-500 hover:text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-150;
+  }
+  .btn-ghost {
+    @apply text-navy-500 hover:bg-navy-50 px-4 py-2 rounded-lg transition-colors duration-150;
+  }
+  .btn-danger {
+    @apply bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors duration-150;
+  }
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  }
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-saffron-400 focus:border-transparent transition-all;
+  }
+  .label {
+    @apply block text-sm font-medium text-navy-500 mb-1;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+}
+
+/* Print styles — same format with tables and logo */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  body {
+    background: white !important;
+  }
+  /* Keep logo, cards, and tables intact when printing / saving as PDF */
+  .print-keep-together {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .print-bg {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4c4c4;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
