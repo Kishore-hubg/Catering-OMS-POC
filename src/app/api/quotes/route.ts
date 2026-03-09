@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { OrderService } from '@/lib/services/OrderService';
 import { getQuoteHTML } from '@/lib/services/QuoteService';
 
+export const dynamic = 'force-dynamic';
+
 const HTML_ERROR_PAGE = (message: string) => `
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"/><title>Quote</title><style>

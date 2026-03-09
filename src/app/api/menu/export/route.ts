@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { MenuService } from '@/lib/services/MenuService';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/menu/export
  * Returns the full menu (including inactive) as JSON for backup.

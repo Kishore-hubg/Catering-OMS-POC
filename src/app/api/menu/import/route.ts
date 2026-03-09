@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { MenuService } from '@/lib/services/MenuService';
 import type { MenuType } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 const MENU_TYPES: MenuType[] = [
   'Veg Menu',
   'Non-Veg Menu',

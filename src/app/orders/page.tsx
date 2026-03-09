@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { Suspense, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { formatCurrency, formatDate, getStatusColor, cn } from '@/lib/utils/format';
@@ -94,6 +94,14 @@ function downloadCSV(content: string, filename: string) {
 }
 
 export default function OrdersPage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-gray-400">Loading…</div>}>
+      <OrdersPageInner />
+    </Suspense>
+  );
+}
+
+function OrdersPageInner() {
   const searchParams = useSearchParams();
   const initialStatus = searchParams.get('status') || '';
 
