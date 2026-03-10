@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import {
@@ -1371,7 +1371,7 @@ function StepReview() {
 
 const STEPS = ['Customer & Event', 'Menu & Equipment', 'Payment & Review'];
 
-export default function NewOrderPage() {
+function NewOrderPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
@@ -1748,5 +1748,13 @@ export default function NewOrderPage() {
       </>
       )}
     </div>
+  );
+}
+
+export default function NewOrderPage() {
+  return (
+    <Suspense fallback={<div className="p-6 text-gray-400">Loading…</div>}>
+      <NewOrderPageInner />
+    </Suspense>
   );
 }
