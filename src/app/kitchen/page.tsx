@@ -119,7 +119,7 @@ function buildWeeklyPlanCSV(
   rows.push('');
 
   rows.push('CATEGORY BREAKDOWN — PREP QUANTITIES');
-  rows.push(['Menu Type', 'Category', 'Item Name', 'Size / Option', 'Total Qty', 'Total Amount'].join(','));
+  rows.push(['Menu Type', 'Category', 'Item Name', 'Size / Option', 'Total Qty'].join(','));
   breakdownByType.forEach((typeRows) => {
     typeRows.forEach((r) => {
       rows.push(
@@ -129,7 +129,6 @@ function buildWeeklyPlanCSV(
           csvEscape(r.name),
           csvEscape(r.sizeOption),
           r.quantity,
-          r.lineTotal > 0 ? formatCurrency(r.lineTotal) : '',
         ].join(',')
       );
     });
@@ -627,7 +626,6 @@ export default function KitchenPage() {
                 .map(([menuType, rows]) => {
                   const panel = MENU_TYPE_PANEL[menuType];
                   const totalQty = rows.reduce((s, r) => s + r.quantity, 0);
-                  const totalDollar = rows.reduce((s, r) => s + r.lineTotal, 0);
                   // Group rows by category (sub-category) for structure: category → item list
                   const byCategory = new Map<string, typeof rows>();
                   rows.forEach((r) => {
@@ -648,52 +646,54 @@ export default function KitchenPage() {
                         </h3>
                       </div>
                       <div className="divide-y divide-gray-200">
-                        {/* Table header: Item Name + Qty only (no trays/unit column) */}
-                        <div className="grid grid-cols-[1fr_80px_80px] gap-0 bg-gray-100 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+                        {/* Table header: Item Name + Qty only (no dollar amounts) */}
+                        <div className="grid grid-cols-[1fr_80px] gap-0 bg-gray-100 text-[10px] font-bold uppercase tracking-wider text-gray-500">
                           <div className="py-2 px-3 border-r border-gray-200">Item Name</div>
-                          <div className="py-2 px-3 border-r border-gray-200 text-center">Qty</div>
-                          <div className="py-2 px-3 text-right">Subtotal</div>
+                          <div className="py-2 px-3 text-center">Qty</div>
                         </div>
                         {/* Sub-categories with item list (same structure as reference) */}
                         {categoryOrder.map((cat) => (
                           <div key={cat}>
-                            <div className={cn(
-                              'px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border-b border-gray-200',
-                              menuType === 'Veg Menu' && 'bg-emerald-50 text-emerald-800',
-                              menuType === 'Non-Veg Menu' && 'bg-red-50 text-red-800',
-                              menuType === 'Desserts' && 'bg-violet-50 text-violet-800',
-                              menuType === 'Puja Food' && 'bg-sky-50 text-sky-800',
-                              !['Veg Menu', 'Non-Veg Menu', 'Desserts', 'Puja Food'].includes(menuType) && 'bg-gray-100 text-gray-700'
-                            )}>
+                            <div
+                              className={cn(
+                                'px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider border-b border-gray-200',
+                                menuType === 'Veg Menu' && 'bg-emerald-50 text-emerald-800',
+                                menuType === 'Non-Veg Menu' && 'bg-red-50 text-red-800',
+                                menuType === 'Desserts' && 'bg-violet-50 text-violet-800',
+                                menuType === 'Puja Food' && 'bg-sky-50 text-sky-800',
+                                !['Veg Menu', 'Non-Veg Menu', 'Desserts', 'Puja Food'].includes(menuType) && 'bg-gray-100 text-gray-700'
+                              )}
+                            >
                               {cat}
                             </div>
                             {byCategory.get(cat)!.map((row, i) => (
                               <div
                                 key={`${row.name}-${row.sizeOption}-${i}`}
                                 className={cn(
-                                  'grid grid-cols-[1fr_80px_80px] gap-0 text-xs border-b border-gray-100',
+                                  'grid grid-cols-[1fr_80px] gap-0 text-xs border-b border-gray-100',
                                   i % 2 === 1 && 'bg-cream-50/50'
                                 )}
                               >
                                 <div className="py-2.5 px-3 border-r border-gray-100 font-semibold text-navy-600">
                                   {row.name}
                                 </div>
-                                <div className="py-2.5 px-3 border-r border-gray-100 text-center font-bold text-navy-600">
+                                <div className="py-2.5 px-3 text-center font-bold text-navy-600">
                                   {row.quantity}
-                                </div>
-                                <div className="py-2.5 px-3 text-right font-semibold text-emerald-600">
-                                  {row.lineTotal > 0 ? formatCurrency(row.lineTotal) : '—'}
                                 </div>
                               </div>
                             ))}
                           </div>
                         ))}
-                        <div className={cn('grid grid-cols-[1fr_80px_80px] gap-0 font-bold text-sm border-t-2 border-gray-200', panel.totalClass)}>
+                        <div
+                          className={cn(
+                            'grid grid-cols-[1fr_80px] gap-0 font-bold text-sm border-t-2 border-gray-200',
+                            panel.totalClass
+                          )}
+                        >
                           <div className="py-2.5 px-3">
                             {menuType.toUpperCase().replace('-', ' ')} TOTAL
                           </div>
                           <div className="py-2.5 px-3 text-center">{totalQty}</div>
-                          <div className="py-2.5 px-3 text-right">{formatCurrency(totalDollar)}</div>
                         </div>
                       </div>
                     </div>

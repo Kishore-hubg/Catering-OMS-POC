@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import {
   useOrderWizard,
@@ -14,12 +14,41 @@ import {
   getMenuTypeColor,
   cn,
 } from '@/lib/utils/format';
-import type { MenuItem, MenuType, OrderLineItem } from '@/types';
+import { CustomerSchema } from '@/lib/validations';
+import type { MenuItem, MenuType, OrderLineItem, Order } from '@/types';
+
+const CustomerEmailSchema = CustomerSchema.pick({ email: true });
+const CustomerPhoneSchema = CustomerSchema.pick({ phone: true });
 
 /* ---------- Step components ---------- */
 
 function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
   const { customer, setCustomer } = useOrderWizard();
+  const [customerErrors, setCustomerErrors] = useState<{
+    email?: string;
+    phone?: string;
+  }>({});
+
+  const validateEmail = (value: string) => {
+    const result = CustomerEmailSchema.safeParse({ email: value });
+    setCustomerErrors((prev) => ({
+      ...prev,
+      email: result.success
+        ? undefined
+        : result.error.flatten().fieldErrors.email?.[0],
+    }));
+  };
+
+  const validatePhone = (value: string) => {
+    const result = CustomerPhoneSchema.safeParse({ phone: value });
+    setCustomerErrors((prev) => ({
+      ...prev,
+      phone: result.success
+        ? undefined
+        : result.error.flatten().fieldErrors.phone?.[0],
+    }));
+  };
+
   return (
     <div className="space-y-4">
       {showTitle && (
@@ -43,10 +72,20 @@ function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
           </label>
           <input
             className="input-field"
+            type="tel"
             value={customer.phone}
-            onChange={(e) => setCustomer({ phone: e.target.value })}
+            onChange={(e) => {
+              const value = e.target.value;
+              setCustomer({ phone: value });
+            }}
+            onBlur={(e) => validatePhone(e.target.value)}
             placeholder="(___) ___-____"
           />
+          {customerErrors.phone && (
+            <p className="mt-1 text-xs text-red-500">
+              {customerErrors.phone}
+            </p>
+          )}
         </div>
         <div>
           <label className="label">Email Address</label>
@@ -54,9 +93,22 @@ function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
             className="input-field"
             type="email"
             value={customer.email}
-            onChange={(e) => setCustomer({ email: e.target.value })}
+            onChange={(e) => {
+              const value = e.target.value;
+              setCustomer({ email: value });
+            }}
+            onBlur={(e) => validateEmail(e.target.value)}
             placeholder="email@example.com"
           />
+          <p className="mt-1 text-[11px] text-gray-500">
+            Double-check this email. If it is incorrect, false responses will
+            propagate to the wrong customer.
+          </p>
+          {customerErrors.email && (
+            <p className="mt-1 text-xs text-red-500">
+              {customerErrors.email}
+            </p>
+          )}
         </div>
         <div>
           <label className="label">Address</label>
@@ -461,6 +513,26 @@ const ADDITIONAL_EQUIPMENT_ICONS: Record<string, string> = {
   'Extension Cords / Power': '💡',
 };
 
+const TRASH_CATEGORY_CODES = new Set(['15', '31', '53', '85']);
+
+type PricingOption = MenuItem['pricingOptions'][number];
+
+const dedupePricingOptions = (
+  options: PricingOption[]
+): { opt: PricingOption; index: number }[] => {
+  const seen = new Set<string>();
+  const result: { opt: PricingOption; index: number }[] = [];
+
+  options.forEach((opt, index) => {
+    const key = `${opt.sizeOption}|${opt.unit || ''}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    result.push({ opt, index });
+  });
+
+  return result;
+};
+
 function StepMenuItems() {
   const {
     lineItems,
@@ -503,6 +575,8 @@ function StepMenuItems() {
     const seen = new Set<string>();
     const out: { value: string; label: string }[] = [];
     menuItems.forEach((i) => {
+      const categoryTrimmed = (i.category || '').toString().trim();
+      if (TRASH_CATEGORY_CODES.has(categoryTrimmed)) return;
       const key = `${i.menuType}|${i.category}`;
       if (seen.has(key)) return;
       seen.add(key);
@@ -578,23 +652,22 @@ function StepMenuItems() {
     const item = menuItems.find((m) => m._id === menuId);
     if (!item) return;
     const opt = item.pricingOptions[0];
-    if (!opt) return;
 
     const current = lineItems[index];
     const quantity = current?.quantity || item.minOrder || 1;
-    const unitPrice = opt.price || 0;
+    const unitPrice = opt?.price || 0;
 
     updateLineItem(index, {
       menuItemId: item._id,
       menuItemName: item.name,
       menuType: item.menuType,
       category: item.category,
-      sizeOption: opt.sizeOption,
-      unit: opt.unit,
+      sizeOption: opt?.sizeOption || 'Quote',
+      unit: opt?.unit || item.minOrderUnit || 'each',
       quantity,
       unitPrice,
       lineTotal: quantity * unitPrice,
-      isQuoteBased: item.isQuoteBased,
+      isQuoteBased: item.isQuoteBased ?? !opt,
     });
   };
 
@@ -714,12 +787,18 @@ function StepMenuItems() {
               );
               const selectedMenuItemId = item.menuItemId || '';
               const selectedMenu = menuItems.find((m) => m._id === selectedMenuItemId);
+              const uniquePricingOptions = selectedMenu
+                ? dedupePricingOptions(selectedMenu.pricingOptions)
+                : [];
               const selectedOptIndex = selectedMenu
                 ? selectedMenu.pricingOptions.findIndex(
                     (opt) => opt.sizeOption === item.sizeOption && opt.price === item.unitPrice
                   )
                 : -1;
-              const effectiveOptIndex = selectedOptIndex >= 0 ? selectedOptIndex : 0;
+              const effectiveOptIndex =
+                selectedOptIndex >= 0
+                  ? selectedOptIndex
+                  : uniquePricingOptions[0]?.index ?? 0;
 
               return (
                 <tr key={idx} className="border-b border-gray-100">
@@ -757,13 +836,13 @@ function StepMenuItems() {
                     </div>
                   </td>
                   <td className="py-2 px-3 align-top">
-                    {selectedMenu && selectedMenu.pricingOptions.length > 1 ? (
+                    {selectedMenu && uniquePricingOptions.length > 1 ? (
                       <select
                         className="input-field text-xs"
                         value={effectiveOptIndex}
                         onChange={(e) => handleSizeOptionChange(idx, e.target.value)}
                       >
-                        {selectedMenu.pricingOptions.map((opt, oi) => (
+                        {uniquePricingOptions.map(({ opt, index: oi }) => (
                           <option key={oi} value={oi}>
                             {opt.sizeOption}
                           </option>
@@ -845,26 +924,6 @@ function StepMenuItems() {
         </div>
       </div>
 
-      {/* Totals summary matching design */}
-      <div className="mt-4 rounded-xl bg-navy-500 text-white px-6 py-4 space-y-1">
-        <div className="flex justify-between text-sm">
-          <span className="text-navy-100">Subtotal (Food)</span>
-          <span>{formatCurrency(getSubtotal())}</span>
-        </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-navy-100">Equipment (if any)</span>
-          <span>{formatCurrency(equipmentTotal)}</span>
-        </div>
-        <div className="flex justify-between text-sm border-b border-navy-400 pb-2 mb-1">
-          <span className="text-navy-100">Taxes / Fees</span>
-          <span>{formatCurrency(getTax())}</span>
-        </div>
-        <div className="flex justify-between text-lg font-extrabold">
-          <span className="text-gold-300">ESTIMATED TOTAL</span>
-          <span className="text-gold-300">{formatCurrency(getTotal())}</span>
-        </div>
-      </div>
-
       {/* Equipment & Extras card */}
       <div className="mt-8 card">
         <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
@@ -893,8 +952,6 @@ function StepMenuItems() {
                     <th className="py-2 px-3">Quantity</th>
                     <th className="py-2 px-3">Unit Rental ($)</th>
                     <th className="py-2 px-3">Rental Total</th>
-                    <th className="py-2 px-3">Return Date</th>
-                    <th className="py-2 px-3">Return Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -945,29 +1002,6 @@ function StepMenuItems() {
                         {row.include && row.quantity > 0
                           ? formatCurrency(row.quantity * row.unitRental)
                           : '$0.00'}
-                      </td>
-                      <td className="py-2 px-3">
-                        <input
-                          type="date"
-                          className="input-field text-xs w-36"
-                          value={row.returnDate}
-                          onChange={(e) =>
-                            setChafingRow(idx, { returnDate: e.target.value })
-                          }
-                        />
-                      </td>
-                      <td className="py-2 px-3">
-                        <select
-                          className="input-field text-xs w-28"
-                          value={row.returnStatus}
-                          onChange={(e) =>
-                            setChafingRow(idx, { returnStatus: e.target.value })
-                          }
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Returned">Returned</option>
-                          <option value="Overdue">Overdue</option>
-                        </select>
                       </td>
                     </tr>
                   ))}
@@ -1153,6 +1187,26 @@ function StepMenuItems() {
           </div>
         </div>
       </div>
+
+      {/* Totals summary matching design */}
+      <div className="mt-4 rounded-xl bg-navy-500 text-white px-6 py-4 space-y-1">
+        <div className="flex justify-between text-sm">
+          <span className="text-navy-100">Subtotal (Food)</span>
+          <span>{formatCurrency(getSubtotal())}</span>
+        </div>
+        <div className="flex justify-between text-sm">
+          <span className="text-navy-100">Other / Additional Equipment</span>
+          <span>{formatCurrency(equipmentTotal)}</span>
+        </div>
+        <div className="flex justify-between text-sm border-b border-navy-400 pb-2 mb-1">
+          <span className="text-navy-100">Taxes / Fees</span>
+          <span>{formatCurrency(getTax())}</span>
+        </div>
+        <div className="flex justify-between text-lg font-extrabold">
+          <span className="text-gold-300">ESTIMATED TOTAL</span>
+          <span className="text-gold-300">{formatCurrency(getTotal())}</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1319,17 +1373,87 @@ const STEPS = ['Customer & Event', 'Menu & Equipment', 'Payment & Review'];
 
 export default function NewOrderPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get('orderId');
+  const isEditMode = !!orderId;
+
   const store = useOrderWizard();
   const [submitting, setSubmitting] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   const [now, setNow] = useState(() => new Date());
+  const [editOrderLoading, setEditOrderLoading] = useState(isEditMode);
+  const [editOrderNumber, setEditOrderNumber] = useState<string | null>(null);
 
-  // Reset wizard on mount
+  // Hydrate from existing order when editing; otherwise reset wizard on mount
   useEffect(() => {
-    store.reset();
-    setLastSavedAt(new Date());
+    if (orderId) {
+      let cancelled = false;
+      setEditOrderLoading(true);
+      fetch(`/api/orders/${orderId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (cancelled || !data.success || !data.data) return;
+          const order = data.data as Order;
+          setEditOrderNumber(order.orderNumber);
+          store.reset();
+          store.setCustomer({
+            name: order.customer.name ?? '',
+            email: order.customer.email ?? '',
+            phone: order.customer.phone ?? '',
+            address: order.customer.address ?? '',
+            dietaryNotes: order.customer.dietaryNotes ?? '',
+          });
+          const rawDate = order.event.eventDate;
+          const eventDateStr =
+            typeof rawDate === 'string'
+              ? rawDate.slice(0, 10)
+              : rawDate
+                ? new Date(rawDate).toISOString().slice(0, 10)
+                : '';
+          store.setEvent({
+            ...order.event,
+            eventDate: eventDateStr,
+            eventTime: order.event.eventTime ?? '',
+            eventType: order.event.eventType ?? '',
+            guestCount: order.event.guestCount,
+            venue: order.event.venue ?? '',
+            deliveryType: order.event.deliveryType,
+            deliveryAddress: order.event.deliveryAddress ?? '',
+            deliveryNotes: order.event.deliveryNotes ?? '',
+            deliveryCity: order.event.deliveryCity ?? '',
+            deliveryState: order.event.deliveryState ?? '',
+            deliveryZip: order.event.deliveryZip ?? '',
+            setupTimeOption: order.event.setupTimeOption ?? '',
+            liveSetupArrivalTime: order.event.liveSetupArrivalTime ?? '',
+            liveStaffCount: order.event.liveStaffCount,
+            liveKitchenType: order.event.liveKitchenType ?? '',
+            liveSetupNotes: order.event.liveSetupNotes ?? '',
+            eventNotes: order.event.eventNotes ?? '',
+          });
+          order.lineItems.forEach((li) => store.addLineItem(li));
+          store.setDiscount(order.discount ?? 0);
+          store.setDiscountType(order.discountType ?? 'flat');
+          store.setDeliveryFee(order.deliveryFee ?? 0);
+          store.setTaxRate(order.taxRate ?? 8.25);
+          store.setAdvancePayment(order.advancePayment ?? 0);
+          store.setAdminNotes(order.adminNotes ?? '');
+          setLastSavedAt(new Date());
+        })
+        .catch(() => {
+          if (!cancelled) toast.error('Failed to load order');
+        })
+        .finally(() => {
+          if (!cancelled) setEditOrderLoading(false);
+        });
+      return () => {
+        cancelled = true;
+      };
+    } else {
+      store.reset();
+      setLastSavedAt(new Date());
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [orderId]);
 
   // Update "seconds ago" every second
   useEffect(() => {
@@ -1419,19 +1543,29 @@ export default function NewOrderPage() {
         return;
       }
 
-      const res = await fetch('/api/orders', {
-        method: 'POST',
+      const url = isEditMode ? `/api/orders/${orderId}` : '/api/orders';
+      const method = isEditMode ? 'PUT' : 'POST';
+      const body = isEditMode
+        ? { ...payload, changeReason: 'Edited via Order History' }
+        : payload;
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
 
       const data = await res.json();
 
       if (data.success) {
-        toast.success(redirectToQuote ? `Order ${data.data.orderNumber} created!` : 'Draft saved.');
+        toast.success(
+          isEditMode ? 'Order updated.' : redirectToQuote ? `Order ${data.data.orderNumber} created!` : 'Draft saved.'
+        );
         setLastSavedAt(new Date());
         store.reset();
-        if (redirectToQuote) {
+        if (isEditMode) {
+          router.push('/orders');
+        } else if (redirectToQuote) {
           router.push(`/orders/${data.data._id}?sendQuote=1`);
         } else {
           router.push('/orders');
@@ -1459,17 +1593,31 @@ export default function NewOrderPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-extrabold text-navy-500 flex items-center gap-3">
-            New Catering Order
-            <span className="badge bg-saffron-50 text-saffron-700 border border-saffron-200">
-              Draft
-            </span>
+            {isEditMode ? 'Edit Catering Order' : 'New Catering Order'}
+            {isEditMode && editOrderNumber ? (
+              <span className="badge bg-navy-100 text-navy-700 border border-navy-200">
+                {editOrderNumber}
+              </span>
+            ) : (
+              !isEditMode && (
+                <span className="badge bg-saffron-50 text-saffron-700 border border-saffron-200">
+                  Draft
+                </span>
+              )
+            )}
           </h1>
           <p className="text-xs text-gray-500 mt-1">
-            Fill in all required fields. Order will be saved automatically as you type.
+            {isEditMode
+              ? 'Update details below and save to apply changes.'
+              : 'Fill in all required fields. Order will be saved automatically as you type.'}
           </p>
         </div>
       </div>
 
+      {editOrderLoading ? (
+        <div className="text-center py-12 text-gray-500">Loading order...</div>
+      ) : (
+        <>
       {/* Step indicator - horizontal bar similar to HTML mockup */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 flex overflow-hidden">
         {STEPS.map((step, i) => {
@@ -1563,7 +1711,7 @@ export default function NewOrderPage() {
                   disabled={submitting}
                   className="btn-outline disabled:opacity-50"
                 >
-                  {submitting ? 'Saving...' : 'Save Draft'}
+                  {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Draft'}
                 </button>
                 <button
                   onClick={store.nextStep}
@@ -1581,8 +1729,9 @@ export default function NewOrderPage() {
                   disabled={submitting || !canProceed()}
                   className="btn-outline disabled:opacity-50"
                 >
-                  {submitting ? 'Saving...' : 'Save Draft'}
+                  {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Draft'}
                 </button>
+                {!isEditMode && (
                 <button
                   onClick={() => handleSubmit(true)}
                   disabled={submitting || !canProceed()}
@@ -1590,11 +1739,14 @@ export default function NewOrderPage() {
                 >
                   {submitting ? 'Saving...' : 'Generate Quote & Email →'}
                 </button>
+                )}
               </>
             )}
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }

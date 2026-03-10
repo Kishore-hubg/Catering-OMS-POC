@@ -416,7 +416,7 @@ function OrdersPageInner() {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
                           <Link
-                            href={`/orders/${order._id}`}
+                            href={`/orders/new?orderId=${order._id}`}
                             className="p-1.5 rounded text-saffron-600 hover:bg-saffron-100"
                             title="Edit"
                           >

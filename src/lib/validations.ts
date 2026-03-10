@@ -24,8 +24,26 @@ export const DeliveryTypeEnum = z.enum(['pickup', 'delivery', 'live']);
 // Customer validation
 export const CustomerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.union([z.string().email(), z.literal('')]).optional().default(''),
-  phone: z.string().min(10, 'Phone must be at least 10 digits'),
+  email: z
+    .union([
+      z
+        .string()
+        .trim()
+        .email(
+          'Enter a valid email address – if this is wrong, false responses will propagate to the wrong customer.'
+        )
+        .max(254, 'Email is too long'),
+      z.literal(''),
+    ])
+    .optional()
+    .default(''),
+  phone: z
+    .string()
+    .trim()
+    .regex(
+      /^\+?[0-9()\-\s]{7,20}$/,
+      'Enter a valid mobile number with country code (e.g. +1 469 555 1234)'
+    ),
   address: z.string().optional(),
   dietaryNotes: z.string().optional(),
 });

@@ -54,16 +54,9 @@ export function getMenuTypeColor(menuType: string): string {
 }
 
 export function getMenuTypeIcon(menuType: string): string {
-  const icons: Record<string, string> = {
-    'Veg Menu': '🥬',
-    'Non-Veg Menu': '🍗',
-    'Desserts': '🍮',
-    'Puja Food': '🪔',
-    'Live Catering': '👨‍🍳',
-    'Chafing Dishes': '🍲',
-    'Disposable Plates': '🍽️',
-  };
-  return icons[menuType] || '📋';
+  // Emojis before item names have been removed to avoid confusion.
+  // Keep function for API compatibility but return an empty string.
+  return '';
 }
 
 export function cn(...classes: (string | boolean | undefined | null)[]): string {

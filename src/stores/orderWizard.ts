@@ -7,8 +7,6 @@ export interface ChafingRow {
   include: boolean;
   quantity: number;
   unitRental: number;
-  returnDate: string;
-  returnStatus: string;
 }
 
 export interface DisposableRow {
@@ -21,8 +19,8 @@ export interface DisposableRow {
 }
 
 const CHAFING_ROWS: ChafingRow[] = [
-  { id: 'chafing-economic', typeLabel: 'Economic Chafing Dish', include: false, quantity: 0, unitRental: 10, returnDate: '', returnStatus: 'Pending' },
-  { id: 'chafing-rotating', typeLabel: 'Rotating Chafing Dish', include: false, quantity: 0, unitRental: 25, returnDate: '', returnStatus: 'Pending' },
+  { id: 'chafing-economic', typeLabel: 'Economic Chafing Dish', include: false, quantity: 0, unitRental: 10 },
+  { id: 'chafing-rotating', typeLabel: 'Rotating Chafing Dish', include: false, quantity: 0, unitRental: 25 },
 ];
 
 const DISPOSABLE_ROWS: DisposableRow[] = [
@@ -307,7 +305,6 @@ export const useOrderWizard = create<OrderWizardState>((set, get) => ({
           quantity: r.quantity,
           unitPrice: r.unitRental,
           lineTotal: r.quantity * r.unitRental,
-          notes: r.returnDate ? `Return: ${r.returnDate} (${r.returnStatus})` : undefined,
         });
       }
     });
