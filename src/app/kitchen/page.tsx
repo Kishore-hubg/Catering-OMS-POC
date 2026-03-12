@@ -119,20 +119,44 @@ function buildWeeklyPlanCSV(
   rows.push('');
 
   rows.push('CATEGORY BREAKDOWN — PREP QUANTITIES');
-  rows.push(['Menu Type', 'Category', 'Item Name', 'Size / Option', 'Total Qty'].join(','));
-  breakdownByType.forEach((typeRows) => {
-    typeRows.forEach((r) => {
-      rows.push(
-        [
-          csvEscape(r.menuType),
-          csvEscape(r.category),
-          csvEscape(r.name),
-          csvEscape(r.sizeOption),
-          r.quantity,
-        ].join(',')
-      );
+
+  // Match the printed breakdown structure: panels per menu type, categories, then items with Qty only.
+  Array.from(breakdownByType.entries())
+    .filter(([menuType]) => MENU_TYPE_PANEL[menuType])
+    .forEach(([menuType, typeRows]) => {
+      const panel = MENU_TYPE_PANEL[menuType];
+      const totalQty = typeRows.reduce((s, r) => s + r.quantity, 0);
+
+      // Group by category, reusing the same structure as the on-screen layout
+      const byCategory = new Map<string, BreakdownRow[]>();
+      typeRows.forEach((r) => {
+        const cat = r.category?.trim() || 'Other';
+        if (!byCategory.has(cat)) byCategory.set(cat, []);
+        byCategory.get(cat)!.push(r);
+      });
+      const categoryOrder = Array.from(byCategory.keys()).sort((a, b) => a.localeCompare(b));
+
+      // Spacer row between panels
+      rows.push('');
+      // Panel title (e.g. "NON-VEGETARIAN ITEMS")
+      rows.push(((panel?.label || menuType) + ' ITEMS').toUpperCase());
+      // Column header consistent with print view
+      rows.push(['ITEM NAME', 'QTY'].join(','));
+
+      // Category headers and item rows
+      categoryOrder.forEach((cat) => {
+        rows.push(cat.toUpperCase());
+        byCategory.get(cat)!.forEach((r) => {
+          rows.push([csvEscape(r.name), r.quantity].join(','));
+        });
+      });
+
+      // Total row per menu type (e.g. "NON VEG MENU TOTAL,12")
+      rows.push([
+        `${menuType.toUpperCase().replace('-', ' ')} TOTAL`,
+        totalQty,
+      ].join(','));
     });
-  });
   return rows.join('\r\n');
 }
 

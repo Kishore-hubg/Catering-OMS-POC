@@ -11,7 +11,6 @@ const navItems = [
   { href: '/orders', label: 'Orders' },
   { href: '/send-quote', label: 'Send Quote' },
   { href: '/kitchen', label: 'Weekly Plan' },
-  { href: '/reports', label: 'Reports' },
 ];
 
 export function Topbar() {

@@ -3,11 +3,7 @@
 import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
-import {
-  useOrderWizard,
-  LIVE_STATION_OPTIONS,
-  ADDITIONAL_EQUIPMENT_OPTIONS,
-} from '@/stores/orderWizard';
+import { useOrderWizard } from '@/stores/orderWizard';
 import {
   formatCurrency,
   getMenuTypeIcon,
@@ -494,26 +490,17 @@ function StepCustomerAndEvent() {
   );
 }
 
-const LIVE_STATION_ICONS: Record<string, string> = {
-  'Chaat Station': '🥘',
-  'Biryani Station': '🍛',
-  'Roti / Paratha Station': '🫓',
-  'Dessert / Halwa Station': '🍰',
-  'Indo-Chinese Station': '🥢',
-  'Indo-Mexican Station': '🌯',
-  'Pizza / Fusion Oven': '🍕',
-  'Pasta Station': '🍝',
-};
-
-const ADDITIONAL_EQUIPMENT_ICONS: Record<string, string> = {
-  'Sterno / Fuel Cans': '🔥',
-  'Serving Spoon Sets': '🧂',
-  'Cooler / Ice Chest': '🪣',
-  'Table Covers / Linens': '🧻',
-  'Extension Cords / Power': '💡',
-};
-
 const TRASH_CATEGORY_CODES = new Set(['15', '31', '53', '85']);
+
+// Only include core food offerings in the main menu selection table.
+// Equipment / stations (e.g. Live Catering, Chafing Dishes, Disposable Plates)
+// are handled separately and should not appear in the dropdown.
+const CORE_MENU_TYPES = new Set<MenuType>([
+  'Veg Menu',
+  'Non-Veg Menu',
+  'Desserts',
+  'Puja Food',
+]);
 
 type PricingOption = MenuItem['pricingOptions'][number];
 
@@ -545,14 +532,6 @@ function StepMenuItems() {
     setChafingRow,
     disposableRows,
     setDisposableRow,
-    liveStations,
-    toggleLiveStation,
-    liveStationNotes,
-    setLiveStationNotes,
-    additionalEquipment,
-    toggleAdditionalEquipment,
-    additionalEquipmentNotes,
-    setAdditionalEquipmentNotes,
     equipmentTotal,
     getTax,
     getTotal,
@@ -575,6 +554,8 @@ function StepMenuItems() {
     const seen = new Set<string>();
     const out: { value: string; label: string }[] = [];
     menuItems.forEach((i) => {
+      // Skip non-core types like Live Catering / equipment categories
+      if (!CORE_MENU_TYPES.has(i.menuType as MenuType)) return;
       const categoryTrimmed = (i.category || '').toString().trim();
       if (TRASH_CATEGORY_CODES.has(categoryTrimmed)) return;
       const key = `${i.menuType}|${i.category}`;
@@ -716,23 +697,22 @@ function StepMenuItems() {
       toast.error('Menu has not loaded yet.');
       return;
     }
-    const item = menuItems[0];
-    const opt = item.pricingOptions[0] || { sizeOption: 'Custom', unit: 'each', price: 0 };
-    const quantity = item.minOrder || 1;
-    const unitPrice = opt.price || 0;
-    const newItem: OrderLineItem = {
-      menuItemId: item._id,
-      menuItemName: item.name,
-      menuType: item.menuType,
-      category: item.category,
-      sizeOption: opt.sizeOption,
-      unit: opt.unit,
-      quantity,
-      unitPrice,
-      lineTotal: quantity * unitPrice,
-      isQuoteBased: item.isQuoteBased,
-    };
-    addLineItem(newItem);
+    // Start with an empty row so the user explicitly selects category, item, and size.
+    const blankItem = {
+      menuItemId: '',
+      menuItemName: '',
+      // menuType intentionally left undefined at runtime; it will be set when a category/item is chosen.
+      menuType: undefined as unknown as MenuType,
+      category: '',
+      sizeOption: '',
+      unit: '',
+      quantity: 0,
+      unitPrice: 0,
+      lineTotal: 0,
+      isQuoteBased: false,
+      notes: '',
+    } as unknown as OrderLineItem;
+    addLineItem(blankItem);
   };
 
   const handleAddItem = (item: MenuItem, optionIndex: number) => {
@@ -1097,94 +1077,8 @@ function StepMenuItems() {
             </div>
           </div>
 
-          {/* 3 · Live Catering Stations */}
-          <div>
-            <div className="text-sm font-semibold text-gray-700 mb-2">
-              3 · Live Catering Stations
-            </div>
-            <p className="text-xs text-gray-500 mb-3">
-              Only applicable for Live Catering events. Select all stations required at the venue.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Stations Required</label>
-                <div className="flex flex-wrap gap-2">
-                  {LIVE_STATION_OPTIONS.map((station) => (
-                    <label
-                      key={station}
-                      className={cn(
-                        'inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-sm cursor-pointer transition-colors',
-                        liveStations.includes(station)
-                          ? 'bg-amber-50 border-amber-300 text-amber-800'
-                          : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-                      )}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={liveStations.includes(station)}
-                        onChange={() => toggleLiveStation(station)}
-                        className="rounded border-gray-300 text-amber-600 focus:ring-amber-500 sr-only"
-                      />
-                      <span>{LIVE_STATION_ICONS[station] || '•'}</span>
-                      <span>{station}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <label className="label">Station Notes</label>
-                <textarea
-                  className="input-field min-h-[100px]"
-                  placeholder="Staffing notes, space requirements, power needs, special instructions…"
-                  value={liveStationNotes}
-                  onChange={(e) => setLiveStationNotes(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* 4 · Other / Additional Equipment */}
-          <div>
-            <div className="text-sm font-semibold text-gray-700 mb-2">
-              4 · Other / Additional Equipment
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="label">Additional Items Needed</label>
-                <div className="flex flex-wrap gap-2">
-                  {ADDITIONAL_EQUIPMENT_OPTIONS.map((item) => (
-                    <label
-                      key={item}
-                      className={cn(
-                        'inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-sm cursor-pointer transition-colors',
-                        additionalEquipment.includes(item)
-                          ? 'bg-amber-50 border-amber-300 text-amber-800'
-                          : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
-                      )}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={additionalEquipment.includes(item)}
-                        onChange={() => toggleAdditionalEquipment(item)}
-                        className="rounded border-gray-300 text-amber-600 focus:ring-amber-500 sr-only"
-                      />
-                      <span>{ADDITIONAL_EQUIPMENT_ICONS[item] || '•'}</span>
-                      <span>{item}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <label className="label">Notes on Additional Items</label>
-                <textarea
-                  className="input-field min-h-[100px]"
-                  placeholder="Any additional equipment or special requests not listed above…"
-                  value={additionalEquipmentNotes}
-                  onChange={(e) => setAdditionalEquipmentNotes(e.target.value)}
-                />
-              </div>
-            </div>
-          </div>
+          {/* Sections 3 & 4 (Live Catering Stations and Other / Additional Equipment)
+              have been removed because they do not carry billable dollar amounts. */}
         </div>
       </div>
 
