@@ -112,7 +112,7 @@ const OrderSchema = new Schema(
     balanceDue: { type: Number, default: 0 },
     status: {
       type: String,
-      enum: ['draft', 'quoted', 'confirmed', 'completed', 'cancelled'],
+      enum: ['draft', 'quoted', 'quote_pending', 'confirmed', 'completed', 'cancelled'],
       default: 'draft',
       index: true,
     },

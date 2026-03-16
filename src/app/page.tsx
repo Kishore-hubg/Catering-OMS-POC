@@ -79,24 +79,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Status Breakdown */}
-      <div className="grid grid-cols-5 gap-4 mb-8">
-        {['draft', 'quoted', 'confirmed', 'completed', 'cancelled'].map((status) => (
-          <Link
-            key={status}
-            href={`/orders?status=${status}`}
-            className="card hover:shadow-md transition-shadow cursor-pointer"
-          >
-            <div className="flex items-center justify-between">
-              <span className={`badge ${getStatusColor(status)}`}>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </span>
-              <span className="text-2xl font-bold">{counts[status] || 0}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
-
       {/* Recent Orders */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">

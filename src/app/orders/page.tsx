@@ -23,6 +23,7 @@ const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: '', label: 'All Statuses' },
   { value: 'draft', label: 'Draft' },
   { value: 'quoted', label: 'Quote Sent' },
+  { value: 'quote_pending', label: 'New Quote Pending' },
   { value: 'confirmed', label: 'Approved' },
   { value: 'completed', label: 'Paid' },
   { value: 'cancelled', label: 'Cancelled' },
@@ -32,6 +33,7 @@ function getStatusLabel(status: string): string {
   const map: Record<string, string> = {
     draft: 'Draft',
     quoted: 'Quote Sent',
+    quote_pending: 'New Quote Pending',
     confirmed: 'Approved',
     completed: 'Paid',
     cancelled: 'Cancelled',
@@ -215,22 +217,22 @@ function OrdersPageInner() {
         <div className="grid grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-saffron-500">
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">TOTAL ORDERS</p>
-            <p className="text-2xl font-black text-navy-500">{stats.totalOrders}</p>
+            <p className="text-2xl font-black text-navy-500">{stats?.totalOrders ?? 0}</p>
             <p className="text-xs text-gray-500 mt-0.5">All time</p>
           </div>
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-emerald-600">
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">APPROVED / CONFIRMED</p>
-            <p className="text-2xl font-black text-navy-500">{stats.confirmed}</p>
+            <p className="text-2xl font-black text-navy-500">{stats?.confirmed ?? 0}</p>
             <p className="text-xs text-gray-500 mt-0.5">This year</p>
           </div>
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-amber-500">
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">AWAITING APPROVAL</p>
-            <p className="text-2xl font-black text-navy-500">{stats.awaitingApproval}</p>
+            <p className="text-2xl font-black text-navy-500">{stats?.awaitingApproval ?? 0}</p>
             <p className="text-xs text-gray-500 mt-0.5">Quote sent</p>
           </div>
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-navy-500">
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">REVISED ORDERS</p>
-            <p className="text-2xl font-black text-navy-500">{stats.revised}</p>
+            <p className="text-2xl font-black text-navy-500">{stats?.revised ?? 0}</p>
             <p className="text-xs text-gray-500 mt-0.5">Modified after send</p>
           </div>
         </div>

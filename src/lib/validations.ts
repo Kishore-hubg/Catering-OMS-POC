@@ -14,12 +14,13 @@ export const MenuTypeEnum = z.enum([
 export const OrderStatusEnum = z.enum([
   'draft',
   'quoted',
+  'quote_pending',
   'confirmed',
   'completed',
   'cancelled',
 ]);
 
-export const DeliveryTypeEnum = z.enum(['pickup', 'delivery', 'live']);
+export const DeliveryTypeEnum = z.enum(['pickup', 'delivery']);
 
 // Customer validation
 export const CustomerSchema = z.object({
@@ -69,7 +70,7 @@ export const EventSchema = z.object({
   eventNotes: z.string().optional(),
 }).refine(
   (data) => {
-    if (data.deliveryType === 'delivery' || data.deliveryType === 'live') {
+    if (data.deliveryType === 'delivery') {
       return !!data.deliveryAddress;
     }
     return true;

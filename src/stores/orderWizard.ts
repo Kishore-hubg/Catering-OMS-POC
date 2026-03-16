@@ -282,10 +282,10 @@ export const useOrderWizard = create<OrderWizardState>((set, get) => ({
   getEquipmentTotalFromExtras: () => {
     const { chafingRows, disposableRows } = get();
     const chafingTotal = chafingRows
-      .filter((r) => r.include && r.quantity > 0)
+      .filter((r) => r.quantity > 0)
       .reduce((sum, r) => sum + r.quantity * r.unitRental, 0);
     const disposableTotal = disposableRows
-      .filter((r) => r.include && r.quantity > 0)
+      .filter((r) => r.quantity > 0)
       .reduce((sum, r) => sum + r.quantity * r.unitPrice, 0);
     return chafingTotal + disposableTotal;
   },
@@ -294,7 +294,7 @@ export const useOrderWizard = create<OrderWizardState>((set, get) => ({
     const { chafingRows, disposableRows } = get();
     const items: OrderLineItem[] = [];
     chafingRows.forEach((r) => {
-      if (r.include && r.quantity > 0) {
+      if (r.quantity > 0) {
         items.push({
           menuItemId: r.id,
           menuItemName: r.typeLabel,
@@ -309,7 +309,7 @@ export const useOrderWizard = create<OrderWizardState>((set, get) => ({
       }
     });
     disposableRows.forEach((r) => {
-      if (r.include && r.quantity > 0) {
+      if (r.quantity > 0) {
         items.push({
           menuItemId: r.id,
           menuItemName: r.typeLabel,

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { format, addDays, startOfWeek, subWeeks, addWeeks } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { formatCurrency, getMenuTypeIcon, cn } from '@/lib/utils/format';
 import type { KitchenDayPlan } from '@/types';
 
@@ -170,19 +170,159 @@ function downloadCSV(content: string, filename: string) {
   URL.revokeObjectURL(link.href);
 }
 
+/** Build a styled Excel workbook for the weekly prep breakdown and trigger download */
+async function exportWeeklyPlanXlsx(
+  plans: KitchenDayPlan[],
+  breakdownByType: Map<string, BreakdownRow[]>,
+  weekStart: Date
+) {
+  const weekEnd = addDays(weekStart, 6);
+  const { Workbook } = await import('exceljs');
+  const workbook = new Workbook();
+  const sheet = workbook.addWorksheet('Weekly Prep');
+
+  let row = 1;
+
+  // Title
+  sheet.mergeCells(row, 1, row, 2);
+  const titleCell = sheet.getCell(row, 1);
+  titleCell.value = 'CATEGORY BREAKDOWN — PREP QUANTITIES';
+  titleCell.alignment = { horizontal: 'center' };
+  titleCell.font = { bold: true, size: 14 };
+  row += 2;
+
+  // Subtitle (week range)
+  sheet.mergeCells(row, 1, row, 2);
+  const subCell = sheet.getCell(row, 1);
+  subCell.value = `Week of ${format(weekStart, 'MMMM d')} – ${format(weekEnd, 'MMM d, yyyy')}`;
+  subCell.alignment = { horizontal: 'center' };
+  subCell.font = { italic: true, size: 11 };
+  row += 2;
+
+  // For each menu type panel: header, header row, category blocks, and total
+  Array.from(breakdownByType.entries())
+    .filter(([menuType]) => MENU_TYPE_PANEL[menuType])
+    .forEach(([menuType, typeRows]) => {
+      const panel = MENU_TYPE_PANEL[menuType];
+      const totalQty = typeRows.reduce((s, r) => s + r.quantity, 0);
+
+      // Blank row between panels
+      row += 1;
+
+      // Panel header row (e.g. "VEGETARIAN ITEMS")
+      sheet.mergeCells(row, 1, row, 2);
+      const panelCell = sheet.getCell(row, 1);
+      panelCell.value = (panel?.label || menuType).toUpperCase();
+      panelCell.font = { bold: true, size: 12, color: { argb: 'FFFFFFFF' } };
+      panelCell.alignment = { horizontal: 'center' };
+      panelCell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF666666' },
+      };
+      row += 1;
+
+      // Column headers: ITEM NAME | QTY
+      sheet.getCell(row, 1).value = 'ITEM NAME';
+      sheet.getCell(row, 2).value = 'QTY';
+      [sheet.getCell(row, 1), sheet.getCell(row, 2)].forEach((c) => {
+        c.font = { bold: true, size: 10 };
+        c.alignment = { horizontal: 'center' };
+        c.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFE5E5E5' },
+        };
+        c.border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+      row += 1;
+
+      // Group rows by category
+      const byCategory = new Map<string, BreakdownRow[]>();
+      typeRows.forEach((r) => {
+        const cat = r.category?.trim() || 'Other';
+        if (!byCategory.has(cat)) byCategory.set(cat, []);
+        byCategory.get(cat)!.push(r);
+      });
+      const categoryOrder = Array.from(byCategory.keys()).sort((a, b) => a.localeCompare(b));
+
+      categoryOrder.forEach((cat) => {
+        // Category row: merged + centered
+        sheet.mergeCells(row, 1, row, 2);
+        const catCell = sheet.getCell(row, 1);
+        catCell.value = cat.toUpperCase();
+        catCell.font = { bold: true, size: 10 };
+        catCell.alignment = { horizontal: 'center' };
+        catCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFD9D9D9' },
+        };
+        row += 1;
+
+        // Item rows
+        byCategory.get(cat)!.forEach((r) => {
+          const nameCell = sheet.getCell(row, 1);
+          const qtyCell = sheet.getCell(row, 2);
+          nameCell.value = r.name;
+          qtyCell.value = r.quantity;
+          nameCell.alignment = { horizontal: 'left' };
+          qtyCell.alignment = { horizontal: 'center' };
+          row += 1;
+        });
+      });
+
+      // Total row per menu type with top border (visual bottom line)
+      const totalLabelCell = sheet.getCell(row, 1);
+      const totalQtyCell = sheet.getCell(row, 2);
+      totalLabelCell.value = `${menuType.toUpperCase().replace('-', ' ')} TOTAL`;
+      totalQtyCell.value = totalQty;
+      [totalLabelCell, totalQtyCell].forEach((c) => {
+        c.font = { bold: true };
+        c.alignment = { horizontal: c === totalQtyCell ? 'center' : 'left' };
+        c.border = {
+          top: { style: 'thick' },
+          left: { style: 'thin' },
+          bottom: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+      });
+      row += 2;
+    });
+
+  sheet.getColumn(1).width = 35;
+  sheet.getColumn(2).width = 8;
+
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `Nidhi-Catering-Weekly-Plan-${format(weekStart, 'yyyy-MM-dd')}.xlsx`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function KitchenPage() {
-  const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
+  // weekStart represents the first day shown in the 7-day window.
+  // It starts as "today" and prev/next arrows move one day at a time.
+  const [weekStart, setWeekStart] = useState(() => new Date());
   const [plans, setPlans] = useState<KitchenDayPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<SelectedOrder | null>(null);
-  const [viewFilter, setViewFilter] = useState<'all' | 'veg' | 'nonveg' | 'dessert' | 'puja'>('all');
 
   useEffect(() => {
     setLoading(true);
     const params = new URLSearchParams();
     params.set('startDate', format(weekStart, 'yyyy-MM-dd'));
-    if (viewFilter !== 'all') params.set('view', viewFilter);
 
     fetch(`/api/kitchen?${params.toString()}`)
       .then((r) => r.json())
@@ -191,7 +331,7 @@ export default function KitchenPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [weekStart, viewFilter]);
+  }, [weekStart]);
 
   // Summary across the week (events, items, guests, delivery/pickup/live counts)
   const weekSummary = useMemo(() => {
@@ -304,75 +444,11 @@ export default function KitchenPage() {
             <input
               type="date"
               value={format(weekStart, 'yyyy-MM-dd')}
-              onChange={(e) => setWeekStart(startOfWeek(new Date(e.target.value), { weekStartsOn: 1 }))}
+              onChange={(e) => setWeekStart(new Date(e.target.value))}
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-800 font-medium focus:ring-2 focus:ring-saffron-400 focus:border-saffron-500"
             />
             <span className="text-base opacity-80" title="Pick date">📅</span>
           </div>
-        </div>
-        <div className="h-6 w-px bg-gray-200" />
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] font-bold uppercase tracking-wide text-gray-500">VIEW</span>
-          <button
-            type="button"
-            onClick={() => setViewFilter('all')}
-            className={cn(
-              'px-3 py-1.5 rounded-full border text-xs font-semibold',
-              viewFilter === 'all'
-                ? 'bg-navy-500 text-white border-navy-500'
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-            )}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewFilter('veg')}
-            className={cn(
-              'px-3 py-1.5 rounded-full border text-xs font-semibold inline-flex items-center gap-1.5',
-              viewFilter === 'veg'
-                ? 'bg-emerald-600 text-white border-emerald-600'
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-            )}
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-600" /> Veg
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewFilter('nonveg')}
-            className={cn(
-              'px-3 py-1.5 rounded-full border text-xs font-semibold inline-flex items-center gap-1.5',
-              viewFilter === 'nonveg'
-                ? 'bg-red-700 text-white border-red-700'
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-            )}
-          >
-            <span className="w-2 h-2 rounded-full bg-red-600" /> Non-Veg
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewFilter('dessert')}
-            className={cn(
-              'px-3 py-1.5 rounded-full border text-xs font-semibold inline-flex items-center gap-1.5',
-              viewFilter === 'dessert'
-                ? 'bg-violet-700 text-white border-violet-700'
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-            )}
-          >
-            <span className="w-2 h-2 rounded-full bg-violet-600" /> Desserts
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewFilter('puja')}
-            className={cn(
-              'px-3 py-1.5 rounded-full border text-xs font-semibold inline-flex items-center gap-1.5',
-              viewFilter === 'puja'
-                ? 'bg-sky-700 text-white border-sky-700'
-                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
-            )}
-          >
-            <span className="w-2 h-2 rounded-full bg-sky-600" /> Puja
-          </button>
         </div>
         <div className="h-6 w-px bg-gray-200" />
         <button
@@ -384,16 +460,11 @@ export default function KitchenPage() {
         </button>
         <button
           type="button"
-          onClick={() => {
-            const weekEnd = addDays(weekStart, 6);
-            const csv = buildWeeklyPlanCSV(plans, breakdownByType, weekStart, weekEnd);
-            const filename = `Nidhi-Catering-Weekly-Plan-${format(weekStart, 'yyyy-MM-dd')}.csv`;
-            downloadCSV(csv, filename);
-          }}
+          onClick={() => exportWeeklyPlanXlsx(plans, breakdownByType, weekStart)}
           disabled={loading}
           className="px-4 py-2 rounded-lg bg-navy-500 text-white text-sm font-semibold hover:bg-navy-600 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          ⬇ Export CSV
+          ⬇ Export Excel
         </button>
       </div>
 
@@ -408,7 +479,7 @@ export default function KitchenPage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setWeekStart(subWeeks(weekStart, 1))}
+            onClick={() => setWeekStart(addDays(weekStart, -1))}
             className="w-9 h-9 rounded-full border border-gray-300 bg-white flex items-center justify-center text-lg font-medium hover:bg-navy-500 hover:text-white hover:border-navy-500"
             title="Previous week"
           >
@@ -416,14 +487,14 @@ export default function KitchenPage() {
           </button>
           <button
             type="button"
-            onClick={() => setWeekStart(startOfWeek(new Date(), { weekStartsOn: 1 }))}
+            onClick={() => setWeekStart(new Date())}
             className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-xs font-bold hover:bg-gray-100"
           >
             Today
           </button>
           <button
             type="button"
-            onClick={() => setWeekStart(addWeeks(weekStart, 1))}
+            onClick={() => setWeekStart(addDays(weekStart, 1))}
             className="w-9 h-9 rounded-full border border-gray-300 bg-white flex items-center justify-center text-lg font-medium hover:bg-navy-500 hover:text-white hover:border-navy-500"
             title="Next week"
           >

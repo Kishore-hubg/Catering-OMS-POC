@@ -31,8 +31,14 @@ export interface MenuItem {
 }
 
 // Order types
-export type OrderStatus = 'draft' | 'quoted' | 'confirmed' | 'completed' | 'cancelled';
-export type DeliveryType = 'pickup' | 'delivery' | 'live';
+export type OrderStatus =
+  | 'draft'
+  | 'quoted'
+  | 'quote_pending'
+  | 'confirmed'
+  | 'completed'
+  | 'cancelled';
+export type DeliveryType = 'pickup' | 'delivery';
 
 export interface OrderLineItem {
   menuItemId: string;

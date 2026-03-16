@@ -376,7 +376,7 @@ export default function OrderDetailPage() {
             <div className="space-y-2">
               <button onClick={openQuote} className="w-full btn-outline text-sm">📄 View / Print Quote</button>
               <button onClick={handleComposeEmail} className="w-full btn-outline text-sm">📧 Send Quote Email</button>
-              {order.status !== 'cancelled' && (
+          {order.status !== 'cancelled' && (
                 <button
                   onClick={() => handleStatusChange('cancelled')}
                   className="w-full text-sm text-red-500 hover:bg-red-50 px-4 py-2 rounded-lg transition-colors"

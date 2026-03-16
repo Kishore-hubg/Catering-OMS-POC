@@ -337,106 +337,7 @@ function StepEvent({ showTitle = true }: { showTitle?: boolean }) {
             </div>
           </div>
         )}
-        {event.deliveryType === 'live' && (
-          <div className="rounded-xl border-2 border-saffron-200 bg-saffron-50/60 p-5 space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b border-saffron-200">
-              <span className="text-saffron-600" aria-hidden>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                  <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63v-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
-                </svg>
-              </span>
-              <h3 className="text-sm font-bold uppercase tracking-wide text-navy-600">Live Catering Requirements</h3>
-            </div>
-            <div>
-              <label className="label">Delivery / Venue Address <span className="text-red-500">*</span></label>
-              <input
-                className="input-field"
-                value={event.deliveryAddress}
-                onChange={(e) => setEvent({ deliveryAddress: e.target.value })}
-                placeholder="Full event address"
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="label">City</label>
-                <input
-                  className="input-field"
-                  value={event.deliveryCity || ''}
-                  onChange={(e) => setEvent({ deliveryCity: e.target.value })}
-                  placeholder="Dallas"
-                />
-              </div>
-              <div>
-                <label className="label">State</label>
-                <input
-                  className="input-field"
-                  value={event.deliveryState || ''}
-                  onChange={(e) => setEvent({ deliveryState: e.target.value })}
-                  placeholder="TX"
-                />
-              </div>
-              <div>
-                <label className="label">ZIP Code</label>
-                <input
-                  className="input-field"
-                  value={event.deliveryZip || ''}
-                  onChange={(e) => setEvent({ deliveryZip: e.target.value })}
-                  placeholder="75201"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="label">Setup Arrival Time <span className="text-red-500">*</span></label>
-              <input
-                type="time"
-                className="input-field"
-                value={event.liveSetupArrivalTime || ''}
-                onChange={(e) => setEvent({ liveSetupArrivalTime: e.target.value })}
-                placeholder="--:--"
-              />
-              <p className="text-xs text-gray-500 mt-0.5">Time the team should arrive to set up</p>
-            </div>
-            <div>
-              <label className="label">Number of Staff Required</label>
-              <input
-                type="number"
-                min={1}
-                className="input-field"
-                value={event.liveStaffCount ?? ''}
-                onChange={(e) =>
-                  setEvent({
-                    liveStaffCount: e.target.value ? parseInt(e.target.value, 10) : undefined,
-                  })
-                }
-                placeholder="e.g. 3"
-              />
-            </div>
-            <div>
-              <label className="label">Available Kitchen / Prep Space</label>
-              <select
-                className="input-field"
-                value={event.liveKitchenType || ''}
-                onChange={(e) => setEvent({ liveKitchenType: e.target.value })}
-              >
-                <option value="">Please select…</option>
-                <option value="Full kitchen on-site">Full kitchen on-site</option>
-                <option value="Outdoor cooking area">Outdoor cooking area</option>
-                <option value="Tent / canopy">Tent / canopy</option>
-                <option value="None — bring all equipment">None — bring all equipment</option>
-              </select>
-            </div>
-            <div>
-              <label className="label">Special Setup Notes</label>
-              <textarea
-                className="input-field"
-                rows={3}
-                placeholder="e.g. Parking near venue, elevator access needed, generator required..."
-                value={event.liveSetupNotes || ''}
-                onChange={(e) => setEvent({ liveSetupNotes: e.target.value })}
-              />
-            </div>
-          </div>
-        )}
+        {/* Live catering requirements removed per v2 testing #11 */}
 
         {/* Event Notes / Special Instructions - full width at bottom */}
         <div>
@@ -927,7 +828,6 @@ function StepMenuItems() {
               <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-600">
-                    <th className="py-2 px-3">Include?</th>
                     <th className="py-2 px-3">Type</th>
                     <th className="py-2 px-3">Quantity</th>
                     <th className="py-2 px-3">Unit Rental ($)</th>
@@ -937,19 +837,6 @@ function StepMenuItems() {
                 <tbody>
                   {chafingRows.map((row, idx) => (
                     <tr key={row.id} className="border-t border-gray-100">
-                      <td className="py-2 px-3">
-                        <label className="flex items-center gap-1">
-                          <input
-                            type="checkbox"
-                            checked={row.include}
-                            onChange={(e) =>
-                              handleChafingChange(idx, { include: e.target.checked })
-                            }
-                            className="rounded border-gray-300 text-amber-600 focus:ring-amber-500"
-                          />
-                          <span className="text-xs">Yes</span>
-                        </label>
-                      </td>
                       <td className="py-2 px-3 font-medium">{row.typeLabel}</td>
                       <td className="py-2 px-3">
                         <input
@@ -979,7 +866,7 @@ function StepMenuItems() {
                         />
                       </td>
                       <td className="py-2 px-3 font-semibold text-emerald-600">
-                        {row.include && row.quantity > 0
+                        {row.quantity > 0
                           ? formatCurrency(row.quantity * row.unitRental)
                           : '$0.00'}
                       </td>
@@ -1002,7 +889,6 @@ function StepMenuItems() {
               <table className="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-gray-50 text-left text-xs uppercase tracking-wide text-gray-600">
-                    <th className="py-2 px-3">Include?</th>
                     <th className="py-2 px-3">Type / Description</th>
                     <th className="py-2 px-3">Quantity</th>
                     <th className="py-2 px-3">Unit Price ($)</th>
@@ -1013,19 +899,6 @@ function StepMenuItems() {
                 <tbody>
                   {disposableRows.map((row, idx) => (
                     <tr key={row.id} className="border-t border-gray-100">
-                      <td className="py-2 px-3">
-                        <label className="flex items-center gap-1">
-                          <input
-                            type="checkbox"
-                            checked={row.include}
-                            onChange={(e) =>
-                              handleDisposableChange(idx, { include: e.target.checked })
-                            }
-                            className="rounded border-gray-300 text-amber-600 focus:ring-amber-500"
-                          />
-                          <span className="text-xs">Yes</span>
-                        </label>
-                      </td>
                       <td className="py-2 px-3 font-medium">{row.typeLabel}</td>
                       <td className="py-2 px-3">
                         <input
@@ -1055,7 +928,7 @@ function StepMenuItems() {
                         />
                       </td>
                       <td className="py-2 px-3 font-semibold text-emerald-600">
-                        {row.include && row.quantity > 0
+                        {row.quantity > 0
                           ? formatCurrency(row.quantity * row.unitPrice)
                           : '$0.00'}
                       </td>
@@ -1324,7 +1197,50 @@ function NewOrderPageInner() {
             liveSetupNotes: order.event.liveSetupNotes ?? '',
             eventNotes: order.event.eventNotes ?? '',
           });
-          order.lineItems.forEach((li) => store.addLineItem(li));
+
+          // Split line items into core food vs equipment so equipment
+          // items hydrate into the Equipment & Extras section instead of
+          // showing up in the main Menu Selection table.
+          const nonEquipmentLineItems = order.lineItems.filter(
+            (li) =>
+              li.menuType !== 'Chafing Dishes' && li.menuType !== 'Disposable Plates'
+          );
+          nonEquipmentLineItems.forEach((li) => store.addLineItem(li));
+
+          const equipmentLineItems = order.lineItems.filter(
+            (li) =>
+              li.menuType === 'Chafing Dishes' || li.menuType === 'Disposable Plates'
+          );
+
+          if (equipmentLineItems.length > 0) {
+            const chafingRows = store.chafingRows;
+            const disposableRows = store.disposableRows;
+
+            equipmentLineItems.forEach((li) => {
+              if (li.menuType === 'Chafing Dishes') {
+                const idx = chafingRows.findIndex((r) => r.id === li.menuItemId);
+                if (idx !== -1) {
+                  store.setChafingRow(idx, {
+                    include: li.quantity > 0,
+                    quantity: li.quantity,
+                    unitRental: li.unitPrice,
+                  });
+                }
+              } else if (li.menuType === 'Disposable Plates') {
+                const idx = disposableRows.findIndex((r) => r.id === li.menuItemId);
+                if (idx !== -1) {
+                  store.setDisposableRow(idx, {
+                    include: li.quantity > 0,
+                    quantity: li.quantity,
+                    unitPrice: li.unitPrice,
+                    notes: li.notes ?? '',
+                  });
+                }
+              }
+            });
+
+            store.syncEquipmentTotal();
+          }
           store.setDiscount(order.discount ?? 0);
           store.setDiscountType(order.discountType ?? 'flat');
           store.setDeliveryFee(order.deliveryFee ?? 0);
@@ -1429,7 +1345,24 @@ function NewOrderPageInner() {
         taxRate: Number(store.taxRate) || 8.25,
         advancePayment: Number(store.advancePayment) || 0,
         adminNotes: combinedAdminNotes || undefined,
+      } as {
+        customer: typeof store.customer;
+        event: typeof store.event;
+        lineItems: typeof allLineItems;
+        discount: number;
+        discountType: typeof store.discountType;
+        deliveryFee: number;
+        taxRate: number;
+        advancePayment: number;
+        adminNotes?: string;
+        status?: import('@/types').OrderStatus;
       };
+
+      // If editing an already-quoted order and we're not immediately generating
+      // a new quote email, mark the order as needing a fresh quote.
+      if (isEditMode && !redirectToQuote) {
+        payload.status = 'quote_pending';
+      }
 
       if (payload.lineItems.length === 0) {
         toast.error('Add at least one menu item before submitting.');
@@ -1453,7 +1386,7 @@ function NewOrderPageInner() {
 
       if (data.success) {
         toast.success(
-          isEditMode ? 'Order updated.' : redirectToQuote ? `Order ${data.data.orderNumber} created!` : 'Draft saved.'
+          isEditMode ? 'Order updated.' : 'Order created.'
         );
         setLastSavedAt(new Date());
         store.reset();
@@ -1605,7 +1538,7 @@ function NewOrderPageInner() {
                   disabled={submitting}
                   className="btn-outline disabled:opacity-50"
                 >
-                  {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Draft'}
+                  {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Order'}
                 </button>
                 <button
                   onClick={store.nextStep}
@@ -1623,7 +1556,7 @@ function NewOrderPageInner() {
                   disabled={submitting || !canProceed()}
                   className="btn-outline disabled:opacity-50"
                 >
-                  {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Draft'}
+                  {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Order'}
                 </button>
                 {!isEditMode && (
                 <button

@@ -23,8 +23,8 @@ export default function SendQuotePage() {
   const fetchOrders = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams();
-    // Focus this view on draft orders which typically still need a quote email
-    params.set('status', 'draft');
+    // Focus this view on orders that still need a quote email
+    params.set('status', 'quote_pending');
     if (search) params.set('search', search);
 
     try {
