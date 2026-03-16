@@ -55,30 +55,6 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-4 gap-6 mb-8">
-        <div className="card">
-          <p className="text-sm text-gray-500 mb-1">Total Orders</p>
-          <p className="text-3xl font-bold text-navy-500">{totalOrders}</p>
-        </div>
-        <div className="card">
-          <p className="text-sm text-gray-500 mb-1">Active Orders</p>
-          <p className="text-3xl font-bold text-saffron-500">
-            {(counts.draft || 0) + (counts.quoted || 0) + (counts.confirmed || 0)}
-          </p>
-        </div>
-        <div className="card">
-          <p className="text-sm text-gray-500 mb-1">Confirmed</p>
-          <p className="text-3xl font-bold text-green-600">{counts.confirmed || 0}</p>
-        </div>
-        <div className="card">
-          <p className="text-sm text-gray-500 mb-1">Revenue</p>
-          <p className="text-3xl font-bold text-navy-500">
-            {formatCurrency(stats?.totalRevenue || 0)}
-          </p>
-        </div>
-      </div>
-
       {/* Recent Orders */}
       <div className="card">
         <div className="flex items-center justify-between mb-4">
