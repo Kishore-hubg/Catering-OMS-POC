@@ -92,11 +92,7 @@ function buildWeeklyPlanCSV(
       const pujaN = order.items.filter((i) => i.menuType === 'Puja Food').length;
       const liveN = order.items.filter((i) => i.menuType === 'Live Catering').length;
       const deliveryLabel =
-        order.deliveryType === 'delivery'
-          ? 'Delivery'
-          : order.deliveryType === 'live'
-          ? 'Live Catering'
-          : 'Pickup';
+        order.deliveryType === 'delivery' ? 'Delivery' : 'Pickup';
       rows.push(
         [
           day.date,
@@ -352,11 +348,10 @@ export default function KitchenPage() {
       p.orders.forEach((o) => {
         const dt = o.deliveryType ?? 'pickup';
         if (dt === 'delivery') deliveryCount += 1;
-        else if (dt === 'live') liveCount += 1;
         else pickupCount += 1;
       });
     });
-    return { totalEvents, veg, nonVeg, dessert, guests, deliveryCount, pickupCount, liveCount };
+    return { totalEvents, veg, nonVeg, dessert, guests, deliveryCount, pickupCount, liveCount: 0 };
   }, [plans]);
 
   // Weekly category breakdown: aggregate by menuType > category > name+sizeOption
@@ -655,8 +650,6 @@ export default function KitchenPage() {
                     {' · '}
                     {selectedOrder.order.deliveryType === 'delivery'
                       ? 'Delivery'
-                      : selectedOrder.order.deliveryType === 'live'
-                      ? 'Live Catering'
                       : 'Pickup'}
                   </p>
                 </div>

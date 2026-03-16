@@ -212,31 +212,7 @@ function OrdersPageInner() {
         </div>
       </div>
 
-      {/* Summary cards: TOTAL ORDERS, APPROVED/CONFIRMED, AWAITING APPROVAL, REVISED ORDERS */}
-      {stats && (
-        <div className="grid grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-saffron-500">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">TOTAL ORDERS</p>
-            <p className="text-2xl font-black text-navy-500">{stats?.totalOrders ?? 0}</p>
-            <p className="text-xs text-gray-500 mt-0.5">All time</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-emerald-600">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">APPROVED / CONFIRMED</p>
-            <p className="text-2xl font-black text-navy-500">{stats?.confirmed ?? 0}</p>
-            <p className="text-xs text-gray-500 mt-0.5">This year</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-amber-500">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">AWAITING APPROVAL</p>
-            <p className="text-2xl font-black text-navy-500">{stats?.awaitingApproval ?? 0}</p>
-            <p className="text-xs text-gray-500 mt-0.5">Quote sent</p>
-          </div>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 border-l-4 border-navy-500">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">REVISED ORDERS</p>
-            <p className="text-2xl font-black text-navy-500">{stats?.revised ?? 0}</p>
-            <p className="text-xs text-gray-500 mt-0.5">Modified after send</p>
-          </div>
-        </div>
-      )}
+      {/* Summary cards removed as requested */}
 
       {/* Search & filter bar: SEARCH, STATUS, EVENT TYPE, FROM DATE, TO DATE, Clear */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 flex flex-wrap items-end gap-4">

@@ -70,20 +70,24 @@ export class KitchenService {
           };
         });
 
+        // Normalize legacy 'live' delivery types to 'pickup' so it fits the narrowed DeliveryType
+        const rawDeliveryType = (order.event.deliveryType || 'pickup') as 'pickup' | 'delivery' | 'live';
+        const deliveryType = rawDeliveryType === 'delivery' ? 'delivery' : 'pickup';
+
         return {
           orderNumber: order.orderNumber,
           customerName: order.customer.name,
           eventTime: order.event.eventTime,
           eventType: order.event.eventType,
           guestCount: order.event.guestCount,
-          deliveryType: order.event.deliveryType as 'pickup' | 'delivery' | 'live',
+          deliveryType,
           items,
         };
       });
 
       dayPlans.push({
         date: dateStr,
-        orders: mappedOrders,
+        orders: mappedOrders as KitchenDayPlan['orders'],
         summary: {
           totalOrders: dayOrders.length,
           totalGuests,

@@ -20,7 +20,7 @@ export const OrderStatusEnum = z.enum([
   'cancelled',
 ]);
 
-export const DeliveryTypeEnum = z.enum(['pickup', 'delivery']);
+export const DeliveryTypeEnum = z.enum(['pickup', 'delivery', 'live']);
 
 // Customer validation
 export const CustomerSchema = z.object({

@@ -38,7 +38,7 @@ export type OrderStatus =
   | 'confirmed'
   | 'completed'
   | 'cancelled';
-export type DeliveryType = 'pickup' | 'delivery';
+export type DeliveryType = 'pickup' | 'delivery' | 'live';
 
 export interface OrderLineItem {
   menuItemId: string;
