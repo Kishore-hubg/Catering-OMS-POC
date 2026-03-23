@@ -35,6 +35,8 @@ const MENU_TYPES: MenuType[] = [
   'Live Catering',
   'Chafing Dishes',
   'Disposable Plates',
+  'Drinks',
+  'Breakfast',
 ];
 
 function validatePutBody(body: unknown): { error?: string; data?: Record<string, unknown> } {

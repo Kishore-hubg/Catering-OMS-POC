@@ -9,6 +9,8 @@ export const MenuTypeEnum = z.enum([
   'Live Catering',
   'Chafing Dishes',
   'Disposable Plates',
+  'Drinks',
+  'Breakfast',
 ]);
 
 export const OrderStatusEnum = z.enum([

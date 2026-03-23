@@ -7,6 +7,7 @@ import type { MenuItem, MenuType } from '@/types';
 const MENU_TYPES: MenuType[] = [
   'Veg Menu', 'Non-Veg Menu', 'Desserts', 'Puja Food',
   'Live Catering', 'Chafing Dishes', 'Disposable Plates',
+  'Drinks', 'Breakfast',
 ];
 
 export default function MenuPage() {

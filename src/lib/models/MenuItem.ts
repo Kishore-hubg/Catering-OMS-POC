@@ -42,6 +42,8 @@ const MenuItemSchema = new Schema(
         'Live Catering',
         'Chafing Dishes',
         'Disposable Plates',
+        'Drinks',
+        'Breakfast',
       ],
       index: true,
     },

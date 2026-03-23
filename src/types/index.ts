@@ -6,7 +6,9 @@ export type MenuType =
   | 'Puja Food'
   | 'Live Catering'
   | 'Chafing Dishes'
-  | 'Disposable Plates';
+  | 'Disposable Plates'
+  | 'Drinks'
+  | 'Breakfast';
 
 export interface PricingOption {
   sizeOption: string;

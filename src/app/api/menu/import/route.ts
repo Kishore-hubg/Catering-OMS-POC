@@ -14,6 +14,8 @@ const MENU_TYPES: MenuType[] = [
   'Live Catering',
   'Chafing Dishes',
   'Disposable Plates',
+  'Drinks',
+  'Breakfast',
 ];
 
 const MENU_TYPE_ALIASES: Record<string, MenuType> = {
@@ -32,6 +34,9 @@ const MENU_TYPE_ALIASES: Record<string, MenuType> = {
   'chafing dishes': 'Chafing Dishes',
   disposable: 'Disposable Plates',
   'disposable plates': 'Disposable Plates',
+  drinks: 'Drinks',
+  beverages: 'Drinks',
+  breakfast: 'Breakfast',
 };
 
 function normalizeMenuType(value: string): string {

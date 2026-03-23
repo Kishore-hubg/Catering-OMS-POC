@@ -14,10 +14,19 @@ const MENU_TYPE_MAP = {
   'Non-Veg Menu': 'Non-Veg Menu',
   'Desserts': 'Desserts',
   'Puja Food': 'Puja Food',
+  'Drinks': 'Drinks',
+  'Breakfast': 'Breakfast',
 };
 
 function normalize(s) {
   return String(s || '').trim().toLowerCase();
+}
+
+function normalizeCategory(cat) {
+  return String(cat || '')
+    .replace(/Indo-\s+Mexican/i, 'Indo-Mexican')
+    .replace(/Chaat-\s+Live/i, 'Chaat Live')
+    .trim();
 }
 
 function parseExcelFile(filePath, sheetName) {
@@ -46,9 +55,11 @@ function parseExcelFile(filePath, sheetName) {
     const minOrderUnit = (row[minUnitIdx] || '').toString().trim() || null;
 
     if (!itemName || category.toLowerCase() === 'summary' || category.toLowerCase() === 'total items') break;
+    // Normalize category strings to match seed data
+    const normalizedCategory = normalizeCategory(category);
     if (isNaN(price) && !sizeOption) continue;
     entries.push({
-      category,
+      category: normalizedCategory,
       itemName,
       sizeOption: sizeOption || 'per pc',
       price: isNaN(price) ? null : price,

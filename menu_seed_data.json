@@ -3,7 +3,7 @@
     {
       "name": "Aloo Tikki With Chole",
       "category": "Appetizer",
-      "description": "Comes with chole, onions, sweet and mint chutney.",
+      "description": "Chole, onions, sweet and mint chutney",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -14,12 +14,30 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Samosa Chat",
+      "name": "Aloo Tikki",
       "category": "Appetizer",
-      "description": "Comes with chole, onions, sweet and mint chutney.",
+      "description": "Only Tikki",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 1.8,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Samosa Chaat",
+      "category": "Appetizer",
+      "description": "Chole, onions, sweet and mint chutney",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -30,7 +48,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Dahi ke Kabab",
@@ -46,7 +65,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Samosa",
@@ -62,7 +82,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Mix Veg Pakora",
@@ -88,7 +109,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Hara Bhara Kebab",
@@ -104,7 +126,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Spring Roll",
@@ -120,7 +143,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Dahi Bhalla",
@@ -136,12 +160,13 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Puff Patties",
       "category": "Appetizer",
-      "description": "Indian patties; options include veg, mushroom, and spinach.",
+      "description": "Options: veg, mushroom, spinach",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -149,15 +174,11 @@
           "sizeOption": "per pc",
           "price": 2.5,
           "unit": "pc"
-        },
-        {
-          "sizeOption": "per pc",
-          "price": 2,
-          "unit": "pc"
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Khaman Dhokla",
@@ -170,15 +191,11 @@
           "sizeOption": "per lb",
           "price": 11,
           "unit": "lb"
-        },
-        {
-          "sizeOption": "per lb",
-          "price": 9.99,
-          "unit": "lb"
         }
       ],
       "minOrder": 3,
-      "minOrderUnit": "lb"
+      "minOrderUnit": "lb",
+      "isQuoteBased": false
     },
     {
       "name": "Soya Champ Malai Tikka",
@@ -201,7 +218,19 @@
           "sizeOption": "Extra Large Tray",
           "price": 145,
           "unit": "tray"
-        },
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Soya Champ Tikka",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 50,
@@ -219,10 +248,11 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Paneer Malai Tikka / Paneer Shashlik",
+      "name": "Paneer Malai Tikka",
       "category": "Appetizer",
       "description": null,
       "menuType": "Veg Menu",
@@ -242,28 +272,14 @@
           "sizeOption": "Extra Large Tray",
           "price": 145,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 160,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Paneer Papad / Achari Tikka",
+      "name": "Paneer Shashlik",
       "category": "Appetizer",
       "description": null,
       "menuType": "Veg Menu",
@@ -283,20 +299,92 @@
           "sizeOption": "Extra Large Tray",
           "price": 145,
           "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Paneer Papad Tikka",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 95,
+          "price": 110,
           "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 130,
+          "price": 155,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Paneer Achari Tikka",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 110,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 155,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Paneer Highway Tikka",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 110,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 155,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Pakoda",
@@ -312,7 +400,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Dahi Bhalla Papdi Chaat",
@@ -328,17 +417,59 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "plates"
+      "minOrderUnit": "plates",
+      "isQuoteBased": false
     },
     {
-      "name": "Panipuri / Golgappa",
+      "name": "Papdi Chaat",
       "category": "Appetizer",
       "description": null,
       "menuType": "Veg Menu",
-      "notes": "Contact for pricing",
-      "pricingOptions": [],
-      "minOrder": null,
-      "minOrderUnit": null
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per plate",
+          "price": 2.75,
+          "unit": "plate"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "plates",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Panipuri (Water & Aloo Masala)",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Per Gallon",
+          "price": 35,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Golgappa",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Per Pack",
+          "price": 7,
+          "unit": "Pack"
+        }
+      ],
+      "minOrder": 4,
+      "minOrderUnit": "Pack",
+      "isQuoteBased": false
     },
     {
       "name": "Vada Pav",
@@ -351,15 +482,11 @@
           "sizeOption": "per pc",
           "price": 3.5,
           "unit": "pc"
-        },
-        {
-          "sizeOption": "per pc",
-          "price": 2.5,
-          "unit": "pc"
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Bread Roll",
@@ -370,17 +497,18 @@
       "pricingOptions": [
         {
           "sizeOption": "per pc",
-          "price": 2,
+          "price": 2.5,
           "unit": "pc"
         }
       ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Veg Cutlet",
       "category": "Appetizer",
-      "description": "Combination of beetroot and other vegetables.",
+      "description": "Combination of beetroot and other vegetables",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -391,7 +519,25 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Rava Matra Kabab",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 2.5,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Cheese Corn Bullets",
@@ -407,7 +553,8 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Potato Patty Slider",
@@ -423,79 +570,98 @@
         }
       ],
       "minOrder": 20,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Gobhi Manchurian",
-      "category": "Appetizer",
-      "description": null,
+      "name": "Taco-Veg",
+      "category": "Indo-Mexican",
+      "description": "Taco Bar ( Tikka Paneer, Cauliflower) Mix Of corn and Flour tortiallas w// Mexican Rice, Beans, Picco Degao &  Sour Cream)",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 78,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 108,
-          "unit": "tray"
+          "sizeOption": "per pc",
+          "price": 3,
+          "unit": "pc"
         }
       ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Baby Corn Manchurian",
-      "category": "Appetizer",
-      "description": null,
+      "name": "Taco-Mix",
+      "category": "Indo-Mexican",
+      "description": "Taco Bar ( Tikka Paneer, Cauliflower, Tikka Chicken) Mix Of corn and Flour tortiallas w// Mexican Rice, Beans, Picco Degao &  Sour Cream)",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
+          "sizeOption": "per pc",
+          "price": 3,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Quesdillas- Cheese",
+      "category": "Indo-Mexican",
+      "description": "Served w// Salsa",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 3.75,
+          "unit": "Pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Quesdillas- Veg",
+      "category": "Indo-Mexican",
+      "description": "Served w// Salsa",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 4,
+          "unit": "Pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Enchiladas- Veg",
+      "category": "Indo-Mexican",
+      "description": "Served w// Red Cabbage salad",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
           "sizeOption": "Large Tray",
-          "price": 78,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 108,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 78,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 108,
-          "unit": "tray"
+          "price": 100,
+          "unit": "each"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Veg Kofta",
       "category": "Kofta",
-      "description": "Vegetable dumplings in tomato and onion gravy.",
+      "description": "Vegetable dumplings in tomato and onion gravy",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -513,30 +679,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 125,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Malai Kofta",
       "category": "Kofta",
-      "description": "Cottage cheese dumplings with cashews and raisins in a creamy gravy.",
+      "description": "Cottage cheese dumplings with cashews & raisins in creamy gravy",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -554,28 +706,14 @@
           "sizeOption": "Extra Large Tray",
           "price": 145,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 120,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Choice of Red, Alfredo or Mixed",
+      "name": "Pasta — Choice of Red, Alfredo or Mixed",
       "category": "Pasta",
       "description": null,
       "menuType": "Veg Menu",
@@ -595,30 +733,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 120,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 42,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 95,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Dal Makhani",
       "category": "Lentils / Dals",
-      "description": "Black whole lentils, rajma, and split gram cooked overnight with spices; finished with cream.",
+      "description": "Black whole lentils, rajma & split gram; finished with cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -636,30 +760,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Dal Panchratni",
       "category": "Lentils / Dals",
-      "description": "Combination of five lentils with tangy/spicy tadka.",
+      "description": "Combination of five lentils with tangy/spicy tadka",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -677,30 +787,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Dal Tadka",
       "category": "Lentils / Dals",
-      "description": "Blend of masoor and channa lentils with tadka.",
+      "description": "Blend of masoor and channa lentils with tadka",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -718,30 +814,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Dal Bukhara",
       "category": "Lentils / Dals",
-      "description": "Black lentils cooked overnight with ghee, tomato paste, and spices.",
+      "description": "Black lentils cooked overnight with ghee, tomato paste & spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -759,30 +841,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 105,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Urad Channa Dal",
       "category": "Lentils / Dals",
-      "description": "Mix of urad and channa lentils.",
+      "description": "Mix of urad and channa lentils",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -800,30 +868,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Kadai Paneer",
       "category": "Paneer Items",
-      "description": "Cottage cheese with bell peppers and onions in karahi masala.",
+      "description": "Cottage cheese with bell peppers & onions in karahi masala",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -841,30 +895,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Butter Masala",
       "category": "Paneer Items",
-      "description": "Homemade cheese in tomato/onion gravy with cream.",
+      "description": "Homemade cheese in tomato/onion gravy with cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -882,30 +922,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 42,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Shahi Paneer",
       "category": "Paneer Items",
-      "description": "Cottage cheese in whole tomato gravy with cashews and cream.",
+      "description": "Cottage cheese in whole tomato gravy with cashews & cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -923,30 +949,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Palak Paneer",
       "category": "Paneer Items",
-      "description": "Cottage cheese in spinach gravy with herbs, spices, and cream.",
+      "description": "Cottage cheese in spinach gravy with herbs, spices & cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -964,30 +976,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 115,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Mattar Paneer",
       "category": "Paneer Items",
-      "description": "Cottage cheese with peas and traditional spices.",
+      "description": "Cottage cheese with peas and traditional spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1005,30 +1003,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Lababdar",
       "category": "Paneer Items",
-      "description": "Diced and shredded paneer in spicy tomato-onion gravy.",
+      "description": "Diced & shredded paneer in spicy tomato-onion gravy",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1046,30 +1030,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Methi Malai",
       "category": "Paneer Items",
-      "description": "Paneer in onion-cashew gravy with yogurt, spices, and methi.",
+      "description": "Paneer in onion-cashew gravy with yogurt, spices & methi",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1087,30 +1057,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Tikka Masala",
       "category": "Paneer Items",
-      "description": "Marinated baked paneer cooked in spicy gravy.",
+      "description": "Marinated baked paneer cooked in spicy gravy",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1128,20 +1084,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Bhurji",
       "category": "Paneer Items",
-      "description": "Scrambled paneer with onion and tomatoes.",
+      "description": "Scrambled paneer with onion and tomatoes",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1159,30 +1111,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 115,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 110,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer do Pyaza",
       "category": "Paneer Items",
-      "description": "Paneer in whole tomato gravy with onions and spices.",
+      "description": "Paneer in whole tomato gravy with onions & spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1200,30 +1138,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Angara",
       "category": "Paneer Items",
-      "description": "Paneer in spicy onion gravy with smoky flavor.",
+      "description": "Paneer in spicy onion gravy with smoky flavor",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1241,30 +1165,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Reshmi",
       "category": "Paneer Items",
-      "description": "Paneer in tomato gravy with peppers, onions, and cashew paste.",
+      "description": "Paneer in tomato gravy with peppers, onions & cashew paste",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1282,30 +1192,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Chef’s Special Paneer Handi",
+      "name": "Chef's Special Paneer Handi",
       "category": "Paneer Items",
-      "description": "Paneer in exotic onion-tomato base with smoky flavor.",
+      "description": "Paneer in exotic onion-tomato base with smoky flavor",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1326,12 +1222,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Mix Veg",
       "category": "Vegetables",
-      "description": "All vegetables cooked with Indian spices.",
+      "description": "All vegetables cooked with Indian spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1349,30 +1246,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Aloo Karare",
       "category": "Vegetables",
-      "description": "Diced potatoes cooked in assorted spices.",
+      "description": "Diced potatoes cooked in assorted spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1393,12 +1276,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Methi Malai Mattar",
       "category": "Vegetables",
-      "description": "Peas in rich onion, poppy seed and cashew gravy with cream.",
+      "description": "Peas in rich onion, poppy seed & cashew gravy with cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1416,149 +1300,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 105,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 95,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Palak Subj-E Bahar",
       "category": "Vegetables",
-      "description": "Vegetables in spinach gravy with spices and cream.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Navrattan Korma",
-      "category": "Vegetables",
-      "description": "Vegetables in mild coconut gravy with spices and cream.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Veg Jalfrezi",
-      "category": "Vegetables",
-      "description": "Vegetables with smoked pineapple and spices.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Tawa Vegetables",
-      "category": "Vegetables",
-      "description": "Exotic vegetables tossed in homemade tawa spices.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 140,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 120,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chef’s Special Veg Deewani Handi",
-      "category": "Vegetables",
-      "description": "Mixed vegetables in exotic onion-tomato base with smoky flavor.",
+      "description": "Vegetables in spinach gravy with spices and cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1579,12 +1330,67 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Chefs Special Stuffed Shahi Aloo Dum",
+      "name": "Navrattan Korma",
       "category": "Vegetables",
-      "description": "Potatoes stuffed with paneer and pomegranate in a shahi gravy.",
+      "description": "Vegetables in mild coconut gravy with spices and cream",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Veg Jalfrezi",
+      "category": "Vegetables",
+      "description": "Vegetables with smoked pineapple and spices",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tawa Vegetables",
+      "category": "Vegetables",
+      "description": "Exotic vegetables tossed in homemade tawa spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1605,131 +1411,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Aloo Gobhi Mattar",
+      "name": "Chef's Special Veg Deewani Handi",
       "category": "Vegetables",
-      "description": "Cauliflower, potatoes and peas cooked with spices.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 78,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 108,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Khoya Khumb Mattar (NEW)",
-      "category": "Vegetables",
-      "description": "Mushrooms, green peas, and khoya in tomato-cashew & melon seed gravy.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 145,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Palak Corn Makhana (NEW)",
-      "category": "Vegetables",
-      "description": "Spinach purée with sweet corn and roasted fox nuts in mildly spiced creamy gravy.",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 145,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Veg Biryani",
-      "category": "Biryani",
-      "description": "Basmati rice cooked with mixed vegetables, herbs and spices. Comes with raita (noted in some blocks).",
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 110,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Paneer Biryani",
-      "category": "Biryani",
-      "description": "Basmati rice cooked with paneer, herbs and spices. Comes with raita (noted in some blocks).",
+      "description": "Mixed vegetables in exotic onion-tomato base with smoky flavor",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1740,14 +1428,53 @@
         },
         {
           "sizeOption": "Large Tray",
-          "price": 90,
+          "price": 85,
           "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 120,
+          "price": 125,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chef's Special Stuffed Shahi Aloo Dum",
+      "category": "Vegetables",
+      "description": "Potatoes stuffed with paneer & pomegranate in shahi gravy",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
           "unit": "tray"
         },
+        {
+          "sizeOption": "Large Tray",
+          "price": 100,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Aloo Gobhi Mattar",
+      "category": "Vegetables",
+      "description": "Cauliflower, potatoes and peas cooked with spices",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 50,
@@ -1765,12 +1492,111 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Jackfruit (Kathal) Biryani",
+      "name": "Sham Savera",
+      "category": "Vegetables",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Large Tray",
+          "price": 125,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Khoya Khumb Mattar",
+      "category": "Vegetables",
+      "description": "Mushrooms, green peas & khoya in tomato-cashew & melon seed gravy",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 100,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 145,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Palak Corn Makhana",
+      "category": "Vegetables",
+      "description": "Spinach with sweet corn & roasted fox nuts in spiced creamy gravy",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 100,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 145,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Veg Biryani",
       "category": "Biryani",
-      "description": "Basmati rice cooked with jackfruit, herbs and spices. Comes with raita.",
+      "description": "Basmati rice with mixed vegetables, herbs & spices. Includes raita",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Paneer Biryani",
+      "category": "Biryani",
+      "description": "Basmati rice with paneer, herbs & spices. Includes raita",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1791,12 +1617,67 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Jackfruit (Kathal) Biryani",
+      "category": "Biryani",
+      "description": "Basmati rice with jackfruit, herbs & spices. Includes raita",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Veg Keema Biryani",
+      "category": "Biryani",
+      "description": "Basmati rice with soya keema, vegetables,herbs & spices. Includes raita",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Rajma",
       "category": "Curry",
-      "description": "Red lentils cooked in tomato and onion gravy with spices.",
+      "description": "Red lentils in tomato and onion gravy with spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1814,30 +1695,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 42,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Punjabi Kadi Pakora",
       "category": "Curry",
-      "description": "Onion dumplings in chickpea flour and yogurt with spices.",
+      "description": "Onion dumplings in chickpea flour & yogurt with spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1858,12 +1725,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Amritsari Chole",
       "category": "Curry",
-      "description": "Garbanzo beans cooked in aromatic herbs and spices.",
+      "description": "Garbanzo beans cooked in aromatic herbs and spices",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1881,25 +1749,11 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 42,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Plain Rice",
@@ -1925,12 +1779,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Jeera Rice",
       "category": "Rice & Bread",
-      "description": "Rice cooked with cumin seeds.",
+      "description": "Rice cooked with cumin seeds",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1951,12 +1806,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Veg Pulao",
       "category": "Rice & Bread",
-      "description": "Medley of rice with chopped vegetables.",
+      "description": "Medley of rice with chopped vegetables",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -1977,38 +1833,159 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Bread",
+      "name": "Tawa Pulao",
+      "category": "Rice & Bread",
+      "description": "Medley of rice with chopped vegetables on tawa",
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Butter Naan",
       "category": "Rice & Bread",
       "description": null,
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "Naan (per piece)",
+          "sizeOption": "per pc",
           "price": 2,
           "unit": "pc"
-        },
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Garlic Naan",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
-          "sizeOption": "Plain/Laccha Paratha (per piece)",
+          "sizeOption": "per pc",
+          "price": 2.5,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Plain Paratha",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
           "price": 1.25,
           "unit": "pc"
-        },
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Laccha Paratha",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
-          "sizeOption": "Phulka Roti (2 pieces)",
+          "sizeOption": "per pc",
+          "price": 1.25,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Poori",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 0.6,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Phulka Roti",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "for 2 pcs",
           "price": 1,
           "unit": "2 pcs"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tawa Bhatura",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 2,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Curd / Raita",
       "category": "Rice & Bread",
-      "description": "Mixed raita, pineapple raita, or plain raita.",
+      "description": "Mixed raita, pineapple raita, or plain raita",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2029,12 +2006,13 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Sarson Ka Saag",
       "category": "Special Attraction",
-      "description": "Mustard leaves cooked Punjabi-style, topped with tadka.",
+      "description": "Mustard leaves cooked Punjabi-style, topped with tadka",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2052,30 +2030,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 140,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 125,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Soya Champ (Gravy)",
       "category": "Special Attraction",
-      "description": "Marinated soya champs in tomato-onion gravy with cream.",
+      "description": "Marinated soya champs in tomato-onion gravy with cream",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2096,14 +2060,15 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Pav Bhaji",
       "category": "Special Attraction",
-      "description": "Vegetables and potatoes cooked in a special spice blend. Pav extra in some listings.",
+      "description": "Vegetables & potatoes in special spice blend",
       "menuType": "Veg Menu",
-      "notes": null,
+      "notes": "Only bhaji price; pav extra",
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
@@ -2119,25 +2084,28 @@
           "sizeOption": "Extra Large Tray",
           "price": 110,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 78,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 108,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Pav",
+      "category": "Special Attraction",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 1,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Pindi Chole",
@@ -2160,30 +2128,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 125,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 120,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Chilli Paneer - Dry",
       "category": "Indo-Chinese",
-      "description": "Fried paneer with onions, bell peppers, and Chinese sauce.",
+      "description": "Fried paneer with onions, bell peppers & Chinese sauce",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2201,30 +2155,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 120,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Honey Chilli Gobi",
       "category": "Indo-Chinese",
-      "description": "Crispy fried cauliflower with honey and Chinese sauces.",
+      "description": "Crispy fried cauliflower with honey and Chinese sauces",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2242,20 +2182,11 @@
           "sizeOption": "Extra Large Tray",
           "price": 108,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Veg Manchurian - Dry",
@@ -2278,30 +2209,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 115,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer 65",
       "category": "Indo-Chinese",
-      "description": "Fried paneer blended with an array of chilies.",
+      "description": "Fried paneer blended with an array of chilies",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2319,25 +2236,11 @@
           "sizeOption": "Extra Large Tray",
           "price": 140,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Veg Manchurian w/ Gravy",
@@ -2360,30 +2263,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 105,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 60,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Chilli Paneer w/ Gravy",
       "category": "Indo-Chinese",
-      "description": "Fried paneer with onions, bell peppers, and Chinese sauce (gravy).",
+      "description": "Fried paneer with onions, bell peppers & Chinese sauce (gravy)",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2401,25 +2290,16 @@
           "sizeOption": "Extra Large Tray",
           "price": 100,
           "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 65,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Hot & Sour Vegetable",
       "category": "Indo-Chinese",
-      "description": "Stir-fried vegetables in sweet and tangy Chinese sauce.",
+      "description": "Stir-fried vegetables in sweet and tangy Chinese sauce",
       "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -2440,10 +2320,11 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Hakka Noodles / Fried Rice",
+      "name": "Hakka Noodles (Veg)",
       "category": "Indo-Chinese",
       "description": null,
       "menuType": "Veg Menu",
@@ -2466,10 +2347,92 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Schezwan Noodles / Schezwan Fried Rice",
+      "name": "Burnt Garlic Noodles (Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Fried Rice (Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 65,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 90,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Burnt Garlic Fried Rice (Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Schezwan Noodles (Veg)",
       "category": "Indo-Chinese",
       "description": null,
       "menuType": "Veg Menu",
@@ -2492,7 +2455,35 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Schezwan Fried Rice (Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 70,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Gobi Manchurian",
@@ -2503,1102 +2494,112 @@
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
-          "price": 48,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 78,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 108,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Green Salad",
-      "category": "Salad",
-      "description": null,
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 25,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 35,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Masala Thums Up",
-      "category": "Drinks",
-      "description": null,
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "per bottle",
-          "price": 4,
-          "unit": "each"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Lassi (Sweet)",
-      "category": "Drinks",
-      "description": null,
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "per cup",
-          "price": 3.5,
-          "unit": "each"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Soda Shikanjavi",
-      "category": "Drinks",
-      "description": null,
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "per cup",
-          "price": 3.5,
-          "unit": "each"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": 333,
-      "category": 85,
-      "description": 2,
-      "menuType": "Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "$1.00",
-          "price": null,
-          "unit": 13
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    }
-  ],
-  "Non-Veg Menu": [
-    {
-      "name": "Chicken 65",
-      "category": "Appetizer",
-      "description": "Pieces of fried boneless chicken blended with an array of different chilies",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
           "price": 50,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
           "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chili Chicken-Dry",
-      "category": "Appetizer",
-      "description": "Fried Crispy Boneless Chicken cooked with chunks of onions, bell peppers, and mixed with a Chinese sauce",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Manchurian-Dry",
-      "category": "Appetizer",
-      "description": "Minced Chicken balls cooked with diced onions, bell peppers, and mixed with a House Made Chinese sauce",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Pakora",
-      "category": "Appetizer",
-      "description": "Fried chunks of Chicken Breast marinated with a spicy chutney, coated in a gram flour batter served with chutneys",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Malai Tikka/ Chicken Tikka",
-      "category": "Appetizer",
-      "description": "Boneless Chicken marinated overnight in yogurt and spices and then cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 140,
-          "unit": "Extra Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Haryali Kabab",
-      "category": "Appetizer",
-      "description": "Boneless Chicken Breast marinated overnight in a blend of yogurt, cilantro, and spices and then cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": "Chicken Seekh Kabab | Fish Pakoda | Chicken Shashlik | Tandoori Chicken(Bone-in)",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Achari Tikka",
-      "category": "Appetizer",
-      "description": "Boneless Chicken Breast marinated overnight in a blend of yogurt, cilantro, spices & Indian pickles and then cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Highway Tikka",
-      "category": "Appetizer",
-      "description": "Boneless Chicken Breast marinated overnight in a blend of yogurt, cilantro, spices, Amul cheese & fenugreek, then cooked to perfection in a clay oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 110,
-          "unit": "Large Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
           "price": 110,
-          "unit": "Large Tray"
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Chicken Seekh Kabab",
-      "category": "Appetizer",
-      "description": "Minced chicken mixed with onion, ginger, garlic and cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 110,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 110,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Fish Pakoda",
-      "category": "Appetizer",
-      "description": "Chunks of Fish marinated and coated in a gram flour batter with Bold Indian Spices and served with Tarter Sauce",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Shashlik",
-      "category": "Appetizer",
-      "description": "Boneless Chicken marinated overnight in yogurt and spices and then cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Tandoori Chicken (Bone-in)",
-      "category": "Appetizer",
-      "description": "Bone-in Chicken marinated overnight in Kefir and spices and then cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Tangri Kabab (Drumsticks)",
-      "category": "Appetizer",
-      "description": "Chicken legs marinated in Kefir and other exotic Indian spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 2,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": 20,
-      "minOrderUnit": "Pcs"
-    },
-    {
-      "name": "Stuffed Tangri (Stuffed Drumstick)",
-      "category": "Appetizer",
-      "description": "Chicken legs marinated in Kefir and other exotic Indian spices and then stuffed with minced chicken",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 3,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": 20,
-      "minOrderUnit": "Pcs"
-    },
-    {
-      "name": "Chicken Shammi Kabab",
-      "category": "Appetizer",
-      "description": "Fried balls of Minced chicken mixed with onion, ginger, garlic",
-      "menuType": "Non-Veg Menu",
-      "notes": "For rates contact us.",
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 3,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": 20,
-      "minOrderUnit": "Pcs"
-    },
-    {
-      "name": "Non-Veg Thali",
-      "category": "Entrees",
-      "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": "a) Butter Chicken or Chicken of the week | b) Dal Makhani or Dal of the week | c) Mix Veg | d) Rice | e) One Naan or 2 Pranthas | f) Raita | g) Pickle | h) Gulab Jamun",
-      "pricingOptions": [
-        {
-          "sizeOption": "price",
-          "price": 14,
-          "unit": null
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Egg Curry",
-      "category": "Main Course",
-      "description": "Fried and boiled eggs cooked in a house special sauce with traditional spices and herbs",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 90,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Curry",
-      "category": "Main Course",
-      "description": "Tender pieces of boneless chicken cooked in a house special sauce with traditional spices and herbs",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Butter Chicken",
-      "category": "Main Course",
-      "description": "Boneless Chicken breast cooked in a tomato and onion gravy enriched with cream",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Kadai Chicken",
-      "category": "Main Course",
-      "description": "Boneless Chicken breast tossed with diced bell peppers and onions in homestyle karahi masala",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Rara",
-      "category": "Main Course",
-      "description": "It is a combination of minced and diced boneless chicken in a thick tomato gravy",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 95,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 95,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Saag Chicken",
-      "category": "Main Course",
-      "description": "Boneless Chicken, gently cooked in Spinach and mustard Gravy flavoured with herbs, spices and cream",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 95,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 95,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Tawa Chicken",
-      "category": "Main Course",
-      "description": "The boneless chicken is cooked over high heat with fresh tomatoes, onions chillies and a range of spices on a flat Griddle",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 95,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 95,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Mughlai Murg",
-      "category": "Main Course",
-      "description": "The boneless chicken cooked in rich cashew and onion gravy with exotic spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Makhmali Murg (Nidhi’s Special)",
-      "category": "Main Course",
-      "description": "The boneless chicken is cooked over high heat with fresh tomatoes, onions chillies and a range of spices on a flat Griddle",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Mutton Curry",
-      "category": "Main Course",
-      "description": "Marinated Goat Meat is slowly cooked with fresh tomatoes, onions chillies and a range of Bold Indian spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 90,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 160,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 160,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Mutton Rogan Josh",
-      "category": "Main Course",
-      "description": "Marinated Goat Meat is slowly cooked with specially made seasoning out of Bold Indian spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 90,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 160,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 160,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Biryani",
-      "category": "Biryani",
-      "description": "Aromatic and long grain basmati rice are cooked with boneless chicken, aromatic herbs, and spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large",
-          "price": 110,
-          "unit": "Extra Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Extra Large Tray *With Raita",
-      "category": "Biryani",
-      "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "price",
-          "price": 120,
-          "unit": null
-        },
-        {
-          "sizeOption": "price",
-          "price": 150,
-          "unit": null
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Mutton (Goat) Biryani",
-      "category": "Biryani",
-      "description": "Aromatic and long grain basmati rice are cooked with goat meat, aromatic herbs, and spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 75,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 110,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Malai Seekh Biryani",
-      "category": "Biryani",
-      "description": "Aromatic and long grain basmati rice are cooked with Seekh kabab in rich Malai gravy with aromatic herbs, and spices",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 60,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 130,
-          "unit": "Extra Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Hakka Noodles, Fried Rice",
+      "name": "Baby Corn Manchurian",
       "category": "Indo-Chinese",
-      "description": "Chilli Chicken Gravy, Chicken Manchurian Gravy",
-      "menuType": "Non-Veg Menu",
-      "notes": "Schezwan Noddles, Schezwan Fried Rice",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 110,
-          "unit": "Extra Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
           "price": 55,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
+          "price": 85,
+          "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 120,
-          "unit": "Extra Large Tray"
+          "price": 115,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Manchow Soup",
+      "category": "Soup",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Gallon",
+          "price": 35,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tomato Basil Soup",
+      "category": "Soup",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Gallon",
+          "price": 35,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
     },
     {
       "name": "Green Salad",
       "category": "Salad",
       "description": null,
-      "menuType": "Non-Veg Menu",
+      "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 25,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
           "price": 35,
-          "unit": "Large Tray"
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Plain Rice",
-      "category": "Rice & Bread",
+      "name": "Idli",
+      "category": "South Indian",
       "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 35,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 50,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 50,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Jeera Rice",
-      "category": "Rice & Bread",
-      "description": "Rice cooked with cumin seeds",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 35,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 50,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 50,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Veg Pulao",
-      "category": "Rice & Bread",
-      "description": "It is a medley of rice with chopped vegetables",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 40,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 60,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 60,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Naan",
-      "category": "Rice & Bread",
-      "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 2,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Plain/Laccha Paratha",
-      "category": "Rice & Bread",
-      "description": null,
-      "menuType": "Non-Veg Menu",
+      "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
@@ -3607,340 +2608,499 @@
           "unit": "pc"
         }
       ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Phulka Roti",
-      "category": "Rice & Bread",
+      "name": "Vada",
+      "category": "South Indian",
       "description": null,
-      "menuType": "Non-Veg Menu",
+      "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "for 2 pcs",
-          "price": 1,
-          "unit": "pcs"
+          "sizeOption": "per pc",
+          "price": 1.25,
+          "unit": "pc"
         }
       ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "(Mixed Raita, Pineapple Raita, Plain Raita)",
-      "category": "Rice & Bread",
+      "name": "Sambhar",
+      "category": "South Indian",
       "description": null,
-      "menuType": "Non-Veg Menu",
+      "menuType": "Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
-          "price": 35,
-          "unit": "Small Tray"
+          "price": 50,
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 46,
-          "unit": "Large Tray"
+          "price": 80,
+          "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 65,
-          "unit": "Extra Large Tray"
+          "price": 110,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Masala Thums Up",
-      "category": "Drinks",
+      "name": "Tamarind Rice",
+      "category": "South Indian",
       "description": null,
-      "menuType": "Non-Veg Menu",
+      "menuType": "Veg Menu",
       "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "price",
-          "price": 4,
-          "unit": "each"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Lassi (Sweet)",
-      "category": "Drinks",
-      "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "price",
-          "price": 3.5,
-          "unit": "each"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Soda Shikanjavi",
-      "category": "Drinks",
-      "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "price",
-          "price": 3.5,
-          "unit": "each"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Chicken Malai Tikka",
-      "category": "Appetizer",
-      "description": "Boneless Chicken marinated overnight in yogurt and spices and then cooked in an oven",
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 100,
-          "unit": "Large Tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "MAIN COURSE",
-      "category": "Appetizer",
-      "description": "Egg Curry",
-      "menuType": "Non-Veg Menu",
-      "notes": "Chicken Curry | Chicken Rara | Saag Chicken | Teekha Murg | Tawa Chicken | Mughlai Murg | Makhmali Murg(Nidhi’s Special) | Mutton Curry | Mutton Rogan Josh",
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 40,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
           "price": 65,
-          "unit": "Large Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
           "price": 90,
-          "unit": "Extra Large Tray"
-        },
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Curd Rice",
+      "category": "South Indian",
+      "description": null,
+      "menuType": "Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 45,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
           "price": 75,
-          "unit": "Large Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 105,
-          "unit": "Extra Large Tray"
-        },
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    }
+  ],
+  "Non-Veg Menu": [
+    {
+      "name": "Quesdillas- N Veg",
+      "category": "Indo-Mexican",
+      "description": "Served w// Salsa",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
-        },
+          "sizeOption": "per pc",
+          "price": 4,
+          "unit": "Pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Enchiladas- N Veg",
+      "category": "Indo-Mexican",
+      "description": "Served w// Red Cabbage salad",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
           "sizeOption": "Large Tray",
-          "price": 90,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 125,
-          "unit": "Extra Large Tray"
-        },
+          "price": 100,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken 65",
+      "category": "Appetizer",
+      "description": "Fried boneless chicken with an array of chilies",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 50,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
           "price": 80,
-          "unit": "Large Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
           "price": 120,
-          "unit": "Extra Large Tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 90,
-          "unit": "Small Tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 160,
-          "unit": "Large Tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 220,
-          "unit": "Extra Large Tray"
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "With Raita",
-      "category": "Biryani",
-      "description": "Malai seekh biryani",
+      "name": "Chili Chicken - Dry",
+      "category": "Appetizer",
+      "description": "Fried crispy boneless chicken with onions, bell peppers & Chinese sauce",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Manchurian - Dry",
+      "category": "Appetizer",
+      "description": "Minced chicken balls with diced onions, bell peppers & Chinese sauce",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Pakora",
+      "category": "Appetizer",
+      "description": "Fried chicken breast in gram flour batter & spicy chutney",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Malai Tikka",
+      "category": "Appetizer",
+      "description": "Boneless chicken marinated in yogurt & spices, oven cooked",
       "menuType": "Non-Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
           "price": 55,
-          "unit": "Small Tray"
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "Large Tray"
+          "price": 100,
+          "unit": "tray"
         },
         {
-          "sizeOption": "Extra Large",
-          "price": 125,
-          "unit": "Extra Large Tray"
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Hakka Noodles & Fried Rice",
-      "category": "Indo-Chinese",
-      "description": "Chilli Chicken Gravy & Chicken Manchurian Gravy",
+      "name": "Chicken Tikka",
+      "category": "Appetizer",
+      "description": null,
       "menuType": "Non-Veg Menu",
-      "notes": "Schezwan Noodles & Schezwan Fried Rice",
+      "notes": null,
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "Small Tray"
+          "price": 55,
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "Large Tray"
+          "price": 100,
+          "unit": "tray"
         },
         {
-          "sizeOption": "Extra Large",
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Haryali Kabab",
+      "category": "Appetizer",
+      "description": "Boneless chicken in yogurt, cilantro & spices, oven cooked",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 100,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Achari Tikka",
+      "category": "Appetizer",
+      "description": "Boneless chicken in yogurt, cilantro, spices & Indian pickles",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 100,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Highway Tikka",
+      "category": "Appetizer",
+      "description": "Boneless chicken in yogurt, Amul cheese & fenugreek, clay oven",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
           "price": 110,
-          "unit": "Extra Large Tray"
+          "unit": "tray"
         },
         {
+          "sizeOption": "Extra Large Tray",
+          "price": 160,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Seekh Kabab",
+      "category": "Appetizer",
+      "description": "Minced chicken with onion, ginger, garlic, oven cooked",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
           "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "Small Tray"
+          "price": 60,
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 70,
-          "unit": "Large Tray"
+          "price": 110,
+          "unit": "tray"
         },
         {
+          "sizeOption": "Extra Large Tray",
+          "price": 165,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Fish Pakoda",
+      "category": "Appetizer",
+      "description": "Fish chunks in gram flour batter with bold Indian spices & tartar sauce",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
           "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "Small Tray"
+          "price": 60,
+          "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "Large Tray"
+          "price": 100,
+          "unit": "tray"
         },
         {
-          "sizeOption": "Extra Large",
-          "price": 120,
-          "unit": "Extra Large Tray"
+          "sizeOption": "Extra Large Tray",
+          "price": 150,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Plain Rice Small Tray $35.00 Large Tray $50.00 Extra Large",
-      "category": "Rice & Bread",
-      "description": null,
+      "name": "Chicken Shashlik",
+      "category": "Appetizer",
+      "description": "Boneless chicken marinated in yogurt & spices, oven cooked",
       "menuType": "Non-Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "price",
-          "price": 65,
-          "unit": null
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Jeera Rice Small Tray $35.00 Large Tray $50.00 Extra Large",
-      "category": "Rice & Bread",
-      "description": null,
+      "name": "Tandoori Chicken (Bone-in)",
+      "category": "Appetizer",
+      "description": "Bone-in chicken in kefir & spices, oven cooked",
       "menuType": "Non-Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "price",
-          "price": 65,
-          "unit": null
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Veg Pulao Small Tray $40.00 Large Tray $60.00 Extra Large",
-      "category": "Rice & Bread",
-      "description": null,
-      "menuType": "Non-Veg Menu",
-      "notes": null,
-      "pricingOptions": [
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
         {
-          "sizeOption": "price",
-          "price": 80,
-          "unit": null
+          "sizeOption": "Large Tray",
+          "price": 100,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 150,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Bread Naan",
-      "category": "Rice & Bread",
-      "description": null,
+      "name": "Tangri Kabab (Drumsticks)",
+      "category": "Appetizer",
+      "description": "Chicken legs in kefir & exotic Indian spices",
       "menuType": "Non-Veg Menu",
       "notes": null,
       "pricingOptions": [
@@ -3950,50 +3110,720 @@
           "unit": "pc"
         }
       ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Curd Small Tray $35.00 Large Tray $46.00 Extra Large",
-      "category": "Rice & Bread",
-      "description": null,
+      "name": "Stuffed Tangri (Stuffed Drumstick)",
+      "category": "Appetizer",
+      "description": "Chicken legs in kefir & spices, stuffed with minced chicken",
       "menuType": "Non-Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "price",
-          "price": 65,
-          "unit": null
+          "sizeOption": "per pc",
+          "price": 3,
+          "unit": "pc"
         }
       ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Chicken Shammi Kabab ( For rates contact us.)",
+      "name": "Chicken Shammi Kabab",
+      "category": "Appetizer",
+      "description": "Fried balls of minced chicken with onion, ginger & garlic",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 3,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Lollipop",
       "category": "Appetizer",
       "description": null,
       "menuType": "Non-Veg Menu",
-      "notes": "Contact for pricing",
-      "pricingOptions": [],
-      "minOrder": null,
-      "minOrderUnit": null
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 2.5,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": 21,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": 156,
-      "category": 53,
-      "description": 1,
+      "name": "Chili Shrimp",
+      "category": "Appetizer",
+      "description": null,
       "menuType": "Non-Veg Menu",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "$1.00",
-          "price": null,
-          "unit": 8
+          "sizeOption": "Small Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 160,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 220,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Patty Slider",
+      "category": "Appetizer",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 3.5,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Egg Curry",
+      "category": "Main Course",
+      "description": "Fried & boiled eggs in house special sauce with spices & herbs",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 140,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Curry",
+      "category": "Main Course",
+      "description": "Boneless chicken in house special sauce with spices & herbs",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 115,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Butter Chicken",
+      "category": "Main Course",
+      "description": "Boneless chicken breast in tomato/onion gravy with cream",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 115,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Kadai Chicken",
+      "category": "Main Course",
+      "description": "Boneless chicken tossed with bell peppers & onions in karahi masala",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 115,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Rara",
+      "category": "Main Course",
+      "description": "Minced & diced boneless chicken in thick tomato gravy",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 95,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 130,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Saag Chicken",
+      "category": "Main Course",
+      "description": "Boneless chicken in spinach & mustard gravy with herbs & cream",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 95,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 130,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tawa Chicken",
+      "category": "Main Course",
+      "description": "Boneless chicken with tomatoes, onions, chillies & spices on griddle",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 95,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 130,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Mughlai Murg",
+      "category": "Main Course",
+      "description": "Boneless chicken in rich cashew & onion gravy with exotic spices",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 115,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Makhmali Murg (Nidhi's Special)",
+      "category": "Main Course",
+      "description": "Boneless chicken with tomatoes, onions, chillies & spices on griddle",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 85,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 115,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Mutton Curry",
+      "category": "Main Course",
+      "description": "Goat meat slowly cooked with tomatoes, onions, chillies & bold spices",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 160,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 220,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Mutton Rogan Josh",
+      "category": "Main Course",
+      "description": "Goat meat slowly cooked with bold Indian spice seasoning",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 160,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 220,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Biryani (with Raita)",
+      "category": "Biryani",
+      "description": "Basmati rice with boneless chicken, aromatic herbs & spices",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Mutton (Goat) Biryani (with Raita)",
+      "category": "Biryani",
+      "description": "Basmati rice with goat meat, aromatic herbs & spices",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 110,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 150,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Malai Seekh Biryani (with Raita)",
+      "category": "Biryani",
+      "description": "Basmati rice with seekh kabab in rich malai gravy, herbs & spices",
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 90,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 130,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Hakka Noodles (Non-Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Fried Rice (Non-Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 50,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Schezwan Noodles (Non-Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Schezwan Fried Rice (Non-Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Burnt Garlic Fried Rice (Non-Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Burnt Garlic Noodles (Non-Veg)",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 55,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 80,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 120,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chilli Chicken Gravy",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Chicken Manchurian Gravy",
+      "category": "Indo-Chinese",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 110,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Green Salad",
+      "category": "Salad",
+      "description": null,
+      "menuType": "Non-Veg Menu",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 25,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 35,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     }
   ],
   "Desserts": [
@@ -4013,15 +3843,11 @@
           "sizeOption": "Regular Oil per lb",
           "price": 12.5,
           "unit": "lb"
-        },
-        {
-          "sizeOption": "Desi Ghee per lb",
-          "price": 15.5,
-          "unit": "lb"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Moong Dal Halwa",
@@ -4037,7 +3863,8 @@
         }
       ],
       "minOrder": 4,
-      "minOrderUnit": "lb"
+      "minOrderUnit": "lb",
+      "isQuoteBased": false
     },
     {
       "name": "Shahi Gulab Jamun",
@@ -4050,15 +3877,11 @@
           "sizeOption": "per pc",
           "price": 1.75,
           "unit": "pc"
-        },
-        {
-          "sizeOption": "per pc",
-          "price": 1.75,
-          "unit": "pc"
         }
       ],
       "minOrder": 25,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Kalakand",
@@ -4071,15 +3894,11 @@
           "sizeOption": "per lb",
           "price": 13,
           "unit": "lb"
-        },
-        {
-          "sizeOption": "per lb",
-          "price": 13,
-          "unit": "lb"
         }
       ],
       "minOrder": 3,
-      "minOrderUnit": "lb"
+      "minOrderUnit": "lb",
+      "isQuoteBased": false
     },
     {
       "name": "Malpua",
@@ -4095,7 +3914,8 @@
         }
       ],
       "minOrder": 25,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Gajar Ka Halwa",
@@ -4111,10 +3931,11 @@
         }
       ],
       "minOrder": 4,
-      "minOrderUnit": "lb"
+      "minOrderUnit": "lb",
+      "isQuoteBased": false
     },
     {
-      "name": "Boondi Ladoo (Desi Ghee) and More",
+      "name": "Boondi Ladoo (Desi Ghee)",
       "category": "Desserts",
       "description": null,
       "menuType": "Desserts",
@@ -4127,7 +3948,8 @@
         }
       ],
       "minOrder": 5,
-      "minOrderUnit": "lb"
+      "minOrderUnit": "lb",
+      "isQuoteBased": false
     },
     {
       "name": "Kheer",
@@ -4148,12 +3970,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 80,
+          "price": 120,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Fruit Custard",
@@ -4174,32 +3997,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
+          "price": 120,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Phirni",
@@ -4220,35 +4024,16 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
+          "price": 120,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Shahi Tudka",
+      "name": "Shahi Tukda",
       "category": "Desserts",
       "description": null,
       "menuType": "Desserts",
@@ -4266,12 +4051,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 110,
+          "price": 160,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Fruit Cream",
@@ -4292,17 +4078,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 110,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "X-Large Tray",
-          "price": 110,
+          "price": 160,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Ras Malai",
@@ -4315,15 +4097,11 @@
           "sizeOption": "per pc",
           "price": 1.75,
           "unit": "pc"
-        },
-        {
-          "sizeOption": "per pc",
-          "price": 1.75,
-          "unit": "pc"
         }
       ],
       "minOrder": 25,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
       "name": "Spongy Rasgulla",
@@ -4336,47 +4114,38 @@
           "sizeOption": "per pc",
           "price": 2,
           "unit": "pc"
-        },
-        {
-          "sizeOption": "per pc",
-          "price": 2,
-          "unit": "pc"
         }
       ],
       "minOrder": 25,
-      "minOrderUnit": "pcs"
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
     },
     {
-      "name": "Phirni Cup",
+      "name": "Rabdi",
       "category": "Desserts",
       "description": null,
       "menuType": "Desserts",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "per cup",
-          "price": 3.5,
-          "unit": "cup"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": 40,
-      "category": 15,
-      "description": 0,
-      "menuType": "Desserts",
-      "notes": null,
-      "pricingOptions": [
+          "sizeOption": "Small Tray",
+          "price": 60,
+          "unit": "tray"
+        },
         {
-          "sizeOption": "$1.50",
-          "price": null,
-          "unit": 1
+          "sizeOption": "Large Tray",
+          "price": 110,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 160,
+          "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     }
   ],
   "Puja Food": [
@@ -4394,7 +4163,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Papad Tikka",
@@ -4415,12 +4185,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 95,
+          "price": 145,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Mix Veg Pakoda",
@@ -4441,12 +4212,30 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 75,
+          "price": 100,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Rava Matra Kabab",
+      "category": "Appetizers",
+      "description": null,
+      "menuType": "Puja Food",
+      "notes": "No Onion And Garlic",
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 2.5,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Cocktail Samosa",
@@ -4462,7 +4251,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Samosa",
@@ -4478,7 +4268,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Samosa Chaat",
@@ -4494,7 +4285,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Aloo Tikki",
@@ -4510,7 +4302,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Aloo Tikki Chaat",
@@ -4526,7 +4319,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Dhokla",
@@ -4537,12 +4331,13 @@
       "pricingOptions": [
         {
           "sizeOption": "per lb",
-          "price": 10,
+          "price": 11,
           "unit": "lb"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Dahi Vada",
@@ -4558,10 +4353,11 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Hara Bhara Kaba",
+      "name": "Hara Bhara Kabab",
       "category": "Appetizers",
       "description": null,
       "menuType": "Puja Food",
@@ -4574,7 +4370,8 @@
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Veg Biryani with Raita",
@@ -4585,22 +4382,23 @@
       "pricingOptions": [
         {
           "sizeOption": "Small Tray",
-          "price": 50,
+          "price": 55,
           "unit": "tray"
         },
         {
           "sizeOption": "Large Tray",
-          "price": 82,
+          "price": 93,
           "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 82,
+          "price": 120,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Paneer Biryani with Raita",
@@ -4616,17 +4414,18 @@
         },
         {
           "sizeOption": "Large Tray",
-          "price": 88,
+          "price": 90,
           "unit": "tray"
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 88,
+          "price": 120,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Veg Pulao",
@@ -4647,12 +4446,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 65,
+          "price": 90,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
       "name": "Jeera Rice",
@@ -4673,414 +4473,13 @@
         },
         {
           "sizeOption": "Extra Large Tray",
-          "price": 50,
+          "price": 65,
           "unit": "tray"
         }
       ],
       "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Dal Makhani",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 49,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 82,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 82,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Dal Panchratni",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 49,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 82,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 82,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Paneer Lababdar",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 93,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 93,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Shahi Paneer",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 93,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 93,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Paneer Butter Masala",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 93,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 93,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Mattar Paneer",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 55,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 93,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 93,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Amritsari Cholle",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 49,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 82,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 82,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Kadi Pakoda",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 49,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 82,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 82,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Mix Veg",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 49,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 82,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 82,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Veg Jalfrazi",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 49,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 82,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 82,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Aloo Gobi",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 80,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 80,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Aloo Bhaji",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 45,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 75,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 75,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Aloo Chole ki Sabji",
-      "category": "Main Course",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "Small Tray",
-          "price": 50,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Large Tray",
-          "price": 85,
-          "unit": "tray"
-        },
-        {
-          "sizeOption": "Extra Large Tray",
-          "price": 85,
-          "unit": "tray"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Phulka Roti",
-      "category": "Breads",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 0.5,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Prantha",
-      "category": "Breads",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 1.25,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": "Poori",
-      "category": "Breads",
-      "description": null,
-      "menuType": "Puja Food",
-      "notes": "No Onion And Garlic",
-      "pricingOptions": [
-        {
-          "sizeOption": "per pc",
-          "price": 0.6,
-          "unit": "pc"
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
-    },
-    {
-      "name": 69,
-      "category": 31,
-      "description": 0,
-      "menuType": "Puja Food",
-      "notes": null,
-      "pricingOptions": [
-        {
-          "sizeOption": "$0.50",
-          "price": null,
-          "unit": 4
-        }
-      ],
-      "minOrder": null,
-      "minOrderUnit": null
+      "minOrderUnit": null,
+      "isQuoteBased": false
     }
   ],
   "Live Catering": [
@@ -5425,11 +4824,191 @@
       "notes": null,
       "pricingOptions": [],
       "isQuoteBased": true
+    },
+    {
+      "name": "Palak Patta Chaat",
+      "category": "Chaat Live",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 3.5,
+          "unit": "Pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Dahi Bhalla Papdi Chaat",
+      "category": "Chaat Live",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 3.5,
+          "unit": "Pc"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": "pcs",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Pizza Oven",
+      "category": "Extras",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Unit",
+          "price": 150,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Taco Station Setup",
+      "category": "Extras",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Unit",
+          "price": 100,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tawa for Tikki",
+      "category": "Extras",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Unit",
+          "price": 40,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Server (5 hrs)",
+      "category": "Extras",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Unit",
+          "price": 150,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Server (3 hrs)",
+      "category": "Extras",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Unit",
+          "price": 100,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Dispenser",
+      "category": "Extras",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Unit",
+          "price": 20,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tawa Vegetables Live",
+      "category": "Vegetables",
+      "description": "Exotic vegetables tossed in homemade tawa spices",
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 65,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 110,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 150,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Poori Live",
+      "category": "Rice & Bread",
+      "description": null,
+      "menuType": "Live Catering",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per pc",
+          "price": 0.5,
+          "unit": "pc"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     }
   ],
   "Chafing Dishes": [
     {
-      "name": "Economic Chafing Dishes",
+      "name": "Economic Chafing Dish",
       "category": "Chafing Dishes",
       "description": "Comes with 2 fuels",
       "menuType": "Chafing Dishes",
@@ -5440,10 +5019,13 @@
           "price": 10,
           "unit": "per dish"
         }
-      ]
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": "Rotating Chafing Dishes",
+      "name": "Rotating Chafing Dish",
       "category": "Chafing Dishes",
       "description": "Comes with 2 fuels",
       "menuType": "Chafing Dishes",
@@ -5454,21 +5036,27 @@
           "price": 25,
           "unit": "per dish"
         }
-      ]
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     },
     {
-      "name": 2,
+      "name": "Premium Chafing Dish — Rose Gold",
       "category": "Chafing Dishes",
-      "description": 0,
+      "description": "Comes with 2 fuels",
       "menuType": "Chafing Dishes",
       "notes": null,
       "pricingOptions": [
         {
-          "sizeOption": "$10.00",
-          "price": null,
-          "unit": 1
+          "sizeOption": "Base price",
+          "price": 35,
+          "unit": "per dish"
         }
-      ]
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     }
   ],
   "Disposable Plates": [
@@ -5507,6 +5095,283 @@
       "notes": "Contact for pricing",
       "pricingOptions": [],
       "isQuoteBased": true
+    }
+  ],
+  "Drinks": [
+    {
+      "name": "Masala Thums Up",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per bottle",
+          "price": 4,
+          "unit": "each"
+        },
+        {
+          "sizeOption": "per bottle",
+          "price": 4,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Lassi (Sweet)",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per cup",
+          "price": 3.5,
+          "unit": "each"
+        },
+        {
+          "sizeOption": "per cup",
+          "price": 3.5,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Mango Lassi",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Gallon",
+          "price": 30,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Badam Milk",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Gallon",
+          "price": 34,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Aam Panna",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Gallon",
+          "price": 40,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Pomegrante Lemonade",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Gallon",
+          "price": 30,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Soda Shikanjavi",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "per cup",
+          "price": 3.5,
+          "unit": "each"
+        },
+        {
+          "sizeOption": "per cup",
+          "price": 3.5,
+          "unit": "each"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Tea",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Per Gallon",
+          "price": 25,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    },
+    {
+      "name": "Coffee",
+      "category": "Drinks",
+      "description": null,
+      "menuType": "Drinks",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Per Gallon",
+          "price": 30,
+          "unit": "Gallon"
+        }
+      ],
+      "minOrder": 2,
+      "minOrderUnit": "Gallon",
+      "isQuoteBased": false
+    }
+  ],
+  "Breakfast": [
+    {
+      "name": "Poha",
+      "category": "Breakfast",
+      "description": null,
+      "menuType": "Breakfast",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Upma",
+      "category": "Breakfast",
+      "description": null,
+      "menuType": "Breakfast",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Small Tray",
+          "price": 45,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Large Tray",
+          "price": 75,
+          "unit": "tray"
+        },
+        {
+          "sizeOption": "Extra Large Tray",
+          "price": 100,
+          "unit": "tray"
+        }
+      ],
+      "minOrder": null,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Sandwich - Cucumber/ Tomato",
+      "category": "Breakfast",
+      "description": "Cut Into Half",
+      "menuType": "Breakfast",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Pcs",
+          "price": 3.5,
+          "unit": "Pcs"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Sandwich - Coleslaw",
+      "category": "Breakfast",
+      "description": "Cut Into Half",
+      "menuType": "Breakfast",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Pcs",
+          "price": 3,
+          "unit": "Pcs"
+        }
+      ],
+      "minOrder": 20,
+      "minOrderUnit": null,
+      "isQuoteBased": false
+    },
+    {
+      "name": "Batata Vada",
+      "category": "Breakfast",
+      "description": null,
+      "menuType": "Breakfast",
+      "notes": null,
+      "pricingOptions": [
+        {
+          "sizeOption": "Pcs",
+          "price": 2,
+          "unit": "Pcs"
+        }
+      ],
+      "minOrder": 21,
+      "minOrderUnit": null,
+      "isQuoteBased": false
     }
   ]
 }

@@ -13,6 +13,8 @@ const MENU_TYPES: MenuType[] = [
   'Live Catering',
   'Chafing Dishes',
   'Disposable Plates',
+  'Drinks',
+  'Breakfast',
 ];
 
 export default function AdminMenuPage() {
