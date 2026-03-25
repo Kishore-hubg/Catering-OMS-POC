@@ -24,29 +24,49 @@ export const OrderStatusEnum = z.enum([
 
 export const DeliveryTypeEnum = z.enum(['pickup', 'delivery', 'live']);
 
+/**
+ * International-friendly phone check (no extra dependencies).
+ * Uses E.164-style bounds: 8–15 digits after stripping formatting; rejects obvious junk.
+ * US/Canada NANP numbers (10 digits, optional leading 1) must still pass NANP rules when applicable.
+ */
+export function isValidPhoneNumber(input: string): boolean {
+  const trimmed = input.trim();
+  if (!trimmed) return false;
+  const digits = trimmed.replace(/\D/g, '');
+  if (digits.length < 8 || digits.length > 15) return false;
+  if (/^0+$/.test(digits)) return false;
+  if (/^(\d)\1{7,}$/.test(digits)) return false;
+
+  const isUsStyleInput =
+    digits.length === 10 || (digits.length === 11 && digits.startsWith('1'));
+  let n = digits;
+  if (digits.length === 11 && digits.startsWith('1')) n = n.slice(1);
+  if (isUsStyleInput && n.length === 10) {
+    return /^[2-9]\d{2}[2-9]\d{6}$/.test(n);
+  }
+
+  return true;
+}
+
 // Customer validation
 export const CustomerSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z
-    .union([
-      z
-        .string()
-        .trim()
-        .email(
-          'Enter a valid email address – if this is wrong, false responses will propagate to the wrong customer.'
-        )
-        .max(254, 'Email is too long'),
-      z.literal(''),
-    ])
-    .optional()
-    .default(''),
+    .string()
+    .trim()
+    .min(1, 'Email is required')
+    .email(
+      'Enter a valid email address – if this is wrong, false responses will propagate to the wrong customer.'
+    )
+    .max(254, 'Email is too long'),
   phone: z
     .string()
     .trim()
-    .regex(
-      /^\+?[0-9()\-\s]{7,20}$/,
-      'Enter a valid mobile number with country code (e.g. +1 469 555 1234)'
-    ),
+    .min(1, 'Phone number is required')
+    .refine(isValidPhoneNumber, {
+      message:
+        'Enter a valid phone number (US/Canada: 10 digits, optional +1; other countries: 8–15 digits with country code)',
+    }),
   address: z.string().optional(),
   dietaryNotes: z.string().optional(),
 });

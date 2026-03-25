@@ -10,20 +10,44 @@ import {
   getMenuTypeColor,
   cn,
 } from '@/lib/utils/format';
-import { CustomerSchema } from '@/lib/validations';
+import { normalizeMenuItemsFromApi } from '@/lib/normalizeMenuResponse';
+import { CustomerSchema, EventSchema } from '@/lib/validations';
 import type { MenuItem, MenuType, OrderLineItem, Order } from '@/types';
 
+const CustomerNameSchema = CustomerSchema.pick({ name: true });
 const CustomerEmailSchema = CustomerSchema.pick({ email: true });
 const CustomerPhoneSchema = CustomerSchema.pick({ phone: true });
 
+type CustomerStepField = 'name' | 'email' | 'phone';
+type EventStepField = 'eventDate' | 'deliveryAddress';
+
 /* ---------- Step components ---------- */
 
-function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
+function StepCustomer({
+  showTitle = true,
+  stepErrors,
+  onDismissStepError,
+}: {
+  showTitle?: boolean;
+  stepErrors?: Partial<Record<CustomerStepField, string>>;
+  onDismissStepError?: (field: CustomerStepField) => void;
+}) {
   const { customer, setCustomer } = useOrderWizard();
   const [customerErrors, setCustomerErrors] = useState<{
+    name?: string;
     email?: string;
     phone?: string;
   }>({});
+
+  const validateName = (value: string) => {
+    const result = CustomerNameSchema.safeParse({ name: value });
+    setCustomerErrors((prev) => ({
+      ...prev,
+      name: result.success
+        ? undefined
+        : result.error.flatten().fieldErrors.name?.[0],
+    }));
+  };
 
   const validateEmail = (value: string) => {
     const result = CustomerEmailSchema.safeParse({ email: value });
@@ -45,6 +69,10 @@ function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
     }));
   };
 
+  const nameErr = stepErrors?.name ?? customerErrors.name;
+  const emailErr = stepErrors?.email ?? customerErrors.email;
+  const phoneErr = stepErrors?.phone ?? customerErrors.phone;
+
   return (
     <div className="space-y-4">
       {showTitle && (
@@ -56,40 +84,51 @@ function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
             Customer Name <span className="text-red-500">*</span>
           </label>
           <input
-            className="input-field"
+            className={cn('input-field', nameErr && 'border-red-400 ring-1 ring-red-200')}
             value={customer.name}
-            onChange={(e) => setCustomer({ name: e.target.value })}
+            onChange={(e) => {
+              onDismissStepError?.('name');
+              setCustomer({ name: e.target.value });
+            }}
+            onBlur={(e) => validateName(e.target.value)}
             placeholder="Full name"
           />
+          {nameErr && (
+            <p className="mt-1 text-xs text-red-500">{nameErr}</p>
+          )}
         </div>
         <div>
           <label className="label">
             Phone Number <span className="text-red-500">*</span>
           </label>
           <input
-            className="input-field"
+            className={cn('input-field', phoneErr && 'border-red-400 ring-1 ring-red-200')}
             type="tel"
             value={customer.phone}
             onChange={(e) => {
+              onDismissStepError?.('phone');
               const value = e.target.value;
               setCustomer({ phone: value });
             }}
             onBlur={(e) => validatePhone(e.target.value)}
             placeholder="(___) ___-____"
           />
-          {customerErrors.phone && (
+          {phoneErr && (
             <p className="mt-1 text-xs text-red-500">
-              {customerErrors.phone}
+              {phoneErr}
             </p>
           )}
         </div>
         <div>
-          <label className="label">Email Address</label>
+          <label className="label">
+            Email Address <span className="text-red-500">*</span>
+          </label>
           <input
-            className="input-field"
+            className={cn('input-field', emailErr && 'border-red-400 ring-1 ring-red-200')}
             type="email"
             value={customer.email}
             onChange={(e) => {
+              onDismissStepError?.('email');
               const value = e.target.value;
               setCustomer({ email: value });
             }}
@@ -100,9 +139,9 @@ function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
             Double-check this email. If it is incorrect, false responses will
             propagate to the wrong customer.
           </p>
-          {customerErrors.email && (
+          {emailErr && (
             <p className="mt-1 text-xs text-red-500">
-              {customerErrors.email}
+              {emailErr}
             </p>
           )}
         </div>
@@ -132,8 +171,19 @@ function StepCustomer({ showTitle = true }: { showTitle?: boolean }) {
   );
 }
 
-function StepEvent({ showTitle = true }: { showTitle?: boolean }) {
+function StepEvent({
+  showTitle = true,
+  stepErrors,
+  onDismissStepError,
+}: {
+  showTitle?: boolean;
+  stepErrors?: Partial<Record<EventStepField, string>>;
+  onDismissStepError?: (field: EventStepField) => void;
+}) {
   const { event, setEvent } = useOrderWizard();
+  const dateErr = stepErrors?.eventDate;
+  const deliveryErr = stepErrors?.deliveryAddress;
+
   return (
     <div className="space-y-4">
       {showTitle && (
@@ -144,7 +194,18 @@ function StepEvent({ showTitle = true }: { showTitle?: boolean }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
             <label className="label">Event Date <span className="text-red-500">*</span></label>
-            <input className="input-field" type="date" value={event.eventDate} onChange={(e) => setEvent({ eventDate: e.target.value })} />
+            <input
+              className={cn('input-field', dateErr && 'border-red-400 ring-1 ring-red-200')}
+              type="date"
+              value={event.eventDate}
+              onChange={(e) => {
+                onDismissStepError?.('eventDate');
+                setEvent({ eventDate: e.target.value });
+              }}
+            />
+            {dateErr && (
+              <p className="mt-1 text-xs text-red-500">{dateErr}</p>
+            )}
           </div>
           <div>
             <label className="label">Event Time <span className="text-red-500">*</span></label>
@@ -291,11 +352,17 @@ function StepEvent({ showTitle = true }: { showTitle?: boolean }) {
             <div>
               <label className="label">Delivery Address <span className="text-red-500">*</span></label>
               <input
-                className="input-field"
+                className={cn('input-field', deliveryErr && 'border-red-400 ring-1 ring-red-200')}
                 value={event.deliveryAddress}
-                onChange={(e) => setEvent({ deliveryAddress: e.target.value })}
+                onChange={(e) => {
+                  onDismissStepError?.('deliveryAddress');
+                  setEvent({ deliveryAddress: e.target.value });
+                }}
                 placeholder="Street address, Suite / Apt"
               />
+              {deliveryErr && (
+                <p className="mt-1 text-xs text-red-500">{deliveryErr}</p>
+              )}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
@@ -364,7 +431,17 @@ function StepEvent({ showTitle = true }: { showTitle?: boolean }) {
   );
 }
 
-function StepCustomerAndEvent() {
+function StepCustomerAndEvent({
+  customerStepErrors,
+  eventStepErrors,
+  onDismissCustomerStepError,
+  onDismissEventStepError,
+}: {
+  customerStepErrors?: Partial<Record<CustomerStepField, string>>;
+  eventStepErrors?: Partial<Record<EventStepField, string>>;
+  onDismissCustomerStepError?: (field: CustomerStepField) => void;
+  onDismissEventStepError?: (field: EventStepField) => void;
+}) {
   return (
     <div className="space-y-6">
       {/* Customer Information - separate card with icon, title, subheading, ample top spacing */}
@@ -380,7 +457,11 @@ function StepCustomerAndEvent() {
             <p className="text-sm text-gray-500 mt-0.5">Primary contact for this order</p>
           </div>
         </div>
-        <StepCustomer showTitle={false} />
+        <StepCustomer
+          showTitle={false}
+          stepErrors={customerStepErrors}
+          onDismissStepError={onDismissCustomerStepError}
+        />
       </div>
 
       {/* Event Details - separate card with icon, title, subheading, ample top spacing */}
@@ -394,7 +475,11 @@ function StepCustomerAndEvent() {
             <p className="text-sm text-gray-500 mt-0.5">Tell us about the occasion</p>
           </div>
         </div>
-        <StepEvent showTitle={false} />
+        <StepEvent
+          showTitle={false}
+          stepErrors={eventStepErrors}
+          onDismissStepError={onDismissEventStepError}
+        />
       </div>
     </div>
   );
@@ -411,6 +496,36 @@ const CORE_MENU_TYPES = new Set<MenuType>([
   'Desserts',
   'Puja Food',
 ]);
+
+/** Collapses case/whitespace so "Appetizer" and "appetizer" map to one category row. */
+function normalizeMenuCategoryKey(cat: string): string {
+  return (cat || '').trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+/** Split only on the first "|" (menuType values never contain "|"). */
+function splitMenuTypeCategoryComposite(composite: string): { menuType: string; category: string } {
+  const i = composite.indexOf('|');
+  if (i < 0) return { menuType: '', category: '' };
+  return { menuType: composite.slice(0, i).trim(), category: composite.slice(i + 1) };
+}
+
+/** Match line-item category to dropdown option when DB strings differ only by case/spacing. */
+function resolveLineItemCategorySelectValue(
+  menuType: MenuType | undefined,
+  category: string | undefined,
+  options: { value: string }[]
+): string {
+  if (!menuType || !(category || '').trim()) return '';
+  const trimmed = category!.trim();
+  const exact = `${menuType}|${trimmed}`;
+  if (options.some((o) => o.value === exact)) return exact;
+  const norm = normalizeMenuCategoryKey(trimmed);
+  const found = options.find((o) => {
+    const p = splitMenuTypeCategoryComposite(o.value);
+    return p.menuType === menuType && normalizeMenuCategoryKey(p.category) === norm;
+  });
+  return found?.value ?? exact;
+}
 
 type PricingOption = MenuItem['pricingOptions'][number];
 
@@ -453,29 +568,59 @@ function StepMenuItems() {
     fetch('/api/menu')
       .then((r) => r.json())
       .then((res) => {
-        if (res.success) setMenuItems(res.data);
+        if (!res?.success) {
+          toast.error(typeof res?.error === 'string' ? res.error : 'Failed to load menu');
+          setMenuItems([]);
+          return;
+        }
+        setMenuItems(normalizeMenuItemsFromApi(res.data));
       })
-      .catch(console.error)
+      .catch(() => {
+        toast.error('Could not load menu. Check your connection and try again.');
+        setMenuItems([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 
-  // Categories with Veg / Non-Veg prefix: "Veg - Appetizer", "Non-Veg - Main Course", etc.
+  // Categories with Veg / Non-Veg prefix; dedupe by normalized key so labels stay distinct per real category.
   const categoriesWithPrefix = useMemo(() => {
-    const seen = new Set<string>();
-    const out: { value: string; label: string }[] = [];
+    const byNormKey = new Map<
+      string,
+      { menuType: MenuType; category: string }
+    >();
     menuItems.forEach((i) => {
-      // Skip non-core types like Live Catering / equipment categories
       if (!CORE_MENU_TYPES.has(i.menuType as MenuType)) return;
       const categoryTrimmed = (i.category || '').toString().trim();
       if (TRASH_CATEGORY_CODES.has(categoryTrimmed)) return;
-      const key = `${i.menuType}|${i.category}`;
-      if (seen.has(key)) return;
-      seen.add(key);
-      const prefix = i.menuType === 'Non-Veg Menu' ? 'Non-Veg' : i.menuType === 'Veg Menu' ? 'Veg' : i.menuType;
-      const label = i.menuType === 'Veg Menu' || i.menuType === 'Non-Veg Menu'
-        ? `${prefix} - ${i.category}`
-        : `${i.category}`;
-      out.push({ value: key, label });
+      const normKey = `${i.menuType}||${normalizeMenuCategoryKey(categoryTrimmed)}`;
+      const prev = byNormKey.get(normKey);
+      if (!prev) {
+        byNormKey.set(normKey, {
+          menuType: i.menuType as MenuType,
+          category: categoryTrimmed,
+        });
+        return;
+      }
+      const prefer =
+        categoryTrimmed.length > prev.category.length
+          ? categoryTrimmed
+          : categoryTrimmed.length < prev.category.length
+            ? prev.category
+            : categoryTrimmed < prev.category
+              ? categoryTrimmed
+              : prev.category;
+      byNormKey.set(normKey, { menuType: prev.menuType, category: prefer });
+    });
+    const out: { value: string; label: string }[] = [];
+    byNormKey.forEach(({ menuType, category }) => {
+      const value = `${menuType}|${category}`;
+      const prefix =
+        menuType === 'Non-Veg Menu' ? 'Non-Veg' : menuType === 'Veg Menu' ? 'Veg' : menuType;
+      const label =
+        menuType === 'Veg Menu' || menuType === 'Non-Veg Menu'
+          ? `${prefix} - ${category}`
+          : `${category}`;
+      out.push({ value, label });
     });
     return out.sort((a, b) => a.label.localeCompare(b.label));
   }, [menuItems]);
@@ -524,10 +669,11 @@ function StepMenuItems() {
       });
       return;
     }
-    const [menuType, category] = compositeValue.split('|');
+    const { menuType, category: rawCat } = splitMenuTypeCategoryComposite(compositeValue);
+    const category = (rawCat || '').trim();
     updateLineItem(index, {
       menuType: menuType as MenuType,
-      category: category || '',
+      category,
       menuItemId: '',
       menuItemName: '',
       sizeOption: '',
@@ -668,12 +814,19 @@ function StepMenuItems() {
           </thead>
           <tbody>
             {lineItems.map((item, idx) => {
-              const rowCategoryValue = item.menuType && item.category
-                ? `${item.menuType}|${item.category}`
-                : '';
-              const [rowMenuType, rowCategory] = rowCategoryValue ? rowCategoryValue.split('|') : ['', ''];
+              const rowCategoryValue = resolveLineItemCategorySelectValue(
+                item.menuType,
+                item.category,
+                categoriesWithPrefix
+              );
+              const { menuType: rowMenuType, category: rowCategory } = rowCategoryValue
+                ? splitMenuTypeCategoryComposite(rowCategoryValue)
+                : { menuType: '', category: '' };
+              const rowCatNorm = normalizeMenuCategoryKey(rowCategory);
               const categoryItems = menuItems.filter(
-                (m) => m.menuType === rowMenuType && m.category === rowCategory
+                (m) =>
+                  m.menuType === (rowMenuType as MenuType) &&
+                  normalizeMenuCategoryKey(m.category || '') === rowCatNorm
               );
               const selectedMenuItemId = item.menuItemId || '';
               const selectedMenu = menuItems.find((m) => m._id === selectedMenuItemId);
@@ -1159,6 +1312,42 @@ function NewOrderPageInner() {
   const [now, setNow] = useState(() => new Date());
   const [editOrderLoading, setEditOrderLoading] = useState(isEditMode);
   const [editOrderNumber, setEditOrderNumber] = useState<string | null>(null);
+  const [customerStepErrors, setCustomerStepErrors] = useState<
+    Partial<Record<CustomerStepField, string>>
+  >({});
+  const [eventStepErrors, setEventStepErrors] = useState<
+    Partial<Record<EventStepField, string>>
+  >({});
+
+  const validateStep0 = (): boolean => {
+    const c = CustomerSchema.safeParse(store.customer);
+    const e = EventSchema.safeParse(store.event);
+    if (!c.success) {
+      const fe = c.error.flatten().fieldErrors;
+      setCustomerStepErrors({
+        name: fe.name?.[0],
+        email: fe.email?.[0],
+        phone: fe.phone?.[0],
+      });
+    } else {
+      setCustomerStepErrors({});
+    }
+    if (!e.success) {
+      const fe = e.error.flatten().fieldErrors;
+      setEventStepErrors({
+        eventDate: fe.eventDate?.[0],
+        deliveryAddress: fe.deliveryAddress?.[0],
+      });
+    } else {
+      setEventStepErrors({});
+    }
+    if (!c.success || !e.success) {
+      toast.error('Please fix the highlighted fields before continuing.');
+      return false;
+    }
+    return true;
+  };
+
 
   // Hydrate from existing order when editing; otherwise reset wizard on mount
   useEffect(() => {
@@ -1283,12 +1472,8 @@ function NewOrderPageInner() {
   const canProceed = () => {
     switch (store.currentStep) {
       case 0:
-        return (
-          store.customer.name &&
-          store.customer.phone &&
-          store.event.eventDate &&
-          store.event.deliveryType
-        );
+        // Always allow Next here so validateStep0() can run and show field-level errors.
+        return true;
       case 1:
         return store.lineItems.length > 0;
       case 2:
@@ -1298,7 +1483,20 @@ function NewOrderPageInner() {
     }
   };
 
+  const goToNextStep = () => {
+    if (store.currentStep === 0) {
+      if (!validateStep0()) return;
+    } else if (store.currentStep === 1 && store.lineItems.length === 0) {
+      toast.error('Add at least one menu item before continuing.');
+      return;
+    }
+    store.nextStep();
+  };
+
   const handleSubmit = async (redirectToQuote = false) => {
+    if (store.currentStep === 0 && !validateStep0()) {
+      return;
+    }
     setSubmitting(true);
     try {
       const equipmentLineItems = store.getEquipmentLineItems();
@@ -1499,7 +1697,18 @@ function NewOrderPageInner() {
       </div>
 
       {/* Step content */}
-      {store.currentStep === 0 && <StepCustomerAndEvent />}
+      {store.currentStep === 0 && (
+        <StepCustomerAndEvent
+          customerStepErrors={customerStepErrors}
+          eventStepErrors={eventStepErrors}
+          onDismissCustomerStepError={(field) =>
+            setCustomerStepErrors((prev) => ({ ...prev, [field]: undefined }))
+          }
+          onDismissEventStepError={(field) =>
+            setEventStepErrors((prev) => ({ ...prev, [field]: undefined }))
+          }
+        />
+      )}
       {store.currentStep === 1 && (
         <div className="card">
           <StepMenuItems />
@@ -1550,7 +1759,8 @@ function NewOrderPageInner() {
                   {submitting ? 'Saving...' : isEditMode ? 'Update Order' : 'Save Order'}
                 </button>
                 <button
-                  onClick={store.nextStep}
+                  type="button"
+                  onClick={goToNextStep}
                   disabled={!canProceed()}
                   className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                 >

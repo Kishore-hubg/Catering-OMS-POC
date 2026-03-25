@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import { formatCurrency, getMenuTypeIcon, getMenuTypeColor, cn } from '@/lib/utils/format';
+import { normalizeMenuItemsFromApi } from '@/lib/normalizeMenuResponse';
 import type { MenuItem, MenuType } from '@/types';
 
 const MENU_TYPES: MenuType[] = [
@@ -20,9 +22,17 @@ export default function MenuPage() {
     fetch('/api/menu')
       .then((r) => r.json())
       .then((res) => {
-        if (res.success) setItems(res.data);
+        if (!res?.success) {
+          toast.error(typeof res?.error === 'string' ? res.error : 'Failed to load menu');
+          setItems([]);
+          return;
+        }
+        setItems(normalizeMenuItemsFromApi(res.data));
       })
-      .catch(console.error)
+      .catch(() => {
+        toast.error('Could not load menu. Check your connection and try again.');
+        setItems([]);
+      })
       .finally(() => setLoading(false));
   }, []);
 

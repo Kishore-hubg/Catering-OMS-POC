@@ -265,8 +265,8 @@ function buildQuoteLineItemsTable(o: NormalizedOrder): string {
 
 /** Build notes block (optional) */
 function buildQuoteNotes(o: NormalizedOrder): string {
-  if (!o.adminNotes) return '';
-  return `<div class="notes"><strong>Notes:</strong> ${o.adminNotes}</div>`;
+  // adminNotes are internal-only and should not appear on customer quotes.
+  return '';
 }
 
 /** Build totals section for the letterhead */

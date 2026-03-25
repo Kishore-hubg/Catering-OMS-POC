@@ -131,6 +131,30 @@ function parseCSV(csvText: string): { name: string; category: string; menuType: 
   return rows;
 }
 
+function normalizeExcelHeaderCell(value: unknown): string {
+  return String(value ?? '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+}
+
+function findExcelHeaderRowIndex(rows: unknown[][]): number {
+  const maxScan = Math.min(30, rows.length);
+  for (let i = 0; i < maxScan; i++) {
+    const row = Array.isArray(rows[i]) ? (rows[i] as unknown[]) : [];
+    const normalized = row.map(normalizeExcelHeaderCell);
+    if (normalized.includes('category') && normalized.includes('item name')) return i;
+    // Allow alternate headers if the customer sheet differs slightly.
+    if (normalized.includes('category') && normalized.some((x) => x === 'name' || x === 'item')) return i;
+  }
+  return -1;
+}
+
+function inferMenuTypeFromSheetName(sheetName: string): MenuType | null {
+  const inferred = normalizeMenuType(sheetName);
+  return MENU_TYPES.includes(inferred as MenuType) ? (inferred as MenuType) : null;
+}
+
 /** Validate a single import item (JSON) and return update payload for an existing item */
 function validateImportItem(
   raw: unknown
@@ -213,55 +237,84 @@ export async function POST(request: NextRequest) {
       try {
         const XLSX = await import('xlsx');
         const wb = XLSX.read(arrayBuffer, { type: 'array' });
-        const firstSheetName = wb.SheetNames[0];
-        if (!firstSheetName) {
+        if (!wb.SheetNames?.length) {
           return NextResponse.json({ success: false, error: 'Excel file has no sheets.' }, { status: 400 });
         }
-        const sheet = wb.Sheets[firstSheetName];
-        // header: 1 = array of arrays so we control column mapping (avoids __EMPTY keys from empty header cells)
-        const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, raw: true, defval: '' });
-        if (rows.length < 2) {
-          return NextResponse.json({
-            success: false,
-            error: 'Excel sheet must have a header row and at least one data row.',
-          }, { status: 400 });
-        }
-        const headerRow = (rows[0] || []).map((c) => String(c ?? '').trim());
-        const nameIdx = findHeaderIndex(headerRow, 'name', 'item name', 'item', 'itemname');
-        const categoryIdx = findHeaderIndex(headerRow, 'category', 'cat');
-        const menutypeIdx = findHeaderIndex(headerRow, 'menutype', 'menu type', 'type');
-        const sizeOptionIdx = findHeaderIndex(headerRow, 'sizeoption', 'size option', 'size');
-        const priceIdx = findHeaderIndex(headerRow, 'price', 'unit price', 'unitprice');
-        const unitIdx = findHeaderIndex(headerRow, 'unit', 'uom');
-        if (nameIdx === -1 || categoryIdx === -1 || menutypeIdx === -1 || sizeOptionIdx === -1 || priceIdx === -1) {
-          const found = headerRow.filter((h) => h).join(', ') || '(none)';
-          return NextResponse.json({
-            success: false,
-            error: `Excel header row must include columns: name (or Item Name), category, menuType (or Menu Type/Type), sizeOption (or Size), price. Found: ${found.slice(0, 150)}${found.length > 150 ? '...' : ''}`,
-          }, { status: 400 });
-        }
+
+        // Read ALL sheets and infer menuType from sheet name if menuType column is missing
         const excelRows: { name: string; category: string; menuType: string; sizeOption: string; price: number | null; unit: string }[] = [];
-        for (let i = 1; i < rows.length; i++) {
-          const row = rows[i] as unknown[];
-          const cells = Array.isArray(row) ? row : [];
-          const getCell = (idx: number) => String(cells[idx] ?? '').trim();
-          const name = getCell(nameIdx);
-          const category = getCell(categoryIdx);
-          const menuType = normalizeMenuType(getCell(menutypeIdx));
-          const sizeOption = getCell(sizeOptionIdx) || 'Default';
-          const priceVal = cells[priceIdx];
-          const price = typeof priceVal === 'number' && !Number.isNaN(priceVal) ? priceVal : parsePrice(String(priceVal ?? ''));
-          const unit = unitIdx >= 0 ? (getCell(unitIdx) || 'serving') : 'serving';
-          if (name && category && menuType && MENU_TYPES.includes(menuType as MenuType)) {
-            excelRows.push({ name, category, menuType, sizeOption, price, unit });
+        const sheetErrors: string[] = [];
+
+        for (const sheetName of wb.SheetNames) {
+          // Skip non-menu informational sheets
+          if (normalizeExcelHeaderCell(sheetName).includes('change log')) continue;
+
+          const inferredMenuType = inferMenuTypeFromSheetName(sheetName);
+          const sheet = wb.Sheets[sheetName];
+          if (!sheet) continue;
+
+          // header: 1 = array of arrays so we control column mapping
+          const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, raw: true, defval: '' }) as unknown[][];
+          if (rows.length < 2) continue;
+
+          const headerRowIndex = findExcelHeaderRowIndex(rows);
+          if (headerRowIndex === -1) {
+            // Don't hard-fail the entire import if one sheet is formatted differently.
+            sheetErrors.push(`Sheet "${sheetName}": could not find header row (expected Category + Item Name).`);
+            continue;
+          }
+
+          const headerRow = (rows[headerRowIndex] || []).map((c) => String(c ?? '').trim());
+          const nameIdx = findHeaderIndex(headerRow, 'name', 'item name', 'item', 'itemname');
+          const categoryIdx = findHeaderIndex(headerRow, 'category', 'cat');
+          const menutypeIdx = findHeaderIndex(headerRow, 'menutype', 'menu type', 'type');
+          const sizeOptionIdx = findHeaderIndex(headerRow, 'sizeoption', 'size option', 'size');
+          const priceIdx = findHeaderIndex(headerRow, 'price', 'unit price', 'unitprice', 'price (usd)');
+          const unitIdx = findHeaderIndex(headerRow, 'unit', 'uom');
+
+          if (nameIdx === -1 || categoryIdx === -1 || sizeOptionIdx === -1 || priceIdx === -1) {
+            sheetErrors.push(`Sheet "${sheetName}": missing required columns (name/category/size/price).`);
+            continue;
+          }
+
+          for (let i = headerRowIndex + 1; i < rows.length; i++) {
+            const row = rows[i] as unknown[];
+            const cells = Array.isArray(row) ? row : [];
+            const getCell = (idx: number) => String(cells[idx] ?? '').trim();
+            const name = getCell(nameIdx);
+            const category = getCell(categoryIdx);
+            const menuTypeRaw = menutypeIdx >= 0 ? getCell(menutypeIdx) : '';
+            const menuType =
+              menuTypeRaw
+                ? normalizeMenuType(menuTypeRaw)
+                : inferredMenuType
+                  ? inferredMenuType
+                  : '';
+            const sizeOption = getCell(sizeOptionIdx) || 'Default';
+            const priceVal = cells[priceIdx];
+            const price =
+              typeof priceVal === 'number' && !Number.isNaN(priceVal)
+                ? priceVal
+                : parsePrice(String(priceVal ?? ''));
+            const unit = unitIdx >= 0 ? (getCell(unitIdx) || 'serving') : 'serving';
+            if (name && category && menuType && MENU_TYPES.includes(menuType as MenuType)) {
+              excelRows.push({ name, category, menuType, sizeOption, price, unit });
+            }
           }
         }
+
         if (excelRows.length === 0) {
-          return NextResponse.json({
-            success: false,
-            error: 'No valid data rows found. Check that menuType values are exactly: ' + MENU_TYPES.join(', ') + '.',
-          }, { status: 400 });
+          return NextResponse.json(
+            {
+              success: false,
+              error:
+                'No valid data rows found across sheets. Ensure sheets contain columns like Category, Item Name, Size / Option, Price (USD). ' +
+                (sheetErrors.length ? `Sheet issues: ${sheetErrors.slice(0, 3).join(' | ')}` : ''),
+            },
+            { status: 400 }
+          );
         }
+
         const updated: string[] = [];
         const skipped: string[] = [];
         const key = (r: typeof excelRows[0]) => `${r.name}\t${r.category}\t${r.menuType}`;
@@ -292,7 +345,7 @@ export async function POST(request: NextRequest) {
           updatedIds: updated,
           skipped: skipped.length,
           skippedDetails: skipped,
-          errors: errors.length ? errors : undefined,
+          errors: errors.length || sheetErrors.length ? [...errors, ...sheetErrors] : undefined,
         });
       } catch (err) {
         console.error('Excel parse error:', err);
